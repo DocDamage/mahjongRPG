@@ -109,8 +109,7 @@ func _refresh() -> void:
 			_ai_turn_pending = true
 			call_deferred("_take_ai_turn")
 		return
-	if flow.phase == MatchFlow.Phase.DRAW:
-		undo.begin_turn(flow)
+	undo.begin_turn(flow)
 	if undo.can_undo():
 		_add_action("Undo turn", _undo_turn)
 	if flow.phase == MatchFlow.Phase.DRAW:

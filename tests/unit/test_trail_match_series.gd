@@ -2,6 +2,7 @@ extends RefCounted
 
 const MahjongTile = preload("res://src/mahjong/domain/mahjong_tile.gd")
 const MatchFlow = preload("res://src/mahjong/domain/match_flow.gd")
+const TenderfootUndo = preload("res://src/mahjong/presentation/tenderfoot_undo.gd")
 const TileIdentity = preload("res://src/mahjong/domain/tile_identity.gd")
 const TrailHandValidator = preload("res://src/mahjong/domain/trail_hand_validator.gd")
 const WallBuilder = preload("res://src/mahjong/domain/wall_builder.gd")
@@ -52,10 +53,19 @@ func _test_replay_reconstruction(failures: Array[String]) -> void:
 	var turn_start = MatchFlow.new(812)
 	turn_start.start_match()
 	var legal_turn_snapshot := turn_start.snapshot()
-	var undo_rebuilt = MatchFlow.rebuild_from_replay(turn_start.replay.snapshot())
+	var undo = TenderfootUndo.new()
+	undo.begin_turn(turn_start)
 	turn_start.discard_at(0)
+	undo.record_player_action()
+	var undo_rebuilt = undo.restore()
 	if undo_rebuilt == null or undo_rebuilt.snapshot() != legal_turn_snapshot:
 		failures.append("a replay checkpoint should restore the legal state before a turn action")
+	else:
+		undo.begin_turn(undo_rebuilt)
+		undo_rebuilt.discard_at(0)
+		undo.record_player_action()
+		if undo.can_undo():
+			failures.append("Tenderfoot should allow only one undo for the same turn")
 
 
 func _test_high_noon_and_brand_abilities(failures: Array[String]) -> void:
