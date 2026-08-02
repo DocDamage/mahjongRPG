@@ -36,7 +36,11 @@ func _on_interacted(_actor: Node2D) -> void:
 		feedback.emit("Planted %s. Water it before resting." % starter_crop.capitalize())
 	elif crop.state == crop.State.READY:
 		var harvest: Dictionary = GameSession.farm.harvest(grid_cell)
-		feedback.emit("Harvested %s." % harvest.get("crop_id", starter_crop))
+		var crop_id := StringName(harvest.get("crop_id", starter_crop))
+		if not harvest.has("error") and GameSession.inventory.add_item(StringName("crop_%s" % crop_id), int(harvest.get("quantity", 1))) == OK:
+			feedback.emit("Harvested %s and added it to inventory." % crop_id.capitalize())
+		else:
+			feedback.emit("Harvest failed.")
 	elif crop.state in [crop.State.DEAD, crop.State.HARVESTED]:
 		feedback.emit("This plot needs a fresh seed.")
 	else:

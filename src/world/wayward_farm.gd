@@ -14,6 +14,7 @@ func _ready() -> void:
 	$FishingSpot.feedback.connect(_show_message)
 	$Horse.feedback.connect(_show_message)
 	$MahjongTable.feedback.connect(_show_message)
+	$ShippingCrate.feedback.connect(_show_message)
 	_update_status(GameSession.day, GameSession.minute_of_day)
 
 

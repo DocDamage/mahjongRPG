@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "items": [
+    {"id": "crop_beans", "sell_value_cents": 70},
+    {"id": "crop_corn", "sell_value_cents": 120},
+    {"id": "crop_tomato", "sell_value_cents": 100},
+    {"id": "crop_wheat", "sell_value_cents": 80},
+    {"id": "fish_anchovy", "sell_value_cents": 45},
+    {"id": "fish_bluegill", "sell_value_cents": 85},
+    {"id": "fish_catfish", "sell_value_cents": 160},
+    {"id": "fish_river_bass", "sell_value_cents": 140},
+    {"id": "fish_sunfish", "sell_value_cents": 55},
+    {"id": "fish_trout", "sell_value_cents": 240}
+  ]
+}
