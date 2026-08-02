@@ -6,7 +6,7 @@ const FishingSession = preload("res://src/fishing/fishing_session.gd")
 
 func run() -> Array[String]:
 	var failures: Array[String] = []
-	var fish_definitions: Array = [FishDefinition.new({"id": "test_fish", "difficulty": 0.1, "hours": [6, 20], "weather": ["clear"]})]
+	var fish_definitions: Array = [FishDefinition.new({"id": "test_fish", "difficulty": 0.1, "sell_value_cents": 100, "hours": [6, 20], "weather": ["clear"]})]
 	var session = FishingSession.new(44)
 	if session.cast(fish_definitions, 8, &"clear") != OK:
 		failures.append("eligible fish should cast successfully")

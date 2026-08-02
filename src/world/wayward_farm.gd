@@ -30,7 +30,7 @@ func _draw() -> void:
 func _update_status(_day: int, _minute_of_day: int) -> void:
 	var hour := GameSession.minute_of_day / 60
 	var minute := GameSession.minute_of_day % 60
-	status_label.text = "WAYWARD FARM  •  Day %d  •  %02d:%02d  •  %s\nMove: WASD / Left Stick  •  Run: Shift / L3  •  Fish: R/RT reel, F/LT release" % [GameSession.day, hour, minute, GameSession.weather_id.capitalize()]
+	status_label.text = "WAYWARD FARM  •  Day %d  •  %02d:%02d  •  %s  •  $%.2f\nMove: WASD / Left Stick  •  Run: Shift / L3  •  Fish: R/RT reel, F/LT release" % [GameSession.day, hour, minute, GameSession.weather_id.capitalize(), GameSession.inventory.money_cents / 100.0]
 
 
 func _show_message(message: String) -> void:

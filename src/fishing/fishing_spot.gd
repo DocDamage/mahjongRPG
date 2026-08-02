@@ -9,6 +9,7 @@ var session
 var _definitions: Array = []
 var _actor: Node2D
 var _last_state := -1
+var _catch_recorded := false
 
 
 func _ready() -> void:
@@ -26,6 +27,7 @@ func _process(delta: float) -> void:
 		var direction := Input.get_axis(&"move_left", &"move_right")
 		session.apply_struggle_input(direction, Input.is_action_pressed(&"fish_reel"), Input.is_action_pressed(&"fish_release"), delta)
 	session.tick(delta)
+	_record_catch_if_needed()
 	if session.state in [FishingSession.State.CATCH, FishingSession.State.ESCAPE] and Input.is_action_just_pressed(&"interact"):
 		session.present_result()
 	elif session.state == FishingSession.State.PRESENTATION and Input.is_action_just_pressed(&"interact"):
@@ -67,6 +69,7 @@ func _begin(actor: Node2D) -> void:
 	_actor = actor
 	_actor.set_physics_process(false)
 	_last_state = -1
+	_catch_recorded = false
 	_update_feedback()
 
 
@@ -76,6 +79,7 @@ func _finish() -> void:
 	_actor = null
 	session = null
 	_last_state = -1
+	_catch_recorded = false
 	feedback.emit("Fishing finished.")
 
 
@@ -95,7 +99,7 @@ func _update_feedback() -> void:
 		FishingSession.State.BITE:
 			feedback.emit("Bite! Press E / A to set the hook.")
 		FishingSession.State.CATCH:
-			feedback.emit("Caught %s! Press E / A to view it." % session.fish.id.capitalize())
+			feedback.emit("Caught %s ($%.2f)! Press E / A to view it." % [session.fish.id.capitalize(), session.fish.sell_value_cents / 100.0])
 		FishingSession.State.ESCAPE:
 			feedback.emit("The fish escaped. Press E / A to continue.")
 		FishingSession.State.PRESENTATION:
@@ -114,3 +118,10 @@ func _load_definitions() -> void:
 		for fish_data_value in fish_value:
 			if fish_data_value is Dictionary:
 				_definitions.append(FishDefinition.new(fish_data_value))
+
+
+func _record_catch_if_needed() -> void:
+	if _catch_recorded or session == null or session.state != FishingSession.State.CATCH or session.fish == null:
+		return
+	if GameSession.inventory.record_fish(session.fish.id, session.fish.sell_value_cents) == OK:
+		_catch_recorded = true

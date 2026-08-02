@@ -22,6 +22,11 @@ func run() -> Array[String]:
 	var restored = GameSessionScript.new()
 	if restored.restore(snapshot) != OK or restored.snapshot() != snapshot:
 		failures.append("session snapshot should round-trip")
+	var legacy := snapshot.duplicate(true)
+	legacy["schema_version"] = 1
+	legacy.erase("inventory")
+	if restored.restore(legacy) != OK or restored.inventory.money_cents != 0:
+		failures.append("version-one session saves should migrate an empty inventory safely")
 	session.free()
 	restored.free()
 	return failures
