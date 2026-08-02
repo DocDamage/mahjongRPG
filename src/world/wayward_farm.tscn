@@ -1,14 +1,18 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://src/world/wayward_farm.gd" id="1_world"]
 [ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
 [ext_resource type="Script" path="res://src/farm/farm_plot.gd" id="3_plot"]
 [ext_resource type="Script" path="res://src/world/bonfire.gd" id="4_fire"]
+[ext_resource type="Script" path="res://src/fishing/fishing_spot.gd" id="5_fishing"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_plot"]
 radius = 26.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fire"]
+radius = 34.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fishing"]
 radius = 34.0
 
 [node name="WaywardFarm" type="Node2D"]
@@ -70,6 +74,16 @@ prompt_text = "Rest until morning"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Bonfire"]
 shape = SubResource("CircleShape2D_fire")
+
+[node name="FishingSpot" type="Area2D" parent="."]
+position = Vector2(545, 210)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("5_fishing")
+prompt_text = "Fish"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FishingSpot"]
+shape = SubResource("CircleShape2D_fishing")
 
 [node name="HUD" type="CanvasLayer" parent="."]
 

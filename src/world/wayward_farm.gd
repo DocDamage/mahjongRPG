@@ -11,6 +11,7 @@ func _ready() -> void:
 	for plot in get_tree().get_nodes_in_group(&"farm_plot"):
 		plot.feedback.connect(_show_message)
 	$Bonfire.feedback.connect(_show_message)
+	$FishingSpot.feedback.connect(_show_message)
 	_update_status(GameSession.day, GameSession.minute_of_day)
 
 
@@ -27,7 +28,7 @@ func _draw() -> void:
 func _update_status(_day: int, _minute_of_day: int) -> void:
 	var hour := GameSession.minute_of_day / 60
 	var minute := GameSession.minute_of_day % 60
-	status_label.text = "WAYWARD FARM  •  Day %d  •  %02d:%02d  •  %s\nMove: WASD / Left Stick  •  Run: Shift / L3" % [GameSession.day, hour, minute, GameSession.weather_id.capitalize()]
+	status_label.text = "WAYWARD FARM  •  Day %d  •  %02d:%02d  •  %s\nMove: WASD / Left Stick  •  Run: Shift / L3  •  Fish: R/RT reel, F/LT release" % [GameSession.day, hour, minute, GameSession.weather_id.capitalize()]
 
 
 func _show_message(message: String) -> void:
