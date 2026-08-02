@@ -3,5 +3,10 @@
   "ambience": {
     "clear": "res://assets/generated/audio/outdoor_generic_ambience.ogg",
     "rain": "res://assets/generated/audio/rain_ambience.ogg"
+  },
+  "events": {
+    "footstep_grass": {"path": "res://assets/generated/audio/footstep_grass.wav", "bus": "SFX"},
+    "footstep_gravel": {"path": "res://assets/generated/audio/footstep_gravel.wav", "bus": "SFX"},
+    "footstep_wood": {"path": "res://assets/generated/audio/footstep_wood.wav", "bus": "SFX"}
   }
 }

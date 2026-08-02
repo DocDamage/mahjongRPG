@@ -19,6 +19,7 @@ floor_color = Color(0.42, 0.3, 0.2, 1)
 [node name="Doc" parent="." instance=ExtResource("2_player")]
 position = Vector2(480, 380)
 movement_bounds = Rect2(65, 115, 830, 300)
+footstep_event = &"footstep_wood"
 
 [node name="Exit" type="Area2D" parent="."]
 position = Vector2(480, 405)

@@ -17,6 +17,9 @@ const REQUIRED_ASSETS := [
 	"res://assets/generated/player/cowboy_left_walk.png",
 	"res://assets/generated/player/cowboy_right_walk.png",
 	"res://assets/generated/horses/horse_brown.png",
+	"res://assets/generated/audio/footstep_grass.wav",
+	"res://assets/generated/audio/footstep_gravel.wav",
+	"res://assets/generated/audio/footstep_wood.wav",
 ]
 
 

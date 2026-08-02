@@ -25,6 +25,7 @@ script = ExtResource("1_world")
 [node name="Doc" parent="." instance=ExtResource("2_player")]
 position = Vector2(130, 420)
 movement_bounds = Rect2(45, 120, 870, 345)
+footstep_event = &"footstep_gravel"
 
 [node name="FarmRoad" type="Area2D" parent="."]
 position = Vector2(70, 420)

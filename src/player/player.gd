@@ -7,6 +7,7 @@ const FRAME_SIZE := Vector2i(64, 64)
 const FRAME_COUNT := 8
 const WALK_SPEED := 150.0
 const RUN_SPEED := 230.0
+const FOOTSTEP_DISTANCE := 42.0
 const WALK_TEXTURE_PATHS := {
 	&"down": "res://assets/generated/player/cowboy_down_walk.png",
 	&"up": "res://assets/generated/player/cowboy_up_walk.png",
@@ -16,6 +17,7 @@ const WALK_TEXTURE_PATHS := {
 
 @export var running := false
 @export var movement_bounds := Rect2()
+@export var footstep_event: StringName = &"footstep_grass"
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var interaction_area: Area2D = $InteractionArea
 
@@ -24,6 +26,7 @@ var _interaction_targets: Array[Area2D] = []
 var _prompt_label: Label
 var _current_prompt_target: Area2D
 var _using_controller := false
+var _footstep_distance := 0.0
 
 
 func _ready() -> void:
@@ -60,11 +63,13 @@ func move_in_direction(direction: Vector2, _delta: float) -> void:
 	velocity = velocity_from_direction(direction)
 	if not velocity.is_zero_approx():
 		_update_facing(velocity.normalized())
+	var previous_position := global_position
 	move_and_slide()
 	if movement_bounds.has_area():
 		global_position = global_position.clamp(movement_bounds.position, movement_bounds.end)
 	_record_session_position()
 	_set_animation(not velocity.is_zero_approx())
+	_record_footstep(previous_position)
 
 
 func velocity_from_direction(direction: Vector2) -> Vector2:
@@ -211,6 +216,16 @@ func _record_session_position() -> void:
 
 func _session():
 	return get_node_or_null("/root/GameSession")
+
+
+func _record_footstep(previous_position: Vector2) -> void:
+	_footstep_distance += previous_position.distance_to(global_position)
+	if _footstep_distance < FOOTSTEP_DISTANCE:
+		return
+	_footstep_distance = fmod(_footstep_distance, FOOTSTEP_DISTANCE)
+	var audio = get_node_or_null("/root/AudioService")
+	if audio != null:
+		audio.play_catalog_event(footstep_event)
 
 
 func _is_game_paused() -> bool:

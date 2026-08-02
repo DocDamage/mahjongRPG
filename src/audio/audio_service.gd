@@ -5,6 +5,7 @@ const AUDIO_CATALOG_PATH := "res://data/audio/vertical_slice_audio.json"
 
 var _events: Dictionary = {}
 var _ambience_paths: Dictionary = {}
+var _event_paths: Dictionary = {}
 var _ambience_player: AudioStreamPlayer
 var _active_ambience: StringName
 
@@ -28,14 +29,33 @@ func load_runtime_catalog() -> Error:
 	if file == null:
 		return FileAccess.get_open_error()
 	var parsed: Variant = JSON.parse_string(file.get_as_text())
-	if not parsed is Dictionary or not parsed.get("ambience", {}) is Dictionary:
+	if not parsed is Dictionary or not parsed.get("ambience", {}) is Dictionary or not parsed.get("events", {}) is Dictionary:
 		return ERR_FILE_UNRECOGNIZED
 	_ambience_paths = parsed["ambience"].duplicate(true)
+	_event_paths = parsed["events"].duplicate(true)
 	return OK
 
 
 func ambience_path(weather_id: StringName) -> String:
 	return String(_ambience_paths.get(weather_id, ""))
+
+
+func event_path(event_id: StringName) -> String:
+	var event_value: Variant = _event_paths.get(event_id, {})
+	return String(event_value.get("path", "")) if event_value is Dictionary else ""
+
+
+func play_catalog_event(event_id: StringName) -> AudioStreamPlayer:
+	var event_value: Variant = _event_paths.get(event_id, {})
+	if not event_value is Dictionary:
+		return null
+	var event: Dictionary = event_value
+	var path := String(event.get("path", ""))
+	var stream := load(path) as AudioStream
+	if stream == null:
+		return null
+	register_event(event_id, stream, StringName(event.get("bus", "SFX")))
+	return play_event(event_id)
 
 
 func set_weather_ambience(weather_id: StringName) -> Error:
