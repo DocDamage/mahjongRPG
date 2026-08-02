@@ -2,9 +2,12 @@ extends PanelContainer
 
 signal confirmed(loadout: Array[StringName])
 
+const BrandCatalog = preload("res://src/mahjong/application/brand_catalog.gd")
+
 var _selected: Array[StringName] = []
 var _state
 var _status: Label
+var _catalog = BrandCatalog.new()
 
 
 func configure(state) -> void:
@@ -14,8 +17,8 @@ func configure(state) -> void:
 
 func open() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	position = Vector2(-250, -155)
-	size = Vector2(500, 310)
+	position = Vector2(-250, -220)
+	size = Vector2(500, 440)
 	_build()
 	GameSession.request_pause(&"brand_loadout")
 
@@ -39,10 +42,16 @@ func _build() -> void:
 	content.add_child(_status)
 	for brand in _state.unlocked_brands():
 		var button := CheckButton.new()
-		button.text = "%s Brand" % String(brand).capitalize()
+		var definition := _catalog.definition(brand)
+		button.text = "%s Brand (rank %d)\n%s" % [String(brand).capitalize(), _state.upgrade_rank(brand), String(definition.get("power", ""))]
 		button.button_pressed = brand in _selected
 		button.toggled.connect(_toggle.bind(brand))
 		content.add_child(button)
+		if _state.can_upgrade(brand):
+			var upgrade := Button.new()
+			upgrade.text = "Upgrade %s — %s" % [String(brand).capitalize(), String(definition.get("upgrade", ""))]
+			upgrade.pressed.connect(_upgrade.bind(brand))
+			content.add_child(upgrade)
 	var confirm := Button.new()
 	confirm.text = "Confirm loadout"
 	confirm.pressed.connect(_confirm)
@@ -59,7 +68,12 @@ func _toggle(enabled: bool, brand: StringName) -> void:
 
 
 func _refresh_status() -> void:
-	_status.text = "Selected: %s. %s" % [", ".join(_selected).capitalize(), "Choose exactly two." if _selected.size() != 2 else "This loadout stays locked for the match."]
+	_status.text = "Selected: %s. %s Upgrade points: %d. Locked Brands do not appear here; earn them through the named mastery rematches." % [", ".join(_selected).capitalize(), "Choose exactly two." if _selected.size() != 2 else "This loadout stays locked for the match.", _state.upgrade_points]
+
+
+func _upgrade(brand: StringName) -> void:
+	if _state.upgrade(brand) == OK:
+		_refresh_status()
 
 
 func _confirm() -> void:

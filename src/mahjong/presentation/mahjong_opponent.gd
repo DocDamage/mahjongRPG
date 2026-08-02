@@ -37,6 +37,7 @@ func _on_interacted(_actor: Node2D) -> void:
 		feedback.emit("This opponent's table is not ready.")
 		return
 	var table = MahjongTable.new()
+	table.opponent_id = opponent_id
 	table.opponent_name = String(_definition["display_name"])
 	table.opponent_loadout = _as_brand_loadout(_definition["brands"])
 	var profile_value: Variant = _definition.get("ai", {})

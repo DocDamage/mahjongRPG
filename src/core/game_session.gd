@@ -21,7 +21,7 @@ signal pause_changed(paused: bool)
 signal weather_changed(weather_id: StringName)
 signal session_restored()
 
-const SAVE_SCHEMA_VERSION := 8
+const SAVE_SCHEMA_VERSION := 9
 const MATCH_TIME_COST_MINUTES := 90
 const MINUTES_PER_DAY := 24 * 60
 const REAL_SECONDS_PER_DAY := 60.0

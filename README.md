@@ -6,7 +6,7 @@ Doc inherits Wayward Farm outside Mercy's Wake, a Gulf Coast frontier town where
 
 ## Playable-slice status
 
-This checkout contains the Phase 1 honest vertical slice and Phase 2 demo-delivery foundation. From the title shell, a player can start or load, configure accessibility preferences, complete First Lantern, use Mabel's daily crop-watering action, choose Orange/Blue before a match, plant any of four crops, save while mounted, recover a backup, and reach Riverbend. It is not a claim that the full planned game is complete.
+This checkout contains the Phase 1–4 playable foundation. From the title shell, a player can start or load, configure accessibility preferences (including Tenderfoot, Trailhand, and Gunslinger Mahjong assistance), complete First Lantern, use Mabel's daily crop-watering action, earn all six Brands through the three existing-world mastery rematches, select and upgrade a two-Brand loadout, reopen the Hall's Frontier Rules table, and play either Trail or Frontier Mahjong. Saves migrate from the P1–P3 schema to persist Brands, upgrades, Hall stage, unlocked rulesets, and discovered Deeds. It is not a claim that the full planned game is complete.
 
 ## Technical target
 
@@ -55,6 +55,7 @@ Use the target Godot 4.7.1 executable—not an arbitrary `godot` on `PATH`. The 
 - [File-size policy](docs/architecture/file_size_policy.md)
 - [Test-to-module coverage inventory](docs/qa/test_to_module_coverage.md)
 - [Manual device/display/accessibility matrix](docs/qa/manual_device_display_matrix.md)
+- [Phase 3–4 completion audit](docs/production/PHASE_3_4_COMPLETION_AUDIT_2026-08-02.md)
 - [Windows setup and recovery](docs/release/setup_and_recovery.md)
 
 ## Licensing

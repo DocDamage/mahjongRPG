@@ -1,6 +1,8 @@
 extends RefCounted
 
 const TrailHandValidator = preload("res://src/mahjong/domain/trail_hand_validator.gd")
+const HandRules = preload("res://src/mahjong/domain/hand_rules.gd")
+const MatchRuleset = preload("res://src/mahjong/domain/match_ruleset.gd")
 
 const DRAW_LIMIT := 3
 
@@ -9,10 +11,10 @@ var draws_remaining := 0
 var waiting_identity_keys: Array[String] = []
 
 
-func declare(hand: Array) -> bool:
+func declare(hand: Array, ruleset: StringName = MatchRuleset.TRAIL) -> bool:
 	if active:
 		return false
-	var waits := TrailHandValidator.winning_identity_keys(hand)
+	var waits := HandRules.winning_identity_keys(hand, ruleset)
 	if waits.is_empty():
 		return false
 	active = true

@@ -105,6 +105,17 @@ Powers may be earned repeatedly, with a maximum of two stored activations per Br
 
 Every player may claim a discard that directly completes a winning hand. Brand rules govern non-winning claims.
 
+## Implemented P3–P4 mastery path
+
+The tracked implementation keeps later-world scope locked while making all six Brands playable in the existing world:
+
+- Orange and Blue are starter Brands.
+- Win a Trail Rules rematch against River Rose for Green, Dynamite Bill for Pink, and Mayor Bell for Dark.
+- Completing those three rematches marks Hall cleanup complete, unlocks Purple, and reopens the Hall's Frontier Rules table.
+- Every earned Brand grants one bounded upgrade point. Rank-one upgrades are persisted with the loadout and change the documented power limit or behavior.
+
+The Hall table uses the 136-tile Frontier wall, thirteen concealed tiles plus a dealer draw, fourteen-tile winning hands, and four-of-a-kind public claims with a replacement draw. Its result screen displays a deterministic replay-event count and hash; the replay log also contains player-readable action explanations. AI decisions retain only public discards and open groups.
+
 Direct interference may inspect a concealed tile, make a discard unclaimable, lock a tile temporarily, or cancel a power. The game does not rearrange an opponent's concealed hand or change the identity of an opponent tile.
 
 ## High Noon declaration

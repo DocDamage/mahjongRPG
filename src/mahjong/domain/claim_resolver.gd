@@ -38,12 +38,18 @@ static func _is_brand_claim(discard, claim: Dictionary) -> bool:
 	var kind := StringName(claim.get("kind", ""))
 	var equipped_value = claim.get("equipped", [])
 	var tiles_value = claim.get("tiles", [])
-	if not equipped_value is Array or not tiles_value is Array or tiles_value.size() != 2:
+	if not equipped_value is Array or not tiles_value is Array:
 		return false
-	if kind == &"blue_run":
+	if kind == &"blue_run" and tiles_value.size() == 2:
 		return &"blue" in equipped_value and _is_run([discard, tiles_value[0], tiles_value[1]])
-	if kind == &"orange_group":
+	if kind == &"orange_group" and tiles_value.size() == 2:
 		return &"orange" in equipped_value and (_is_run([discard, tiles_value[0], tiles_value[1]]) or _is_set([discard, tiles_value[0], tiles_value[1]]))
+	if kind == &"green_set" and tiles_value.size() == 2:
+		return &"green" in equipped_value and _is_set([discard, tiles_value[0], tiles_value[1]])
+	if kind == &"pink_pair" and tiles_value.size() == 1:
+		return &"pink" in equipped_value and _is_set([discard, tiles_value[0]])
+	if kind == &"frontier_quad" and tiles_value.size() == 3:
+		return _is_set([discard, tiles_value[0], tiles_value[1], tiles_value[2]])
 	return false
 
 

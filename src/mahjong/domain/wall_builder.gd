@@ -6,14 +6,24 @@ const MahjongTile = preload("res://src/mahjong/domain/mahjong_tile.gd")
 
 const TRAIL_COPIES_PER_IDENTITY := 3
 const TRAIL_WALL_SIZE := 102
+const FRONTIER_COPIES_PER_IDENTITY := 4
+const FRONTIER_WALL_SIZE := 136
 
 
 static func build_trail_wall(seed: int) -> Array:
+	return _build_wall(seed, TRAIL_COPIES_PER_IDENTITY)
+
+
+static func build_frontier_wall(seed: int) -> Array:
+	return _build_wall(seed, FRONTIER_COPIES_PER_IDENTITY)
+
+
+static func _build_wall(seed: int, copies_per_identity: int) -> Array:
 	var wall: Array = []
 	var identities: Array = TileIdentity.all_identities()
 	for identity_index in identities.size():
-		for copy_index in TRAIL_COPIES_PER_IDENTITY:
-			var brand_index := (identity_index * TRAIL_COPIES_PER_IDENTITY + copy_index) % BrandId.ALL.size()
+		for copy_index in copies_per_identity:
+			var brand_index := (identity_index * copies_per_identity + copy_index) % BrandId.ALL.size()
 			wall.append(MahjongTile.new(identities[identity_index], BrandId.ALL[brand_index]))
 	_shuffle(wall, seed)
 	return wall

@@ -41,6 +41,8 @@
 | Godot 4.7.1 Windows export | Validated the official 4.7.1 runtime and matching templates, passed repository validation plus 31 native suites/smoke/editor checks, packaged the ignored Windows debug build, and headlessly launched it with an isolated AppData environment. |
 | P1 honest vertical slice | Added persisted Orange/Blue ownership/loadout selection, Mabel's visible daily crop-watering action, four-crop picker, first localized Silas evidence, inspectable schedule feedback, and safe mounted-location persistence with schema-8 migration. |
 | P2 demo delivery foundation | Added target-engine GitHub Actions checks, a 250-LOC warning report, title/load/accessibility shell with persistent preferences, canonical setup/recovery guidance, coverage inventory, manual QA matrix, and a proprietary-code disposition. |
+| P3 four-Brand mastery | Added data-backed six-Brand definitions, River Rose/Dynamite Bill mastery unlocks for Green/Pink, saved bounded upgrades, charge/loadout state, and expanded Tenderfoot lessons. |
+| P4 Frontier Rules | Added the Hall stage-2 Frontier table, Mayor Bell/Dark and cleanup/Purple progression, deterministic 136-tile Frontier walls, 14-tile validation, quad claims/replacement draws, expanded Deeds, saved ruleset/Deed IDs, assistance modes, visible-information AI explanations, and replay hash/explanation evidence. |
 | Target-engine CI evidence | GitHub Actions run `30770900107` passed Linux resource import, validator, all 33 suites, smoke, and editor initialization plus Windows Godot-template/export preflight. |
 
 ## Current local verification baseline
@@ -54,4 +56,4 @@ python tools/validate_repository.py
 <Godot 4.7.1 engine> --headless --path . --editor --quit
 ```
 
-The portable validation engine is official Godot 4.7.1 with matching Windows templates. The current run reports 33 suites plus smoke/editor success, and target-engine CI is green. The Windows debug export and isolated-AppData headless launch are verified. The expanded master source tree (4,430 assets) and four supplemental source directories also verify locally; user-observed clean-profile and manual device/display/accessibility passes remain external evidence gates. See [setup_and_recovery.md](../release/setup_and_recovery.md).
+The portable validation engine is official Godot 4.7.1 with matching Windows templates. The current run reports 39 suites plus smoke/editor success, and target-engine CI is green. The Windows debug export and isolated-AppData headless launch are verified. The expanded master source tree (4,430 assets) and four supplemental source directories also verify locally; user-observed clean-profile and manual device/display/accessibility passes remain external evidence gates. See [setup_and_recovery.md](../release/setup_and_recovery.md).

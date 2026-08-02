@@ -26,7 +26,7 @@ func _draw() -> void:
 
 func _on_interacted(_actor: Node2D) -> void:
 	if GameSession.quests.completed.has(QUEST_ID):
-		feedback.emit("%s\n%s" % [DialogueCatalog.text(&"first_lantern.after"), _silas_evidence_text()])
+		feedback.emit("%s\n%s\n%s" % [DialogueCatalog.text(&"first_lantern.after"), _hall_mastery_text(), _silas_evidence_text()])
 		return
 	if not GameSession.quests.is_active(QUEST_ID):
 		GameSession.quests.start(QUEST_ID)
@@ -73,3 +73,10 @@ func _on_quest_completed(quest_id: StringName) -> void:
 
 func _silas_evidence_text() -> String:
 	return DialogueCatalog.text(&"evidence.silas_first_lantern_note.text") if GameSession.evidence.has(&"silas_first_lantern_note") else ""
+
+
+func _hall_mastery_text() -> String:
+	if GameSession.brands.can_play_frontier():
+		return "The cleanup is complete. The rebuilt western table now teaches Frontier Rules; Purple has returned to the Hall."
+	var wins: Dictionary = GameSession.brands.match_wins
+	return "Hall cleanup ledger — River Rose: %s, Dynamite Bill: %s, Mayor Bell: %s. Win each Trail Rules rematch to claim Green, Pink, and Dark and reopen the Frontier table." % ["done" if int(wins.get(&"river_rose", 0)) > 0 else "pending", "done" if int(wins.get(&"dynamite_bill", 0)) > 0 else "pending", "done" if int(wins.get(&"mayor_bell", 0)) > 0 else "pending"]

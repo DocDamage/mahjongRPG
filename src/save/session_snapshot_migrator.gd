@@ -33,4 +33,13 @@ static func migrate(snapshot_data: Dictionary, current_version: int) -> Dictiona
 		horse_data["mounted_scene"] = ""
 		horse_data["mounted_position"] = []
 		migrated["horse"] = horse_data
+	if schema_version <= 8:
+		var brand_data: Dictionary = migrated.get("brands", {})
+		brand_data["upgrades"] = {}
+		brand_data["upgrade_points"] = 0
+		brand_data["match_wins"] = {}
+		brand_data["hall_stage"] = 1
+		brand_data["unlocked_rulesets"] = {"trail": true}
+		brand_data["discovered_deeds"] = {}
+		migrated["brands"] = brand_data
 	return migrated

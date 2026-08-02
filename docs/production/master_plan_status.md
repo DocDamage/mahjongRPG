@@ -8,6 +8,8 @@ This is an evidence ledger for `CODEX_MASTER_EXECUTION_PLAN.md`. It is not a com
 | --- | --- | --- |
 | P1: honest vertical slice | Code complete / manual checkpoint pending | Save schema 8 adds starter Orange/Blue Brand ownership and persisted pre-match loadout state, Mabel's assigned once-per-day crop-watering action, first Silas evidence, four-crop picker, inspectable unavailable-opponent schedules, and mounted horse scene/position persistence. Focused migration/orchestration tests, progression, save, smoke, and editor checks pass with Godot 4.7.1; the physical player checkpoint is part of the pending manual matrix. |
 | P2: demo-grade delivery foundation | Partial / manual evidence gate | Target-engine [GitHub Actions run 30770987928](https://github.com/DocDamage/mahjongRPG/actions/runs/30770987928) is green for validator, resource import, 33 suites, smoke, editor, and Windows template/export preflight. The 250-LOC report, canonical setup/recovery, manual matrix, coverage inventory, title/load/accessibility shell, persistent preferences, controller-glyph base, and proprietary code notice are present. Expanded source verification passed for `assets/MahjongRPG/` (4,430 assets) and all four expanded supplemental directories. Physical controller/display matrix and user-observed clean-profile pass remain evidence gates. |
+| P3: four-Brand mastery | Code complete / manual checkpoint pending | `data/brands/six_brands.json` defines all six Brands. Existing-world rematches unlock Green (River Rose) and Pink (Dynamite Bill), provide bounded saved upgrade points, and expose charge/loadout/tutorial state. `test_brand_mastery`, `test_six_brand_powers`, replay tests, migration fixtures, smoke, and editor load pass. A player still needs to perform the physical earn/equip/win checkpoint. |
+| P4: Frontier Rules and complete Mahjong | Code complete / manual checkpoint pending | Frontier Rules ships a deterministic 136-tile wall, 14-tile hands, quad public claims/replacement draws, Dark/Purple powers, expanded Deeds/Renown, saved ruleset/Deed/Hall IDs, assistance modes, visible-information Frontier AI, replay explanations/hashes, and a real Hall stage-2 table. Mayor Bell's rematch gives Dark; all three rematches finish Hall cleanup and unlock Purple/Frontier. `test_frontier_rules`, `test_frontier_ai`, `test_match_replay_explainer`, schema-9 migration, smoke, and editor gates pass. The physical Trail/Frontier checkpoint remains pending. |
 | A–C: orientation and source import | Complete for the expanded canonical asset folder | `docs/assets/master_import.md` establishes `assets/MahjongRPG/` as the local source. The user explicitly retained archives outside the repo; no archive is committed. |
 | D: Godot 4.7.1 smoke | Complete | Official Godot `4.7.1.stable.official.a13da4feb` and matching Windows templates passed preflight, the 31-suite native runner, runtime smoke, and headless editor initialization. |
 | E: foundation integration | External gate | Work is on `agent/project-foundation`; no merge into `develop`, push, or PR is claimed. |
@@ -31,7 +33,7 @@ python tools/validate_repository.py
 <Godot 4.7.1 engine> --headless --path . --editor --quit
 ```
 
-The current native run reports 33 suites. The complete commands and latest milestones are maintained in `implementation_log.md`.
+The current native run reports 39 suites. The complete commands and latest milestones are maintained in `implementation_log.md`.
 
 ## Required delivery actions
 

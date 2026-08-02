@@ -18,6 +18,7 @@ const DATA_TABLES := {
 	&"runtime_assets": "res://data/runtime_assets/vertical_slice_assets.json",
 	&"opponent_schedules": "res://data/schedules/vertical_slice_opponent_schedules.json",
 	&"mahjong_tile_atlas": "res://data/mahjong/vertical_slice_tile_atlas.json",
+	&"brands": "res://data/brands/six_brands.json",
 }
 const REQUIRED_ASSETS := [
 	"res://assets/generated/player/cowboy_down_walk.png",

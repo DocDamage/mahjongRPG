@@ -16,6 +16,9 @@ func _ready() -> void:
 	var mabel = get_node_or_null("Mabel")
 	if mabel != null:
 		mabel.feedback.connect(_show_message)
+	var frontier_table = get_node_or_null("FrontierTable")
+	if frontier_table != null:
+		frontier_table.feedback.connect(_show_message)
 	var clerk = get_node_or_null("StoreClerk")
 	if clerk != null:
 		clerk.feedback.connect(_show_message)

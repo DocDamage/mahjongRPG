@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://src/world/interior.gd" id="1_interior"]
 [ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
 [ext_resource type="Script" path="res://src/world/scene_exit.gd" id="3_exit"]
 [ext_resource type="Script" path="res://src/story/hall_foreman.gd" id="4_mabel"]
+[ext_resource type="Script" path="res://src/mahjong/presentation/hall_frontier_table.gd" id="5_frontier"]
 [sub_resource type="CircleShape2D" id="ExitShape"]
 radius = 42.0
 [sub_resource type="CircleShape2D" id="MabelShape"]
@@ -32,6 +33,14 @@ collision_mask = 0
 script = ExtResource("4_mabel")
 prompt_text = "Speak with Mabel"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Mabel"]
+shape = SubResource("MabelShape")
+[node name="FrontierTable" type="Area2D" parent="."]
+position = Vector2(285, 235)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("5_frontier")
+prompt_text = "Inspect Hall cleanup"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FrontierTable"]
 shape = SubResource("MabelShape")
 [node name="HUD" type="CanvasLayer" parent="."]
 [node name="Status" type="Label" parent="HUD"]

@@ -1,6 +1,7 @@
 extends RefCounted
 
-const TrailHandValidator = preload("res://src/mahjong/domain/trail_hand_validator.gd")
+const HandRules = preload("res://src/mahjong/domain/hand_rules.gd")
+const MatchRuleset = preload("res://src/mahjong/domain/match_ruleset.gd")
 
 const DEED_RENOWN := {
 	"three_trails": 2,
@@ -13,11 +14,14 @@ const DEED_RENOWN := {
 	"self_made": 1,
 	"long_trail": 2,
 	"against_the_odds": 2,
+	"iron_corral": 2,
+	"four_of_a_kind": 2,
 }
 
 
 static func evaluate(tiles: Array, context: Dictionary = {}) -> Array[Dictionary]:
-	var decompositions := TrailHandValidator.decompose_hand(tiles)
+	var ruleset := StringName(context.get("ruleset", MatchRuleset.TRAIL))
+	var decompositions := HandRules.decompose_hand(tiles, ruleset)
 	if decompositions.is_empty():
 		return []
 	var decomposition: Dictionary = decompositions.front()
@@ -34,9 +38,9 @@ static func evaluate(tiles: Array, context: Dictionary = {}) -> Array[Dictionary
 				run_count += 1
 			elif String(group_value.get("kind", "")) == "set":
 				set_count += 1
-	if run_count == 3:
+	if run_count == (4 if ruleset == MatchRuleset.FRONTIER else 3):
 		_add(deeds, "three_trails", "Three Trails: every group is a Run.")
-	if set_count == 3:
+	if set_count == (4 if ruleset == MatchRuleset.FRONTIER else 3):
 		_add(deeds, "posse", "The Posse: every group is a matching Set.")
 	var numbered_suits := _numbered_suits(tiles)
 	if numbered_suits.size() == 1 and _all_numbered(tiles):
@@ -58,6 +62,10 @@ static func evaluate(tiles: Array, context: Dictionary = {}) -> Array[Dictionary
 		_add(deeds, "long_trail", "Long Trail: your Runs span ranks one through nine.")
 	if bool(context.get("opponent_declared_high_noon", false)):
 		_add(deeds, "against_the_odds", "Against the Odds: win after the opponent declares High Noon.")
+	if groups.any(func(group) -> bool: return String(group.get("kind", "")) == "quad"):
+		_add(deeds, "four_of_a_kind", "Iron Corral: complete a legal Frontier quad.")
+	if ruleset == MatchRuleset.FRONTIER and run_count + set_count >= 4:
+		_add(deeds, "iron_corral", "Iron Corral: complete all four Frontier groups without a quad.")
 	return deeds
 
 

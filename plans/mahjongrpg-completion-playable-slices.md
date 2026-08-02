@@ -3,7 +3,7 @@
 **Created:** 2026-08-02
 **Baseline:** `agent/project-foundation` at `102a593`
 **Inputs:** `docs/production/REPOSITORY_COMPLETENESS_AUDIT_2026-08-02.md`, `docs/CODEX_MASTER_EXECUTION_PLAN.md`, and `docs/SIX_BRANDS_AT_HIGH_NOON_COMPLETE_GAME_PLAN.md`
-**Status:** Reviewed blueprint; P1 implementation complete in code; P2 source-asset evidence resolved from the expanded `assets/` tree; manual acceptance evidence remains pending
+**Status:** Reviewed blueprint; P1–P4 implementation complete in code with automated evidence. P2 manual device/display and clean-profile acceptance evidence remains pending.
 
 ## Objective
 
@@ -259,3 +259,4 @@ This file is the execution blueprint. `docs/production/master_plan_status.md` re
 ## Changelog
 
 - **2026-08-02:** Corrected P2 source-evidence terminology. `assets/MahjongRPG/` is the canonical expanded master source tree and `assets/Hero - Cowboy - AssetPack/`, `assets/horses/`, `assets/fishing UI/`, and `assets/Cozy SFX Volume 1/` are the canonical expanded supplemental trees. Verified with `tools/import_master_assets.py --expanded-source-dir assets/MahjongRPG --verify-only` (4,430 assets) and `tools/import_supplemental_assets.py --expanded-source-dir assets --verify-only` (four source directories). The ignored original ZIP archives are optional provenance, not a P2 acceptance prerequisite.
+- **2026-08-02:** Implemented P3–P4 on the foundation branch. The data-backed six-Brand catalog, named existing-world mastery rematches, bounded saved upgrades, charge/loadout UI, expanded tutorial, and deterministic replay evidence deliver P3. Frontier Rules adds a deterministic 136-tile wall, 14-tile hands, quad claims/replacement draws, Dark/Purple powers, expanded Deeds/Renown, assistance modes, visible-information AI explanations, replay hashes, Hall stage 2, and schema-9 migration fixtures. Automated validation, all 39 native suites, smoke, and editor load pass; physical checkpoint/device evidence remains manual.

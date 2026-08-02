@@ -42,6 +42,7 @@ func _build() -> void:
 	_add_row(content, "ReducedMotion", "Reduced motion", func(): _preferences.toggle_reduced_motion())
 	_add_row(content, "Subtitles", "Subtitles", func(): _preferences.toggle_subtitles())
 	_add_row(content, "Glyphs", "Controller glyphs", func(): _preferences.cycle_controller_glyph_set())
+	_add_row(content, "MahjongAssistance", "Mahjong assistance", func(): _preferences.cycle_mahjong_assistance())
 	var back := Button.new()
 	back.text = "Back"
 	back.pressed.connect(close)
@@ -67,6 +68,7 @@ func _refresh() -> void:
 	_set_row("ReducedMotion", "On" if _preferences.reduced_motion else "Off")
 	_set_row("Subtitles", "On" if _preferences.subtitles else "Off")
 	_set_row("Glyphs", String(_preferences.controller_glyph_set).capitalize())
+	_set_row("MahjongAssistance", String(_preferences.mahjong_assistance).capitalize())
 
 
 func _set_row(id: String, value: String) -> void:

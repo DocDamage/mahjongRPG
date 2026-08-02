@@ -13,6 +13,7 @@ var interaction_mode: StringName = &"toggle"
 var reduced_motion := false
 var subtitles := true
 var controller_glyph_set: StringName = &"auto"
+var mahjong_assistance: StringName = &"tenderfoot"
 
 
 func _ready() -> void:
@@ -30,13 +31,16 @@ func load_preferences() -> Error:
 	reduced_motion = bool(config.get_value("accessibility", "reduced_motion", reduced_motion))
 	subtitles = bool(config.get_value("accessibility", "subtitles", subtitles))
 	controller_glyph_set = StringName(config.get_value("accessibility", "controller_glyph_set", controller_glyph_set))
+	mahjong_assistance = StringName(config.get_value("accessibility", "mahjong_assistance", mahjong_assistance))
+	if not mahjong_assistance in [&"tenderfoot", &"trailhand", &"gunslinger"]:
+		mahjong_assistance = &"tenderfoot"
 	_apply()
 	return OK
 
 
 func save_preferences() -> Error:
 	var config := ConfigFile.new()
-	for entry in {"text_scale": text_scale, "ui_scale": ui_scale, "dialogue_speed": dialogue_speed, "interaction_mode": interaction_mode, "reduced_motion": reduced_motion, "subtitles": subtitles, "controller_glyph_set": controller_glyph_set}:
+	for entry in {"text_scale": text_scale, "ui_scale": ui_scale, "dialogue_speed": dialogue_speed, "interaction_mode": interaction_mode, "reduced_motion": reduced_motion, "subtitles": subtitles, "controller_glyph_set": controller_glyph_set, "mahjong_assistance": mahjong_assistance}:
 		config.set_value("accessibility", entry, get(entry))
 	return config.save(CONFIG_PATH)
 
@@ -73,6 +77,11 @@ func toggle_subtitles() -> void:
 
 func cycle_controller_glyph_set() -> void:
 	controller_glyph_set = &"xbox" if controller_glyph_set == &"auto" else &"playstation" if controller_glyph_set == &"xbox" else &"auto"
+	_commit()
+
+
+func cycle_mahjong_assistance() -> void:
+	mahjong_assistance = &"trailhand" if mahjong_assistance == &"tenderfoot" else &"gunslinger" if mahjong_assistance == &"trailhand" else &"tenderfoot"
 	_commit()
 
 
