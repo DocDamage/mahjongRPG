@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "fish": [
+    {"id": "anchovy", "difficulty": 0.25, "hours": [6, 20], "weather": ["clear", "rain"]},
+    {"id": "bluegill", "difficulty": 0.35, "hours": [6, 18], "weather": ["clear"]},
+    {"id": "catfish", "difficulty": 0.55, "hours": [16, 24], "weather": ["rain"]},
+    {"id": "river_bass", "difficulty": 0.5, "hours": [6, 20], "weather": ["clear", "rain"]},
+    {"id": "sunfish", "difficulty": 0.2, "hours": [6, 18], "weather": ["clear"]},
+    {"id": "trout", "difficulty": 0.7, "hours": [6, 12], "weather": ["rain"]}
+  ]
+}
