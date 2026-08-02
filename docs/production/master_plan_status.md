@@ -7,7 +7,7 @@ This is an evidence ledger for `CODEX_MASTER_EXECUTION_PLAN.md`. It is not a com
 | Plan phase | Status | Current evidence / remaining work |
 | --- | --- | --- |
 | A–C: orientation and source import | Complete for the expanded canonical asset folder | `docs/assets/master_import.md` establishes `assets/MahjongRPG/` as the local source. The user explicitly retained archives outside the repo; no archive is committed. |
-| D: Godot 4.7.1 smoke | External gate | `tools/verify_export_environment.py` reports installed Godot 4.6.2 and missing 4.7.1 Windows templates. |
+| D: Godot 4.7.1 smoke | Complete | Official Godot `4.7.1.stable.official.a13da4feb` and matching Windows templates passed preflight, the 31-suite native runner, runtime smoke, and headless editor initialization. |
 | E: foundation integration | External gate | Work is on `agent/project-foundation`; no merge into `develop`, push, or PR is claimed. |
 | F: architecture and headless tests | Complete for the slice | Versioned `GameSession`, focused services, data tables, native runner, 300 LOC validator, and recursive runtime-resource audit are present. |
 | G: runtime assets | Partial | Hero actions, five horses, audio categories, and deterministic 34-face Mahjong atlas are cataloged. The compact presentation adds Brand patterns, but it does not yet generate every orientation/state atlas named in the full plan. |
@@ -18,24 +18,22 @@ This is an evidence ledger for `CODEX_MASTER_EXECUTION_PLAN.md`. It is not a com
 | M: fishing | Complete for the slice | All required session states, deterministic conditions, keyboard/controller controls, overlay, catch records/economy, non-color tension feedback, controller haptics, and a default rod/bait/lure/hook/line catalog with applied modifiers are present. |
 | N: horse travel | Complete for the slice | All five colorways are cataloged; selected horse state, safe dismount, discovered hitch posts, and fast travel are save-backed and tested. |
 | O: world and narrative | Complete for the slice | Wayward Farm, Dustward, Riverbend, general store, inn, hall, three opponents, First Lantern, helper unlock, access dispute, shipping, store, sleep, bonfire, and horse route are playable scenes. |
-| P: QA, export, PR | Partial / external gate | Validation, 28 suites, smoke, editor, scene loads, and export preflight run locally. Controller-only/manual display passes, a clean-profile Windows development export, push, and draft PR remain unverified or require authorization. |
+| P: QA, export, PR | Partial / external gate | Validation, 31 suites, smoke, editor, export preflight, Windows debug packaging, and an isolated-AppData headless launch passed locally. Controller-only/manual display passes, a user-observed clean-Windows-profile pass, push, and draft PR remain unverified or require authorization. |
 
 ## Current local validation evidence
 
 ```powershell
 python tools/validate_repository.py
-godot --headless --path . --script res://tests/test_runner.gd
-godot --headless --path . --script res://tests/smoke_test.gd
-godot --headless --path . --editor --quit
+<Godot 4.7.1 engine> --headless --path . --script res://tests/test_runner.gd
+<Godot 4.7.1 engine> --headless --path . --script res://tests/smoke_test.gd
+<Godot 4.7.1 engine> --headless --path . --editor --quit
 ```
 
-The current native run reports 28 suites. The complete commands and latest milestones are maintained in `implementation_log.md`.
+The current native run reports 31 suites. The complete commands and latest milestones are maintained in `implementation_log.md`.
 
 ## Required delivery actions
 
-1. Install or provide the exact Godot 4.7.1 runtime and matching Windows export templates.
-2. Run `python tools/verify_export_environment.py`, then create and launch the Windows development export on a clean user profile.
-3. Perform the plan's manual controller, display, crop, fishing, horse, schedule, Hall, and audio passes.
-4. With user authorization, push the focused branch and open the required draft PR into `develop`.
+1. Perform the plan's manual controller, display, crop, fishing, horse, schedule, Hall, and audio passes, including a user-observed clean-Windows-profile development-export launch.
+2. With user authorization, push the focused branch and open the required draft PR into `develop`.
 
 Until those gates have evidence, the plan is not complete.

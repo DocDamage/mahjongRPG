@@ -19,6 +19,7 @@ EXCLUDED_PREFIXES = (
     "assets/MahjongRPG/",
     "vendor/local/",
     "artifacts/local/",
+    "exports/",
 )
 REQUIRED = (
     "project.godot",

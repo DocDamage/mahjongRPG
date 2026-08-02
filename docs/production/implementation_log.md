@@ -38,6 +38,7 @@
 | Placement route safety | Added guarded-route breadth-first validation to construction placement, preventing a non-walkable build from sealing the farm's traversable route while allowing walkable paths. |
 | Controller focus regression | Added a viewport-attached controls-screen test that verifies initial binding focus and focus retention when the controller tab becomes active. |
 | Weather catalog | Moved deterministic clear/rain selection into validated weather data while defining cloudy, thunderstorm, dust wind, and supernatural fog for later activation. |
+| Godot 4.7.1 Windows export | Validated the official 4.7.1 runtime and matching templates, passed repository validation plus 31 native suites/smoke/editor checks, packaged the ignored Windows debug build, and headlessly launched it with an isolated AppData environment. |
 
 ## Current local verification baseline
 
@@ -45,9 +46,9 @@ The following checks passed after the milestones above:
 
 ```powershell
 python tools/validate_repository.py
-godot --headless --path . --script res://tests/test_runner.gd
-godot --headless --path . --script res://tests/smoke_test.gd
-godot --headless --path . --editor --quit
+<Godot 4.7.1 engine> --headless --path . --script res://tests/test_runner.gd
+<Godot 4.7.1 engine> --headless --path . --script res://tests/smoke_test.gd
+<Godot 4.7.1 engine> --headless --path . --editor --quit
 ```
 
-The installed engine is Godot 4.6.2. The execution plan requires Godot 4.7.1, so Windows export and clean-profile validation remain explicitly unverified; see [export_validation.md](export_validation.md).
+The portable validation engine is official Godot 4.7.1 with matching Windows templates. The Windows debug export and isolated-AppData headless launch are verified; the plan's user-observed clean-profile and manual device/display passes remain outstanding. See [export_validation.md](export_validation.md).

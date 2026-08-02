@@ -6,18 +6,16 @@
 
 ## Current environment result
 
-On 2026-08-02, the installed executable was Godot `4.6.2.stable.official.71f334935` at `C:\Users\Doc\AppData\Local\Microsoft\WinGet\Links\godot.exe`.
+On 2026-08-02, the project was validated with the official portable Godot `4.7.1.stable.official.a13da4feb` executable at `C:\Users\Doc\AppData\Local\GodotPortable\4.7.1\Godot_v4.7.1-stable_win64_console.exe`. Its matching official Windows templates are installed in `%APPDATA%\Godot\export_templates\4.7.1.stable`.
 
-The checked-in plan requires Godot 4.7.1; this executable was not replaced. A quoted headless debug-export attempt correctly found the preset but failed because this machine lacks the Godot 4.6.2 Windows export templates:
+`python tools/verify_export_environment.py --godot <portable-engine>` passed. Repository validation, all 31 native test suites, the runtime smoke test, and headless editor initialization also passed on that engine.
 
-```text
-C:/Users/Doc/AppData/Roaming/Godot/export_templates/4.6.2.stable/windows_debug_x86_64.exe
-C:/Users/Doc/AppData/Roaming/Godot/export_templates/4.6.2.stable/windows_release_x86_64.exe
-```
-
-Therefore no Windows binary is claimed as validated. Install the exact Godot 4.7.1 executable and its matching export templates, then run:
+The following command completed successfully and wrote an ignored Windows development build:
 
 ```powershell
-python tools/verify_export_environment.py
-godot --headless --path . --export-debug "Windows Desktop" "exports/SixBrandsAtHighNoon.exe"
+<portable-engine> --headless --path . --export-debug "Windows Desktop" "exports/SixBrandsAtHighNoon.exe"
 ```
+
+The resulting `exports/SixBrandsAtHighNoon.exe` is 102,982,144 bytes and its accompanying PCK is 33,702,504 bytes. The executable also launched successfully with `--headless --quit-after 12` while the process used an isolated temporary `APPDATA` directory. This automated launch is not a substitute for the plan's user-observed clean-Windows-profile, controller, and display-mode passes.
+
+The preset excludes `assets/source/*`, `assets/MahjongRPG/*`, `vendor/local/*`, `artifacts/local/*`, documentation, and tests. No source archive has been added to the repository.
