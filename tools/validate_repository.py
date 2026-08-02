@@ -12,13 +12,34 @@ ROOT = Path(__file__).resolve().parents[1]
 MAX_BYTES = 95 * 1024 * 1024
 MAX_LINES = 300
 SOURCE_EXTENSIONS = {".gd", ".py", ".cs", ".js", ".ts", ".tsx", ".jsx", ".sh"}
-EXCLUDED_PREFIXES = (".git/", ".godot/", "assets/source/", "vendor/local/")
+EXCLUDED_PREFIXES = (
+    ".git/",
+    ".godot/",
+    "assets/source/",
+    "assets/MahjongRPG/",
+    "vendor/local/",
+    "artifacts/local/",
+)
 REQUIRED = (
     "project.godot",
     "legal/THIRD_PARTY_ASSET_LICENSE_CC0.txt",
     "docs/assets/manifests/supplemental_source_archives.json",
+    "docs/assets/manifests/master_source_archives.json",
+    "docs/assets/master_import.md",
     "docs/architecture/file_size_policy.md",
     "assets/generated/npcs/dynamite_bill/rotations/east.png",
+    "tools/import_master_assets.py",
+)
+MASTER_ARCHIVE_NAMES = (
+    "MahjongRPG.z01",
+    "MahjongRPG.z02",
+    "MahjongRPG.z03",
+    "MahjongRPG.z04",
+    "MahjongRPG.z05",
+    "MahjongRPG.z06",
+    "MahjongRPG.z07",
+    "MahjongRPG.z08",
+    "MahjongRPG.zip",
 )
 
 
@@ -69,6 +90,22 @@ def check_manifest(errors: list[str]) -> None:
             errors.append(f"Invalid SHA-256 for {entry.get('file')}")
 
 
+def check_master_manifest(errors: list[str]) -> None:
+    path = ROOT / "docs/assets/manifests/master_source_archives.json"
+    if not path.is_file():
+        return
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        errors.append(f"Invalid master archive manifest JSON: {error}")
+        return
+    if tuple(data.get("required_files", ())) != MASTER_ARCHIVE_NAMES:
+        errors.append("Master archive manifest filenames differ from the required split ZIP set")
+    archives = data.get("archives", [])
+    if archives and {entry.get("file") for entry in archives} != set(MASTER_ARCHIVE_NAMES):
+        errors.append("Pinned master archive manifest is incomplete")
+
+
 def check_patch(errors: list[str]) -> None:
     path = ROOT / "assets/generated/npcs/dynamite_bill/rotations/east.png"
     if not path.is_file():
@@ -87,6 +124,7 @@ def main() -> int:
     check_required(errors)
     check_files(errors)
     check_manifest(errors)
+    check_master_manifest(errors)
     check_patch(errors)
     if errors:
         print("Repository validation failed:", file=sys.stderr)

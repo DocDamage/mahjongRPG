@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import functools
 import hashlib
 import json
 import re
@@ -17,7 +18,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "docs" / "assets" / "manifests" / "supplemental_source_archives.json"
 DEFAULT_SOURCE = ROOT / "vendor" / "local" / "supplemental"
+DEFAULT_EXPANDED_SOURCE = ROOT / "assets"
 TARGET = ROOT / "assets" / "source" / "supplemental"
+EXPANDED_DIRECTORIES = {
+    "hero": "Hero - Cowboy - AssetPack",
+    "horses": "horses",
+    "fishing_ui": "fishing UI",
+    "cozy_sfx": "Cozy SFX Volume 1",
+}
 
 
 def sha256(path: Path) -> str:
@@ -78,6 +86,22 @@ def copy_zip(archive: Path, destination: Path, drop_parts: int = 1) -> None:
             target.write_bytes(bundle.read(info))
 
 
+def copy_directory(source_root: Path, destination: Path) -> None:
+    occupied: set[Path] = set()
+    for source in sorted(source_root.rglob("*")):
+        if not source.is_file():
+            continue
+        relative = source.relative_to(source_root)
+        if "__MACOSX" in relative.parts or source.name == ".DS_Store":
+            continue
+        target = destination / safe_name(relative.as_posix())
+        if target in occupied or target.exists():
+            raise ValueError(f"Normalized filename collision: {relative}")
+        occupied.add(target)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, target)
+
+
 def run_ffmpeg(arguments: list[str]) -> None:
     subprocess.run(
         ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", *arguments],
@@ -85,39 +109,60 @@ def run_ffmpeg(arguments: list[str]) -> None:
     )
 
 
-def import_sfx(archive: Path, destination: Path) -> None:
+@functools.lru_cache
+def ogg_encoder_arguments() -> tuple[str, ...]:
+    result = subprocess.run(
+        ["ffmpeg", "-hide_banner", "-encoders"],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    encoders = result.stdout
+    if "libvorbis" in encoders:
+        return ("-c:a", "libvorbis", "-q:a", "5")
+    if "vorbis" in encoders:
+        return ("-strict", "-2", "-c:a", "vorbis", "-q:a", "5")
+    raise RuntimeError("ffmpeg has no Vorbis encoder; OGG ambience cannot be generated")
+
+
+def import_sfx_tree(source_root: Path, destination: Path) -> None:
     ffmpeg = shutil.which("ffmpeg")
     if not ffmpeg:
         raise RuntimeError("ffmpeg is required to normalize Cozy SFX Volume 1")
+    for source in sorted(source_root.rglob("*")):
+        if not source.is_file():
+            continue
+        rel = source.relative_to(source_root)
+        if "__MACOSX" in rel.parts or source.name == ".DS_Store" or not rel.parts:
+            continue
+        top = rel.parts[0].upper()
+        if top in {"BONUS TRACK", "DEMO TRACK.WAV", "SOUND DEM0.MP4"}:
+            continue
+        category = slug(rel.parts[0])
+        out_rel = safe_name(Path(*rel.parts[1:]).as_posix())
+        output = destination / category / out_rel
+        output.parent.mkdir(parents=True, exist_ok=True)
+        if category == "background_ambience":
+            run_ffmpeg(["-i", str(source), *ogg_encoder_arguments(), str(output.with_suffix(".ogg"))])
+        elif source.name.lower() == "stone_footstep_2.wav":
+            run_ffmpeg(["-i", str(source), "-t", "0.50", "-c:a", "pcm_s16le", str(output)])
+        elif source.suffix.lower() == ".mp3":
+            run_ffmpeg(["-i", str(source), *ogg_encoder_arguments(), str(output.with_suffix(".ogg"))])
+        elif source.suffix.lower() == ".wav":
+            shutil.copy2(source, output)
+
+
+def import_sfx(archive: Path, destination: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="cozy_sfx_") as temp_name:
         temp = Path(temp_name)
         with zipfile.ZipFile(archive) as bundle:
             for info in bundle.infolist():
-                if not usable(info):
-                    continue
-                rel = Path(info.filename)
-                if rel.parts and rel.parts[0].lower().startswith("cozy sfx"):
-                    rel = Path(*rel.parts[1:])
-                if not rel.parts:
-                    continue
-                top = rel.parts[0].upper()
-                if top in {"BONUS TRACK", "DEMO TRACK.WAV", "SOUND DEM0.MP4"}:
-                    continue
-                source = temp / safe_name(rel.as_posix())
-                source.parent.mkdir(parents=True, exist_ok=True)
-                source.write_bytes(bundle.read(info))
-                category = slug(rel.parts[0])
-                out_rel = safe_name(Path(*rel.parts[1:]).as_posix())
-                output = destination / category / out_rel
-                output.parent.mkdir(parents=True, exist_ok=True)
-                if category == "background_ambience":
-                    run_ffmpeg(["-i", str(source), "-c:a", "libvorbis", "-q:a", "5", str(output.with_suffix(".ogg"))])
-                elif source.name == "stone_footstep_2.wav":
-                    run_ffmpeg(["-i", str(source), "-t", "0.50", "-c:a", "pcm_s16le", str(output)])
-                elif source.suffix.lower() == ".mp3":
-                    run_ffmpeg(["-i", str(source), "-c:a", "libvorbis", "-q:a", "5", str(output.with_suffix(".ogg"))])
-                elif source.suffix.lower() == ".wav":
-                    shutil.copy2(source, output)
+                if usable(info):
+                    extracted = temp / safe_name(info.filename)
+                    extracted.parent.mkdir(parents=True, exist_ok=True)
+                    extracted.write_bytes(bundle.read(info))
+        source_root = next(temp.iterdir(), temp)
+        import_sfx_tree(source_root, destination)
 
 
 def atomic_replace(staging: Path) -> None:
@@ -132,7 +177,19 @@ def atomic_replace(staging: Path) -> None:
         shutil.rmtree(backup)
 
 
-def import_all(manifest: dict, source_dir: Path) -> None:
+def finish_import(staging: Path, source: dict) -> None:
+    marker = {
+        "schema": 1,
+        "imported_at": datetime.now(timezone.utc).isoformat(),
+        "source": source,
+    }
+    (staging / ".import_complete.json").write_text(
+        json.dumps(marker, indent=2) + "\n", encoding="utf-8"
+    )
+    atomic_replace(staging)
+
+
+def import_archives(manifest: dict, source_dir: Path) -> None:
     TARGET.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="supplemental_", dir=TARGET.parent) as temp_name:
         staging = Path(temp_name) / "content"
@@ -142,23 +199,34 @@ def import_all(manifest: dict, source_dir: Path) -> None:
         copy_zip(verified["horses"], staging / "horses")
         copy_zip(verified["fishing_ui"], staging / "fishing_ui")
         import_sfx(verified["cozy_sfx"], staging / "cozy_sfx")
-        marker = {
-            "schema": 1,
-            "imported_at": datetime.now(timezone.utc).isoformat(),
-            "archives": [
-                {"file": item["file"], "sha256": item["sha256"]}
-                for item in manifest["archives"]
-            ],
-        }
-        (staging / ".import_complete.json").write_text(
-            json.dumps(marker, indent=2) + "\n", encoding="utf-8"
-        )
-        atomic_replace(staging)
+        finish_import(staging, {"kind": "pinned_archives", "archives": manifest["archives"]})
+
+
+def expanded_sources(source_dir: Path) -> dict[str, Path]:
+    sources = {kind: source_dir / name for kind, name in EXPANDED_DIRECTORIES.items()}
+    missing = [path.name for path in sources.values() if not path.is_dir()]
+    if missing:
+        raise FileNotFoundError(f"Missing expanded supplemental asset directories: {', '.join(missing)}")
+    return sources
+
+
+def import_expanded(source_dir: Path) -> None:
+    sources = expanded_sources(source_dir)
+    TARGET.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="supplemental_", dir=TARGET.parent) as temp_name:
+        staging = Path(temp_name) / "content"
+        staging.mkdir()
+        copy_directory(sources["hero"], staging / "hero_cowboy")
+        copy_directory(sources["horses"], staging / "horses")
+        copy_directory(sources["fishing_ui"], staging / "fishing_ui")
+        import_sfx_tree(sources["cozy_sfx"], staging / "cozy_sfx")
+        finish_import(staging, {"kind": "expanded_directories", "directories": EXPANDED_DIRECTORIES})
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--source-dir", type=Path, default=DEFAULT_SOURCE)
+    parser.add_argument("--archive-source-dir", type=Path)
+    parser.add_argument("--expanded-source-dir", type=Path, default=DEFAULT_EXPANDED_SOURCE)
     parser.add_argument("--verify-only", action="store_true")
     parser.add_argument("--clean", action="store_true")
     args = parser.parse_args()
@@ -169,12 +237,19 @@ def main() -> int:
         print(f"Removed {TARGET}")
         return 0
 
-    manifest = load_manifest()
-    for entry in manifest["archives"]:
-        verify(entry, args.source_dir)
-    print(f"Verified {len(manifest['archives'])} supplemental archives.")
+    if args.archive_source_dir:
+        manifest = load_manifest()
+        for entry in manifest["archives"]:
+            verify(entry, args.archive_source_dir)
+        print(f"Verified {len(manifest['archives'])} supplemental archives.")
+    else:
+        sources = expanded_sources(args.expanded_source_dir)
+        print(f"Verified {len(sources)} expanded supplemental asset directories.")
     if not args.verify_only:
-        import_all(manifest, args.source_dir)
+        if args.archive_source_dir:
+            import_archives(manifest, args.archive_source_dir)
+        else:
+            import_expanded(args.expanded_source_dir)
         print(f"Imported supplemental assets to {TARGET}")
     return 0
 

@@ -12,6 +12,16 @@ exports/
 vendor/local/
 assets/source/supplemental/
 
+# This checkout can receive an expanded local asset drop. Keep raw source packs
+# out of version control; only intentional generated/runtime outputs may be added.
+assets/*
+!assets/generated/
+!assets/generated/**
+
+# Local validation and environment snapshots are reproducibility evidence, not
+# source-controlled project content.
+artifacts/local/
+
 # Local tooling
 __pycache__/
 *.py[cod]
