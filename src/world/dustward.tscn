@@ -1,15 +1,23 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://src/world/dustward.gd" id="1_world"]
 [ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
 [ext_resource type="Script" path="res://src/world/scene_exit.gd" id="3_exit"]
 [ext_resource type="Script" path="res://src/mahjong/presentation/mahjong_opponent.gd" id="4_opponent"]
+[ext_resource type="Script" path="res://src/horses/horse_actor.gd" id="5_horse"]
+[ext_resource type="Script" path="res://src/horses/hitching_post.gd" id="6_hitch"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_exit"]
 radius = 42.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_opponent"]
 radius = 34.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_horse"]
+radius = 42.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hitch"]
+radius = 32.0
 
 [node name="Dustward" type="Node2D"]
 script = ExtResource("1_world")
@@ -61,6 +69,33 @@ opponent_id = &"dynamite_bill"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DynamiteBill"]
 shape = SubResource("CircleShape2D_opponent")
+
+[node name="Horse" type="Area2D" parent="."]
+position = Vector2(820, 415)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("5_horse")
+prompt_text = "Mount horse"
+travel_bounds = Rect2(45, 120, 870, 345)
+
+[node name="Sprite2D" type="Sprite2D" parent="Horse"]
+position = Vector2(0, -26)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Horse"]
+shape = SubResource("CircleShape2D_horse")
+
+[node name="DustwardHitch" type="Area2D" parent="."]
+position = Vector2(875, 420)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_hitch")
+prompt_text = "Use Dustward hitching post"
+post_id = &"dustward"
+destination_post_id = &"wayward_farm"
+destination_scene = "res://src/world/wayward_farm.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DustwardHitch"]
+shape = SubResource("CircleShape2D_hitch")
 
 [node name="HUD" type="CanvasLayer" parent="."]
 

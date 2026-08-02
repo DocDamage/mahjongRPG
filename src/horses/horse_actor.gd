@@ -21,6 +21,8 @@ func _ready() -> void:
 	$Sprite2D.region_enabled = true
 	$Sprite2D.region_rect = Rect2(0, 0, 128, 128)
 	queue_redraw()
+	if GameSession.horse.mounted:
+		call_deferred("_restore_mounted_rider")
 
 
 func _process(delta: float) -> void:
@@ -61,3 +63,15 @@ func _dismount() -> void:
 		_rider.set_physics_process(true)
 	_rider = null
 	feedback.emit("Dismounted.")
+
+
+func _restore_mounted_rider() -> void:
+	var rider = get_parent().get_node_or_null("Doc")
+	if rider == null:
+		GameSession.horse.mounted = false
+		return
+	_rider = rider
+	_rider.global_position = global_position
+	_rider.visible = false
+	_rider.set_physics_process(false)
+	_awaiting_interact_release = true

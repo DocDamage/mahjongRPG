@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3]
+[gd_scene load_steps=19 format=3]
 
 [ext_resource type="Script" path="res://src/world/wayward_farm.gd" id="1_world"]
 [ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://src/mahjong/presentation/mahjong_table_interactable.gd" id="7_mahjong"]
 [ext_resource type="Script" path="res://src/economy/shipping_crate.gd" id="8_shipping"]
 [ext_resource type="Script" path="res://src/world/scene_exit.gd" id="9_exit"]
+[ext_resource type="Script" path="res://src/horses/hitching_post.gd" id="10_hitch"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_plot"]
 radius = 26.0
@@ -30,6 +31,9 @@ radius = 38.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_exit"]
 radius = 42.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hitch"]
+radius = 32.0
 
 [node name="WaywardFarm" type="Node2D"]
 script = ExtResource("1_world")
@@ -145,6 +149,19 @@ destination_scene = "res://src/world/dustward.tscn"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DustwardRoad"]
 shape = SubResource("CircleShape2D_exit")
+
+[node name="WaywardHitch" type="Area2D" parent="."]
+position = Vector2(790, 175)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("10_hitch")
+prompt_text = "Use Wayward hitching post"
+post_id = &"wayward_farm"
+destination_post_id = &"dustward"
+destination_scene = "res://src/world/dustward.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WaywardHitch"]
+shape = SubResource("CircleShape2D_hitch")
 
 [node name="HUD" type="CanvasLayer" parent="."]
 

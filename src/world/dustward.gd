@@ -7,6 +7,8 @@ extends Node2D
 func _ready() -> void:
 	queue_redraw()
 	$FarmRoad.feedback.connect(_show_message)
+	$Horse.feedback.connect(_show_message)
+	$DustwardHitch.feedback.connect(_show_message)
 	for opponent in get_tree().get_nodes_in_group(&"dustward_opponent"):
 		opponent.feedback.connect(_show_message)
 	_update_status()
