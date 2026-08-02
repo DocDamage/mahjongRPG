@@ -173,6 +173,7 @@ collision_mask = 0
 script = ExtResource("9_exit")
 prompt_text = "Travel to Riverbend"
 destination_scene = "res://src/world/riverbend.tscn"
+required_hall_milestone = &"first_lantern"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RiverbendPath"]
 shape = SubResource("CircleShape2D_river_exit")

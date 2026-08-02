@@ -4,7 +4,7 @@
     {
       "id": "first_lantern",
       "title": "The First Lantern",
-      "start_text": "Mabel needs one bean crop and any one fish to light the Six Brands Hall's first lantern.",
+      "start_text": "Mayor Bell has disputed the Hall's Riverbend access. Mabel needs one bean crop and any one fish to light the first lantern and prove the Hall is active again.",
       "requirements": {"crop_beans": 1, "any_fish": 1},
       "rewards": {"helper": "mabel", "hall_milestone": "first_lantern"}
     }

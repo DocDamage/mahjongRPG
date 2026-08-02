@@ -3,6 +3,7 @@ extends "res://src/interaction/world_interactable.gd"
 signal feedback(message: String)
 
 @export_file("*.tscn") var destination_scene: String
+@export var required_hall_milestone: StringName
 
 
 func _ready() -> void:
@@ -17,5 +18,8 @@ func _draw() -> void:
 
 
 func _on_interacted(_actor: Node2D) -> void:
+	if not required_hall_milestone.is_empty() and not GameSession.quests.hall_milestones.has(required_hall_milestone):
+		feedback.emit("Access is disputed until the Six Brands Hall restores %s." % required_hall_milestone.capitalize())
+		return
 	if destination_scene.is_empty() or SceneRouter.change_scene(destination_scene) != OK:
 		feedback.emit("That route is closed for now.")

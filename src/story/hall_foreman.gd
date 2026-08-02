@@ -24,7 +24,7 @@ func _on_interacted(_actor: Node2D) -> void:
 		return
 	if not GameSession.quests.is_active(QUEST_ID):
 		GameSession.quests.start(QUEST_ID)
-		feedback.emit("Mabel: Bring one bean crop and any fish. We'll light the hall's first lantern.")
+		feedback.emit("Mabel: Bring one bean crop and any fish. The first lantern will settle Mayor Bell's Riverbend access dispute.")
 		return
 	var bean_count: int = GameSession.quests.requirement_count(QUEST_ID, GameSession.inventory, &"crop_beans")
 	var fish_count: int = GameSession.quests.requirement_count(QUEST_ID, GameSession.inventory, &"any_fish")
@@ -34,7 +34,7 @@ func _on_interacted(_actor: Node2D) -> void:
 	GameSession.inventory.remove_item(&"crop_beans")
 	_remove_one_fish()
 	if GameSession.quests.complete(QUEST_ID) == OK:
-		feedback.emit("The first lantern shines. Mabel joins Wayward Farm, and the Six Brands Hall begins to return.")
+		feedback.emit("The first lantern shines. Mabel joins Wayward Farm, the Hall begins to return, and Riverbend access is restored.")
 
 
 func _remove_one_fish() -> void:
