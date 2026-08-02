@@ -1,11 +1,15 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://src/world/interior.gd" id="1_interior"]
 [ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
 [ext_resource type="Script" path="res://src/world/scene_exit.gd" id="3_exit"]
+[ext_resource type="Script" path="res://src/economy/store_clerk.gd" id="4_clerk"]
 
 [sub_resource type="CircleShape2D" id="ExitShape"]
 radius = 42.0
+
+[sub_resource type="CircleShape2D" id="ClerkShape"]
+radius = 34.0
 
 [node name="GeneralStore" type="Node2D"]
 script = ExtResource("1_interior")
@@ -26,6 +30,16 @@ destination_scene = "res://src/world/dustward.tscn"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
 shape = SubResource("ExitShape")
+
+[node name="StoreClerk" type="Area2D" parent="."]
+position = Vector2(500, 220)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_clerk")
+prompt_text = "Sell crops and fish"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoreClerk"]
+shape = SubResource("ClerkShape")
 
 [node name="HUD" type="CanvasLayer" parent="."]
 [node name="Status" type="Label" parent="HUD"]
