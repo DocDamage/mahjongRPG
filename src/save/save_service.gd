@@ -45,6 +45,13 @@ func load_current_session(slot_id: StringName) -> Error:
 	return session.restore(payload_value)
 
 
+func autosave(reason: StringName) -> Error:
+	var result := save_current_session(SLOT_AUTOSAVE)
+	if result == OK:
+		save_status.emit("Autosaved after %s." % String(reason).replace("_", " "))
+	return result
+
+
 func save(slot_id: StringName, payload: Dictionary) -> Error:
 	if not is_valid_slot(slot_id):
 		return ERR_INVALID_PARAMETER

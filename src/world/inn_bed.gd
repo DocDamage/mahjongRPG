@@ -16,4 +16,5 @@ func _draw() -> void:
 func _on_interacted(_actor: Node2D) -> void:
 	var advance := (24 * 60 - GameSession.minute_of_day) + 8 * 60
 	GameSession.advance_minutes(advance)
-	feedback.emit("You rest at the inn until morning.")
+	var save_result: Error = SaveService.autosave(&"resting")
+	feedback.emit("You rest at the inn until morning.%s" % (" Autosaved." if save_result == OK else ""))

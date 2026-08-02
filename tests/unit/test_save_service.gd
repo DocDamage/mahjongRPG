@@ -25,7 +25,7 @@ func run() -> Array[String]:
 		var slot_payload := {"slot": slot_number}
 		if service.save(manual_slot, slot_payload) != OK or service.load_save(manual_slot).get("payload", {}) != slot_payload:
 			failures.append("manual slot %d should independently round-trip" % slot_number)
-	if service.save_current_session(slot) != ERR_UNAVAILABLE or service.load_current_session(slot) != ERR_UNAVAILABLE:
+	if service.save_current_session(slot) != ERR_UNAVAILABLE or service.load_current_session(slot) != ERR_UNAVAILABLE or service.autosave(&"test") != ERR_UNAVAILABLE:
 		failures.append("detached save services should report unavailable game sessions")
 	var recovery_slot := &"manual_6"
 	var backup_payload := {"revision": 1}

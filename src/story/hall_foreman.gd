@@ -34,7 +34,8 @@ func _on_interacted(_actor: Node2D) -> void:
 	GameSession.inventory.remove_item(&"crop_beans")
 	_remove_one_fish()
 	if GameSession.quests.complete(QUEST_ID) == OK:
-		feedback.emit("The first lantern shines. Mabel joins Wayward Farm, the Hall begins to return, and Riverbend access is restored.")
+		var save_result: Error = SaveService.autosave(&"quest_completion")
+		feedback.emit("The first lantern shines. Mabel joins Wayward Farm, the Hall begins to return, and Riverbend access is restored.%s" % (" Autosaved." if save_result == OK else ""))
 
 
 func _remove_one_fish() -> void:

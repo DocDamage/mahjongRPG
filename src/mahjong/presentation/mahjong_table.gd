@@ -219,6 +219,7 @@ func _close_match() -> void:
 	if _match_started:
 		MatchWager.settle(GameSession.inventory, wager_tier, flow.match_winner)
 	GameSession.complete_mahjong_match()
+	SaveService.autosave(&"mahjong_match")
 	queue_free()
 func _show_wager_selection() -> void:
 	_clear(action_box)

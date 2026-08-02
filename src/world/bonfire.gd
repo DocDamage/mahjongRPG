@@ -18,4 +18,5 @@ func _on_interacted(_actor: Node2D) -> void:
 	var target_minute := 8 * 60
 	var advance := (24 * 60 - GameSession.minute_of_day) + target_minute
 	GameSession.advance_minutes(advance)
-	feedback.emit("Rested until morning. Crops progressed overnight.")
+	var save_result: Error = SaveService.autosave(&"resting")
+	feedback.emit("Rested until morning. Crops progressed overnight.%s" % (" Autosaved." if save_result == OK else ""))

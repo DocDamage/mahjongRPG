@@ -19,6 +19,13 @@ func change_scene(scene_path: String) -> Error:
 	_transitioning = false
 	if result == OK:
 		transition_finished.emit(scene_path)
+		call_deferred("_autosave_after_transition", scene_path)
 	else:
 		transition_failed.emit(scene_path, result)
 	return result
+
+
+func _autosave_after_transition(_scene_path: String) -> void:
+	var save_service = get_node_or_null("/root/SaveService")
+	if save_service != null:
+		save_service.autosave(&"travel")
