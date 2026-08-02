@@ -34,10 +34,14 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if Input.is_action_just_pressed(&"pause"):
+		_toggle_pause()
 	if _is_game_paused():
 		velocity = Vector2.ZERO
 		_set_animation(false)
+		_show_pause_prompt()
 		return
+	_update_interaction_prompt(nearest_interaction_target())
 	move_in_direction(Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down"), delta)
 	if Input.is_action_just_pressed(&"interact"):
 		interact()
@@ -149,6 +153,23 @@ func _update_interaction_prompt(target: Area2D) -> void:
 	var prompt := String(target.get("prompt_text"))
 	_prompt_label.text = "E / A  •  %s" % prompt
 	_prompt_label.visible = not prompt.is_empty()
+
+
+func _toggle_pause() -> void:
+	var session := get_node_or_null("/root/GameSession")
+	if session == null:
+		return
+	if session.is_paused():
+		session.release_pause(&"player_pause")
+	else:
+		session.request_pause(&"player_pause")
+
+
+func _show_pause_prompt() -> void:
+	if _prompt_label == null:
+		return
+	_prompt_label.text = "PAUSED  •  Esc / Start to resume"
+	_prompt_label.visible = true
 
 
 func _is_game_paused() -> bool:
