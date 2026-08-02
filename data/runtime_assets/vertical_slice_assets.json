@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "hero": {
+    "frame_size": [64, 64],
+    "frame_counts": {"walk": 8, "idle": 15, "draw": 6, "armed": 1, "shoot": 3},
+    "actions": ["walk", "idle", "draw", "armed", "shoot"],
+    "directions": ["up", "down", "left", "right"]
+  },
+  "horses": {
+    "frame_size": [128, 128],
+    "colors": ["black", "brown", "golden", "gray", "white"]
+  }
+}

@@ -20,6 +20,7 @@
 | `b62fc4e` | Independent Master, Music, Ambience, SFX, Mahjong, and UI volume controls. |
 | Animal care foundation | Feed Juniper's hens once per day, collect next-day eggs, track happiness, and sell eggs through existing shipping and store flows. |
 | Autosave recovery | Autosave safely after travel, rest, quest completion, and finished Mahjong matches using the existing checksum and backup flow. |
+| Runtime hero and horse catalog | Deterministically generate all directional hero actions and five horse colorways from the canonical `assets` folders, then resolve them through a runtime data catalog. |
 
 ## Current local verification baseline
 

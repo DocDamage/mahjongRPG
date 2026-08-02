@@ -1,7 +1,7 @@
 extends "res://src/interaction/world_interactable.gd"
 
-const HORSE_TEXTURE_PATH := "res://assets/generated/horses/horse_brown.png"
 const MOUNTED_SPEED := 300.0
+const RuntimeAssetCatalog = preload("res://src/content/runtime_asset_catalog.gd")
 
 signal feedback(message: String)
 
@@ -13,9 +13,10 @@ var _awaiting_interact_release := false
 
 func _ready() -> void:
 	interacted.connect(_on_interacted)
-	var texture := load(HORSE_TEXTURE_PATH) as Texture2D
+	var texture_path := RuntimeAssetCatalog.horse_texture_path(GameSession.horse.selected_color)
+	var texture := load(texture_path) as Texture2D
 	if texture == null:
-		push_error("Missing generated brown horse texture")
+		push_error("Missing generated horse texture: %s" % GameSession.horse.selected_color)
 		return
 	$Sprite2D.texture = texture
 	$Sprite2D.region_enabled = true

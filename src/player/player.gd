@@ -3,17 +3,11 @@ extends CharacterBody2D
 signal facing_changed(direction: StringName)
 signal interaction_target_changed(target: Area2D)
 
-const FRAME_SIZE := Vector2i(64, 64)
-const FRAME_COUNT := 8
 const WALK_SPEED := 150.0
 const RUN_SPEED := 230.0
 const FOOTSTEP_DISTANCE := 42.0
-const WALK_TEXTURE_PATHS := {
-	&"down": "res://assets/generated/player/cowboy_down_walk.png",
-	&"up": "res://assets/generated/player/cowboy_up_walk.png",
-	&"left": "res://assets/generated/player/cowboy_left_walk.png",
-	&"right": "res://assets/generated/player/cowboy_right_walk.png",
-}
+const RuntimeAssetCatalog = preload("res://src/content/runtime_asset_catalog.gd")
+const DIRECTIONS := [&"down", &"up", &"left", &"right"]
 
 @export var running := false
 @export var movement_bounds := Rect2()
@@ -27,6 +21,7 @@ var _prompt_label: Label
 var _current_prompt_target: Area2D
 var _using_controller := false
 var _footstep_distance := 0.0
+var _story_action: StringName
 
 
 func _ready() -> void:
@@ -95,31 +90,54 @@ func nearest_interaction_target() -> Area2D:
 
 func _build_animations() -> void:
 	var frames := SpriteFrames.new()
-	for direction in WALK_TEXTURE_PATHS:
-		frames.add_animation(direction)
-		frames.set_animation_speed(direction, 8.0)
-		frames.set_animation_loop(direction, true)
-		var texture: Texture2D = load(String(WALK_TEXTURE_PATHS[direction])) as Texture2D
-		if texture == null:
-			push_error("Missing imported walk texture: %s" % WALK_TEXTURE_PATHS[direction])
-			continue
-		for frame_index in FRAME_COUNT:
-			var frame := AtlasTexture.new()
-			frame.atlas = texture
-			frame.region = Rect2(Vector2(frame_index * FRAME_SIZE.x, 0), FRAME_SIZE)
-			frames.add_frame(direction, frame)
+	for action in [&"walk", &"idle", &"draw", &"armed", &"shoot"]:
+		for direction in DIRECTIONS:
+			var animation_name := _animation_name(action, direction)
+			frames.add_animation(animation_name)
+			frames.set_animation_speed(animation_name, 8.0)
+			frames.set_animation_loop(animation_name, action in [&"walk", &"idle"])
+			var texture: Texture2D = load(RuntimeAssetCatalog.hero_texture_path(direction, action)) as Texture2D
+			if texture == null:
+				push_error("Missing generated hero texture: %s/%s" % [direction, action])
+				continue
+			for frame_index in RuntimeAssetCatalog.hero_frame_count(action):
+				var frame := AtlasTexture.new()
+				frame.atlas = texture
+				frame.region = Rect2(Vector2(frame_index * RuntimeAssetCatalog.hero_frame_size().x, 0), RuntimeAssetCatalog.hero_frame_size())
+				frames.add_frame(animation_name, frame)
 	sprite.sprite_frames = frames
 
 
 func _set_animation(moving: bool) -> void:
-	if sprite.animation != facing:
-		sprite.play(facing)
+	var action: StringName = _story_action if not _story_action.is_empty() else (&"walk" if moving else &"idle")
+	var animation_name := _animation_name(action, facing)
+	if sprite.animation != animation_name:
+		sprite.play(animation_name)
 	if moving:
 		sprite.speed_scale = 1.8 if running else 1.0
-		sprite.play()
+		if _story_action.is_empty():
+			sprite.play()
 	else:
-		sprite.pause()
-		sprite.frame = 0
+		if _story_action.is_empty():
+			sprite.play()
+			sprite.speed_scale = 1.0
+
+
+func play_story_animation(action: StringName) -> Error:
+	if not action in [&"draw", &"armed", &"shoot"]:
+		return ERR_INVALID_PARAMETER
+	_story_action = action
+	_set_animation(false)
+	return OK
+
+
+func clear_story_animation() -> void:
+	_story_action = &""
+	_set_animation(false)
+
+
+func _animation_name(action: StringName, direction: StringName) -> StringName:
+	return StringName("%s_%s" % [action, direction])
 
 
 func _update_facing(direction: Vector2) -> void:

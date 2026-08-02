@@ -58,6 +58,12 @@ The verified supplemental archives add:
 - Fishing rod states, directional prompts, fish, gear, store icons, and catch presentation
 - Generated Dynamite Bill east rotation
 
+The runtime generator promotes the canonical expanded asset folders into tracked, reproducible game assets:
+
+- Five hero action sheets in each cardinal direction: walk, breathing idle, gun draw, armed still, and shooting
+- Black, brown, golden, gray, and white horse sheets
+- A data-driven runtime catalog at `data/runtime_assets/vertical_slice_assets.json`
+
 Running initially accelerates the existing walk cycle. Farming, table, carrying, sleeping, and helper animations remain authored production work based on the supplied style.
 
 ## Supplemental audio

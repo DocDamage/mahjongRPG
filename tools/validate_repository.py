@@ -41,6 +41,10 @@ MASTER_ARCHIVE_NAMES = (
     "MahjongRPG.z08",
     "MahjongRPG.zip",
 )
+RUNTIME_HERO_ACTIONS = ("walk", "idle", "draw", "armed", "shoot")
+RUNTIME_HERO_FRAME_COUNTS = {"walk": 8, "idle": 15, "draw": 6, "armed": 1, "shoot": 3}
+RUNTIME_DIRECTIONS = ("up", "down", "left", "right")
+RUNTIME_HORSE_COLORS = ("black", "brown", "golden", "gray", "white")
 
 
 def relative(path: Path) -> str:
@@ -119,6 +123,35 @@ def check_patch(errors: list[str]) -> None:
         errors.append(f"Dynamite Bill east patch is {width}x{height}, expected 92x92")
 
 
+def check_runtime_catalog(errors: list[str]) -> None:
+    path = ROOT / "data" / "runtime_assets" / "vertical_slice_assets.json"
+    if not path.is_file():
+        errors.append("Missing runtime asset catalog")
+        return
+    try:
+        catalog = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        errors.append(f"Invalid runtime asset catalog JSON: {error}")
+        return
+    hero = catalog.get("hero", {})
+    horses = catalog.get("horses", {})
+    if tuple(hero.get("actions", ())) != RUNTIME_HERO_ACTIONS or tuple(hero.get("directions", ())) != RUNTIME_DIRECTIONS:
+        errors.append("Runtime hero catalog mappings differ from the required action and direction set")
+    if hero.get("frame_counts") != RUNTIME_HERO_FRAME_COUNTS:
+        errors.append("Runtime hero catalog frame counts differ from the approved sheets")
+    if tuple(horses.get("colors", ())) != RUNTIME_HORSE_COLORS:
+        errors.append("Runtime horse catalog mappings differ from the required color set")
+    for direction in RUNTIME_DIRECTIONS:
+        for action in RUNTIME_HERO_ACTIONS:
+            path = ROOT / "assets" / "generated" / "player" / f"cowboy_{direction}_{action}.png"
+            if not path.is_file():
+                errors.append(f"Missing generated hero asset: {relative(path)}")
+    for color in RUNTIME_HORSE_COLORS:
+        path = ROOT / "assets" / "generated" / "horses" / f"horse_{color}.png"
+        if not path.is_file():
+            errors.append(f"Missing generated horse asset: {relative(path)}")
+
+
 def main() -> int:
     errors: list[str] = []
     check_required(errors)
@@ -126,6 +159,7 @@ def main() -> int:
     check_manifest(errors)
     check_master_manifest(errors)
     check_patch(errors)
+    check_runtime_catalog(errors)
     if errors:
         print("Repository validation failed:", file=sys.stderr)
         for error in errors:
