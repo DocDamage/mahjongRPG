@@ -1,6 +1,7 @@
 extends Node
 
 signal active_device_changed(using_controller: bool)
+signal binding_changed(action: StringName)
 
 const ACTIONS := {
 	&"move_up": [KEY_W, KEY_UP],
@@ -36,6 +37,41 @@ func install_default_actions() -> void:
 
 func movement_vector() -> Vector2:
 	return Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
+
+
+func remap_key(action: StringName, keycode: Key) -> Error:
+	if not ACTIONS.has(action) or keycode == KEY_NONE:
+		return ERR_INVALID_PARAMETER
+	if not is_key_available(keycode, action):
+		return ERR_ALREADY_EXISTS
+	for event in InputMap.action_get_events(action):
+		if event is InputEventKey:
+			InputMap.action_erase_event(action, event)
+	_add_key(action, keycode)
+	binding_changed.emit(action)
+	return OK
+
+
+func reset_key_bindings(action: StringName) -> Error:
+	if not ACTIONS.has(action):
+		return ERR_INVALID_PARAMETER
+	for event in InputMap.action_get_events(action):
+		if event is InputEventKey:
+			InputMap.action_erase_event(action, event)
+	for keycode in ACTIONS[action]:
+		_add_key(action, keycode)
+	binding_changed.emit(action)
+	return OK
+
+
+func is_key_available(keycode: Key, ignored_action: StringName = &"") -> bool:
+	for action in ACTIONS:
+		if action == ignored_action:
+			continue
+		for event in InputMap.action_get_events(action):
+			if event is InputEventKey and event.physical_keycode == keycode:
+				return false
+	return true
 
 
 func _input(event: InputEvent) -> void:
