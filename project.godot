@@ -6,6 +6,14 @@ config_version=5
 config/name="Six Brands at High Noon"
 run/main_scene="res://src/bootstrap/bootstrap.tscn"
 
+[autoload]
+GameSession="*res://src/core/game_session.gd"
+SceneRouter="*res://src/core/scene_router.gd"
+SaveService="*res://src/save/save_service.gd"
+AudioService="*res://src/audio/audio_service.gd"
+InputService="*res://src/input/input_service.gd"
+ContentRegistry="*res://src/content/content_registry.gd"
+
 [display]
 window/size/viewport_width=960
 window/size/viewport_height=540
