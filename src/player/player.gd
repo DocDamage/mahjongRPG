@@ -44,8 +44,6 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if Input.is_action_just_pressed(&"pause"):
-		_toggle_pause()
 	if _is_game_paused():
 		velocity = Vector2.ZERO
 		_set_animation(false)
@@ -170,16 +168,6 @@ func _update_interaction_prompt(target: Area2D) -> void:
 func _on_active_device_changed(using_controller: bool) -> void:
 	_using_controller = using_controller
 	_update_interaction_prompt(_current_prompt_target)
-
-
-func _toggle_pause() -> void:
-	var session := get_node_or_null("/root/GameSession")
-	if session == null:
-		return
-	if session.is_paused():
-		session.release_pause(&"player_pause")
-	else:
-		session.request_pause(&"player_pause")
 
 
 func _show_pause_prompt() -> void:

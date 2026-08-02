@@ -19,6 +19,7 @@ func _ready() -> void:
 	var clerk = get_node_or_null("StoreClerk")
 	if clerk != null:
 		clerk.feedback.connect(_show_message)
+	SaveService.save_status.connect(_show_message)
 	status_label.text = "%s  •  E / A interacts  •  $%.2f" % [location_name, GameSession.inventory.money_cents / 100.0]
 
 

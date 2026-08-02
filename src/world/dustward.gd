@@ -13,6 +13,7 @@ func _ready() -> void:
 	$InnDoor.feedback.connect(_show_message)
 	$HallDoor.feedback.connect(_show_message)
 	GameSession.weather_changed.connect(_on_weather_changed)
+	SaveService.save_status.connect(_show_message)
 	for opponent in get_tree().get_nodes_in_group(&"dustward_opponent"):
 		opponent.feedback.connect(_show_message)
 	_update_status()

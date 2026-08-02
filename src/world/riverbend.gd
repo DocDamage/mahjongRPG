@@ -9,6 +9,7 @@ func _ready() -> void:
 	$FarmRoad.feedback.connect(_show_message)
 	$FishingSpot.feedback.connect(_show_message)
 	GameSession.weather_changed.connect(_on_weather_changed)
+	SaveService.save_status.connect(_show_message)
 	_update_status()
 
 

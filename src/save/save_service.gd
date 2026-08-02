@@ -2,6 +2,7 @@ extends Node
 
 signal saved(slot_id: StringName)
 signal loaded(slot_id: StringName)
+signal save_status(message: String)
 
 const SAVE_SCHEMA_VERSION := 1
 const MANUAL_SLOT_COUNT := 6
@@ -9,6 +10,39 @@ const SLOT_AUTOSAVE := &"autosave"
 const SLOT_EMERGENCY := &"emergency"
 const SLOT_PRE_FINALE := &"pre_finale"
 const SAVE_DIRECTORY := "user://saves"
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed(&"save_game"):
+		var save_result := save_current_session(SLOT_AUTOSAVE)
+		save_status.emit("Game saved." if save_result == OK else "Save failed.")
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed(&"load_game"):
+		var load_result := load_current_session(SLOT_AUTOSAVE)
+		save_status.emit("Game loaded." if load_result == OK else "No valid autosave found.")
+		get_viewport().set_input_as_handled()
+
+
+func save_current_session(slot_id: StringName) -> Error:
+	if not is_inside_tree():
+		return ERR_UNAVAILABLE
+	var session = get_node_or_null("/root/GameSession")
+	if session == null:
+		return ERR_UNAVAILABLE
+	return save(slot_id, session.snapshot())
+
+
+func load_current_session(slot_id: StringName) -> Error:
+	if not is_inside_tree():
+		return ERR_UNAVAILABLE
+	var session = get_node_or_null("/root/GameSession")
+	if session == null:
+		return ERR_UNAVAILABLE
+	var document := load_save(slot_id)
+	var payload_value: Variant = document.get("payload")
+	if not payload_value is Dictionary:
+		return int(document.get("error", ERR_FILE_NOT_FOUND))
+	return session.restore(payload_value)
 
 
 func save(slot_id: StringName, payload: Dictionary) -> Error:

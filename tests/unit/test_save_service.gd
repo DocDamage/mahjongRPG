@@ -17,6 +17,16 @@ func run() -> Array[String]:
 			failures.append("save payload should round-trip: %s" % loaded)
 	if service.is_valid_slot(&"manual_7"):
 		failures.append("manual slot seven should be rejected")
+	for slot_number in range(1, SaveServiceScript.MANUAL_SLOT_COUNT + 1):
+		var manual_slot := StringName("manual_%d" % slot_number)
+		if not service.is_valid_slot(manual_slot):
+			failures.append("every configured manual slot should be valid")
+			continue
+		var slot_payload := {"slot": slot_number}
+		if service.save(manual_slot, slot_payload) != OK or service.load_save(manual_slot).get("payload", {}) != slot_payload:
+			failures.append("manual slot %d should independently round-trip" % slot_number)
+	if service.save_current_session(slot) != ERR_UNAVAILABLE or service.load_current_session(slot) != ERR_UNAVAILABLE:
+		failures.append("detached save services should report unavailable game sessions")
 	var session = GameSessionScript.new()
 	session.start_new_game(91)
 	session.farm.plant(Vector2i(0, 0), &"beans", 1)

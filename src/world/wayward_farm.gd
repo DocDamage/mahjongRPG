@@ -9,6 +9,7 @@ func _ready() -> void:
 	GameSession.time_advanced.connect(_update_status)
 	GameSession.weather_changed.connect(_update_status)
 	GameSession.weather_changed.connect(_redraw_for_weather)
+	SaveService.save_status.connect(_show_message)
 	for plot in get_tree().get_nodes_in_group(&"farm_plot"):
 		plot.feedback.connect(_show_message)
 	$Bonfire.feedback.connect(_show_message)
@@ -49,17 +50,3 @@ func _show_message(message: String) -> void:
 
 func _redraw_for_weather(_weather_id: StringName) -> void:
 	queue_redraw()
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed(&"save_game"):
-		var result := SaveService.save(SaveService.SLOT_AUTOSAVE, GameSession.snapshot())
-		_show_message("Game saved." if result == OK else "Save failed.")
-		get_viewport().set_input_as_handled()
-	elif event.is_action_pressed(&"load_game"):
-		var document := SaveService.load_save(SaveService.SLOT_AUTOSAVE)
-		if document.has("payload") and GameSession.restore(document["payload"]) == OK:
-			_show_message("Game loaded.")
-		else:
-			_show_message("No valid autosave found.")
-		get_viewport().set_input_as_handled()
