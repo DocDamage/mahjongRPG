@@ -31,7 +31,7 @@ func refresh(session) -> void:
 	_progress.value = session.progress * 100.0
 	var pull := "RIGHT" if session.target_direction > 0.0 else "LEFT"
 	_direction_label.text = "Fish pull: %s  •  Counter with %s" % [pull, "RIGHT" if pull == "LEFT" else "LEFT"]
-	_help_label.text = "Hook: E / A  •  Reel: R / RT  •  Release: F / LT"
+	_help_label.text = "Counter: Left Stick / Keys  •  Rod: Right Stick  •  Reel: R / RT  •  Release: F / LT"
 
 
 func _build() -> void:

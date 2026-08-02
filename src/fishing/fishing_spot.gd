@@ -28,7 +28,9 @@ func _process(delta: float) -> void:
 	if session.state == FishingSession.State.BITE and Input.is_action_just_pressed(&"interact"):
 		session.hook_set()
 	if session.state == FishingSession.State.STRUGGLE:
-		var direction := Input.get_axis(&"move_left", &"move_right")
+		var counter_direction := Input.get_axis(&"move_left", &"move_right")
+		var rod_direction := Input.get_axis(&"fish_rod_left", &"fish_rod_right")
+		var direction := rod_direction if absf(rod_direction) > 0.15 else counter_direction
 		session.apply_struggle_input(direction, Input.is_action_pressed(&"fish_reel"), Input.is_action_pressed(&"fish_release"), delta)
 	session.tick(delta)
 	_record_catch_if_needed()
@@ -94,7 +96,7 @@ func _update_feedback() -> void:
 	_overlay.refresh(session)
 	if session.state == FishingSession.State.STRUGGLE:
 		var pull := "right" if session.target_direction > 0.0 else "left"
-		feedback.emit("Fish pulling %s • tension %d%% • reel R/RT, release F/LT" % [pull, int(session.tension * 100.0)])
+		feedback.emit("Fish pulling %s • tension %d%% • counter left stick/keys, rod right stick • reel R/RT, release F/LT" % [pull, int(session.tension * 100.0)])
 		return
 	if _last_state == session.state:
 		return

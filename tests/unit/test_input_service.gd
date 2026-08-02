@@ -7,7 +7,7 @@ func run() -> Array[String]:
 	var failures: Array[String] = []
 	var service = InputServiceScript.new()
 	service.install_default_actions()
-	for action in [&"move_up", &"move_down", &"move_left", &"move_right", &"interact", &"run", &"save_game", &"load_game", &"fish_reel", &"fish_release", &"pause", &"place_field"]:
+	for action in [&"move_up", &"move_down", &"move_left", &"move_right", &"interact", &"run", &"save_game", &"load_game", &"fish_reel", &"fish_release", &"fish_rod_left", &"fish_rod_right", &"pause", &"place_field"]:
 		if not InputMap.has_action(action) or InputMap.action_get_events(action).is_empty():
 			failures.append("missing input action: %s" % action)
 	if service.remap_key(&"interact", KEY_Q) != OK or service.is_key_available(KEY_Q):

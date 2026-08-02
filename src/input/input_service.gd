@@ -14,6 +14,8 @@ const ACTIONS := {
 	&"load_game": [KEY_F9],
 	&"fish_reel": [KEY_R],
 	&"fish_release": [KEY_F],
+	&"fish_rod_left": [],
+	&"fish_rod_right": [],
 	&"pause": [KEY_ESCAPE],
 	&"place_field": [KEY_B],
 }
@@ -98,6 +100,8 @@ func _add_controller_actions() -> void:
 	_add_button(&"run", JOY_BUTTON_LEFT_STICK)
 	_add_axis(&"fish_reel", JOY_AXIS_TRIGGER_RIGHT, 1.0)
 	_add_axis(&"fish_release", JOY_AXIS_TRIGGER_LEFT, 1.0)
+	_add_axis(&"fish_rod_left", JOY_AXIS_RIGHT_X, -1.0)
+	_add_axis(&"fish_rod_right", JOY_AXIS_RIGHT_X, 1.0)
 	_add_button(&"pause", JOY_BUTTON_START)
 	_add_button(&"place_field", JOY_BUTTON_X)
 
