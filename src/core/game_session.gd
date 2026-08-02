@@ -11,8 +11,9 @@ signal session_started(seed: int)
 signal time_advanced(day: int, minute_of_day: int)
 signal pause_changed(paused: bool)
 signal weather_changed(weather_id: StringName)
+signal session_restored()
 
-const SAVE_SCHEMA_VERSION := 3
+const SAVE_SCHEMA_VERSION := 4
 const MATCH_TIME_COST_MINUTES := 90
 const MINUTES_PER_DAY := 24 * 60
 const REAL_SECONDS_PER_DAY := 60.0
@@ -25,6 +26,8 @@ var farm
 var horse
 var inventory
 var quests
+var player_scene := ""
+var player_position := Vector2.ZERO
 var _pause_reasons: Dictionary = {}
 var _time_accumulator := 0.0
 
@@ -55,6 +58,8 @@ func start_new_game(new_seed: int) -> void:
 	horse = HorseTravelState.new()
 	inventory = InventoryService.new()
 	quests = null
+	player_scene = ""
+	player_position = Vector2.ZERO
 	_ensure_quests()
 	_ensure_farm()
 	_pause_reasons.clear()
@@ -115,6 +120,13 @@ func make_rng(stream_name: StringName) -> RandomNumberGenerator:
 	return rng
 
 
+func record_player_state(scene_path: String, position: Vector2) -> void:
+	if not scene_path.begins_with("res://"):
+		return
+	player_scene = scene_path
+	player_position = position
+
+
 func snapshot() -> Dictionary:
 	return {
 		"schema_version": SAVE_SCHEMA_VERSION,
@@ -126,6 +138,7 @@ func snapshot() -> Dictionary:
 		"horse": _ensure_horse().snapshot(),
 		"inventory": _ensure_inventory().snapshot(),
 		"quests": _ensure_quests().snapshot(),
+		"player": {"scene": player_scene, "position": [player_position.x, player_position.y]},
 	}
 
 
@@ -153,10 +166,22 @@ func restore(snapshot_data: Dictionary) -> Error:
 	var quest_data_value = migrated.get("quests", {})
 	if not quest_data_value is Dictionary or _ensure_quests().restore(quest_data_value) != OK:
 		return ERR_INVALID_DATA
+	var player_data_value = migrated.get("player", {})
+	if not player_data_value is Dictionary:
+		return ERR_INVALID_DATA
+	var player_data: Dictionary = player_data_value
+	var position_value: Variant = player_data.get("position", [])
+	if not position_value is Array or position_value.size() != 2:
+		return ERR_INVALID_DATA
+	player_scene = String(player_data.get("scene", ""))
+	player_position = Vector2(float(position_value[0]), float(position_value[1]))
 	_pause_reasons.clear()
 	_time_accumulator = 0.0
 	time_advanced.emit(day, minute_of_day)
 	weather_changed.emit(weather_id)
+	session_restored.emit()
+	if is_inside_tree() and not player_scene.is_empty():
+		call_deferred("_restore_player_scene")
 	return OK
 
 
@@ -224,15 +249,26 @@ func _ensure_quests():
 	return quests
 
 
+func _restore_player_scene() -> void:
+	if player_scene.is_empty() or not ResourceLoader.exists(player_scene):
+		return
+	var current_scene = get_tree().current_scene
+	if current_scene != null and current_scene.scene_file_path != player_scene:
+		var router = get_node_or_null("/root/SceneRouter")
+		if router != null:
+			router.change_scene(player_scene)
+
+
 func _migrate_snapshot(snapshot_data: Dictionary) -> Dictionary:
 	var schema_version := int(snapshot_data.get("schema_version", -1))
 	if schema_version == SAVE_SCHEMA_VERSION:
 		return snapshot_data.duplicate(true)
-	if schema_version < 1 or schema_version > 2:
+	if schema_version < 1 or schema_version > 3:
 		return {}
 	var migrated := snapshot_data.duplicate(true)
 	migrated["schema_version"] = SAVE_SCHEMA_VERSION
 	if schema_version == 1:
 		migrated["inventory"] = {"money_cents": 0, "items": {}, "fish_records": {}}
 	migrated["quests"] = {"active": {}, "completed": {}, "unlocked_helpers": {}, "hall_milestones": {}}
+	migrated["player"] = {"scene": "", "position": [0, 0]}
 	return migrated

@@ -37,6 +37,10 @@ func _ready() -> void:
 	if input_service != null:
 		_using_controller = input_service.using_controller
 		input_service.active_device_changed.connect(_on_active_device_changed)
+	var session = _session()
+	if session != null:
+		session.session_restored.connect(_restore_session_position)
+	call_deferred("_restore_or_record_session_position")
 
 
 func _physics_process(delta: float) -> void:
@@ -61,6 +65,7 @@ func move_in_direction(direction: Vector2, _delta: float) -> void:
 	move_and_slide()
 	if movement_bounds.has_area():
 		global_position = global_position.clamp(movement_bounds.position, movement_bounds.end)
+	_record_session_position()
 	_set_animation(not velocity.is_zero_approx())
 
 
@@ -182,6 +187,42 @@ func _show_pause_prompt() -> void:
 		return
 	_prompt_label.text = "PAUSED  •  %s to resume" % ("Start" if _using_controller else "Esc")
 	_prompt_label.visible = true
+
+
+func _restore_or_record_session_position() -> void:
+	var session = _session()
+	if session == null:
+		return
+	var current_scene = get_tree().current_scene
+	if current_scene != null and session.player_scene == current_scene.scene_file_path:
+		_restore_session_position()
+	else:
+		_record_session_position()
+
+
+func _restore_session_position() -> void:
+	var session = _session()
+	if session == null:
+		return
+	var current_scene = get_tree().current_scene
+	if current_scene == null or session.player_scene != current_scene.scene_file_path:
+		return
+	global_position = session.player_position
+	if movement_bounds.has_area():
+		global_position = global_position.clamp(movement_bounds.position, movement_bounds.end)
+
+
+func _record_session_position() -> void:
+	var session = _session()
+	if session == null:
+		return
+	var current_scene = get_tree().current_scene
+	if current_scene != null:
+		session.record_player_state(current_scene.scene_file_path, global_position)
+
+
+func _session():
+	return get_node_or_null("/root/GameSession")
 
 
 func _is_game_paused() -> bool:
