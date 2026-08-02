@@ -9,6 +9,8 @@ const ACTIONS := {
 	&"move_right": [KEY_D, KEY_RIGHT],
 	&"interact": [KEY_E, KEY_SPACE],
 	&"run": [KEY_SHIFT],
+	&"save_game": [KEY_F5],
+	&"load_game": [KEY_F9],
 	&"pause": [KEY_ESCAPE],
 }
 

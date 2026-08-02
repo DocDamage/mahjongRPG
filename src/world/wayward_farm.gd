@@ -32,3 +32,17 @@ func _update_status(_day: int, _minute_of_day: int) -> void:
 
 func _show_message(message: String) -> void:
 	message_label.text = message
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed(&"save_game"):
+		var result := SaveService.save(SaveService.SLOT_AUTOSAVE, GameSession.snapshot())
+		_show_message("Game saved." if result == OK else "Save failed.")
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed(&"load_game"):
+		var document := SaveService.load_save(SaveService.SLOT_AUTOSAVE)
+		if document.has("payload") and GameSession.restore(document["payload"]) == OK:
+			_show_message("Game loaded.")
+		else:
+			_show_message("No valid autosave found.")
+		get_viewport().set_input_as_handled()
