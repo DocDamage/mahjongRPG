@@ -1,0 +1,21 @@
+extends "res://src/interaction/world_interactable.gd"
+
+signal feedback(message: String)
+
+@export_file("*.tscn") var destination_scene: String
+
+
+func _ready() -> void:
+	interacted.connect(_on_interacted)
+	queue_redraw()
+
+
+func _draw() -> void:
+	draw_rect(Rect2(-24, -32, 48, 64), Color("3c2b1b"))
+	draw_rect(Rect2(-24, -32, 48, 64), Color("d9c18a"), false, 3.0)
+	draw_line(Vector2(-12, 0), Vector2(12, 0), Color("d9c18a"), 3.0)
+
+
+func _on_interacted(_actor: Node2D) -> void:
+	if destination_scene.is_empty() or SceneRouter.change_scene(destination_scene) != OK:
+		feedback.emit("That route is closed for now.")

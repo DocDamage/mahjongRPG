@@ -1,0 +1,81 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://src/world/dustward.gd" id="1_world"]
+[ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://src/world/scene_exit.gd" id="3_exit"]
+[ext_resource type="Script" path="res://src/mahjong/presentation/mahjong_opponent.gd" id="4_opponent"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_exit"]
+radius = 42.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_opponent"]
+radius = 34.0
+
+[node name="Dustward" type="Node2D"]
+script = ExtResource("1_world")
+
+[node name="Doc" parent="." instance=ExtResource("2_player")]
+position = Vector2(130, 420)
+movement_bounds = Rect2(45, 120, 870, 345)
+
+[node name="FarmRoad" type="Area2D" parent="."]
+position = Vector2(70, 420)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_exit")
+prompt_text = "Return to Wayward Farm"
+destination_scene = "res://src/world/wayward_farm.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FarmRoad"]
+shape = SubResource("CircleShape2D_exit")
+
+[node name="MayorBell" type="Area2D" parent="." groups=["dustward_opponent"]]
+position = Vector2(190, 270)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_opponent")
+prompt_text = "Challenge Mayor Bell"
+opponent_id = &"mayor_bell"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MayorBell"]
+shape = SubResource("CircleShape2D_opponent")
+
+[node name="RiverRose" type="Area2D" parent="." groups=["dustward_opponent"]]
+position = Vector2(470, 260)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_opponent")
+prompt_text = "Challenge River Rose"
+opponent_id = &"river_rose"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RiverRose"]
+shape = SubResource("CircleShape2D_opponent")
+
+[node name="DynamiteBill" type="Area2D" parent="." groups=["dustward_opponent"]]
+position = Vector2(750, 270)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_opponent")
+prompt_text = "Challenge Dynamite Bill"
+opponent_id = &"dynamite_bill"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DynamiteBill"]
+shape = SubResource("CircleShape2D_opponent")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Status" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 20.0
+offset_right = 910.0
+offset_bottom = 70.0
+theme_override_colors/font_color = Color(0.95, 0.89, 0.74, 1)
+theme_override_font_sizes/font_size = 18
+
+[node name="Message" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 480.0
+offset_right = 900.0
+offset_bottom = 520.0
+theme_override_colors/font_color = Color(1, 0.92, 0.67, 1)
+theme_override_font_sizes/font_size = 18

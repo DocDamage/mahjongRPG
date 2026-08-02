@@ -6,6 +6,8 @@ const TrailHandValidator = preload("res://src/mahjong/domain/trail_hand_validato
 const VisibleKnowledge = preload("res://src/mahjong/ai/visible_knowledge.gd")
 
 var flow
+var opponent_name := "Trailhand"
+var opponent_loadout: Array[StringName] = [&"dark", &"green"]
 var status_label: Label
 var action_box: HBoxContainer
 var tiles_box: HBoxContainer
@@ -18,6 +20,7 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	GameSession.request_pause(&"mahjong")
 	flow = MatchFlow.new(GameSession.seed + GameSession.day * 100 + GameSession.minute_of_day)
+	flow.configure_loadouts([&"orange", &"blue"], opponent_loadout)
 	flow.start_match()
 	_build_ui()
 	_refresh()
@@ -39,7 +42,7 @@ func _build_ui() -> void:
 	panel.add_theme_constant_override("separation", 12)
 	add_child(panel)
 	var title := Label.new()
-	title.text = "SIX BRANDS • TRAIL RULES"
+	title.text = "SIX BRANDS • TRAIL RULES vs %s" % opponent_name
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 28)
 	panel.add_child(title)
@@ -72,7 +75,7 @@ func _build_ui() -> void:
 func _refresh() -> void:
 	_clear(action_box)
 	_clear(tiles_box)
-	status_label.text = "%s Hand  •  Renown: Doc %d — Opponent %d  •  Wall: %d\nOpponent has %d concealed tile(s), %d open group(s)." % [flow.hand_name().capitalize(), flow.renown[0], flow.renown[1], flow.wall.size(), flow.hands[1].size(), flow.open_groups[1].size()]
+	status_label.text = "%s Hand  •  Renown: Doc %d — %s %d  •  Wall: %d\n%s has %d concealed tile(s), %d open group(s)." % [flow.hand_name().capitalize(), flow.renown[0], opponent_name, flow.renown[1], flow.wall.size(), opponent_name, flow.hands[1].size(), flow.open_groups[1].size()]
 	result_label.text = ""
 	if flow.phase == MatchFlow.Phase.MATCH_COMPLETE:
 		result_label.text = "Match complete. %s" % ("Doc wins!" if flow.match_winner == 0 else "Opponent wins." if flow.match_winner == 1 else "The match ends tied.")
