@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://src/world/wayward_farm.gd" id="1_world"]
 [ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://src/world/bonfire.gd" id="4_fire"]
 [ext_resource type="Script" path="res://src/fishing/fishing_spot.gd" id="5_fishing"]
 [ext_resource type="Script" path="res://src/horses/horse_actor.gd" id="6_horse"]
+[ext_resource type="Script" path="res://src/mahjong/presentation/mahjong_table_interactable.gd" id="7_mahjong"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_plot"]
 radius = 26.0
@@ -18,6 +19,9 @@ radius = 34.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_horse"]
 radius = 42.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mahjong"]
+radius = 48.0
 
 [node name="WaywardFarm" type="Node2D"]
 script = ExtResource("1_world")
@@ -102,6 +106,16 @@ position = Vector2(0, -26)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Horse"]
 shape = SubResource("CircleShape2D_horse")
+
+[node name="MahjongTable" type="Area2D" parent="."]
+position = Vector2(660, 190)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("7_mahjong")
+prompt_text = "Play Trail Rules Mahjong"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MahjongTable"]
+shape = SubResource("CircleShape2D_mahjong")
 
 [node name="HUD" type="CanvasLayer" parent="."]
 

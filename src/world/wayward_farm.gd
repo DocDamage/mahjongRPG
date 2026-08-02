@@ -13,6 +13,7 @@ func _ready() -> void:
 	$Bonfire.feedback.connect(_show_message)
 	$FishingSpot.feedback.connect(_show_message)
 	$Horse.feedback.connect(_show_message)
+	$MahjongTable.feedback.connect(_show_message)
 	_update_status(GameSession.day, GameSession.minute_of_day)
 
 
