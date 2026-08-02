@@ -12,6 +12,7 @@ func _ready() -> void:
 		plot.feedback.connect(_show_message)
 	$Bonfire.feedback.connect(_show_message)
 	$FishingSpot.feedback.connect(_show_message)
+	$Horse.feedback.connect(_show_message)
 	_update_status(GameSession.day, GameSession.minute_of_day)
 
 

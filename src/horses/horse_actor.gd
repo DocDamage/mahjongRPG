@@ -1,0 +1,63 @@
+extends "res://src/interaction/world_interactable.gd"
+
+const HORSE_TEXTURE_PATH := "res://assets/generated/horses/horse_brown.png"
+const MOUNTED_SPEED := 300.0
+
+signal feedback(message: String)
+
+@export var travel_bounds := Rect2()
+
+var _rider: Node2D
+var _awaiting_interact_release := false
+
+
+func _ready() -> void:
+	interacted.connect(_on_interacted)
+	var texture := load(HORSE_TEXTURE_PATH) as Texture2D
+	if texture == null:
+		push_error("Missing generated brown horse texture")
+		return
+	$Sprite2D.texture = texture
+	$Sprite2D.region_enabled = true
+	$Sprite2D.region_rect = Rect2(0, 0, 128, 128)
+	queue_redraw()
+
+
+func _process(delta: float) -> void:
+	if not GameSession.horse.mounted:
+		return
+	if _awaiting_interact_release:
+		if not Input.is_action_pressed(&"interact"):
+			_awaiting_interact_release = false
+		return
+	var direction := Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
+	global_position += direction * MOUNTED_SPEED * delta
+	if travel_bounds.has_area():
+		global_position = global_position.clamp(travel_bounds.position, travel_bounds.end)
+	if Input.is_action_just_pressed(&"interact"):
+		_dismount()
+
+
+func _on_interacted(actor: Node2D) -> void:
+	if GameSession.horse.mounted:
+		return
+	if GameSession.horse.mount(true) != OK:
+		feedback.emit("The horse cannot be mounted here.")
+		return
+	_rider = actor
+	_rider.visible = false
+	_rider.set_physics_process(false)
+	_awaiting_interact_release = true
+	feedback.emit("Mounted %s horse. Ride faster; press E / A to dismount." % GameSession.horse.selected_color.capitalize())
+
+
+func _dismount() -> void:
+	if GameSession.horse.dismount(travel_bounds.has_point(global_position)) != OK:
+		feedback.emit("No safe place to dismount.")
+		return
+	if _rider != null:
+		_rider.global_position = global_position
+		_rider.visible = true
+		_rider.set_physics_process(true)
+	_rider = null
+	feedback.emit("Dismounted.")

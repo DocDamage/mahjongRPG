@@ -3,6 +3,7 @@ extends Node
 const CropDefinition = preload("res://src/crops/crop_definition.gd")
 const FarmGrid = preload("res://src/farm/farm_grid.gd")
 const FarmService = preload("res://src/farm/farm_service.gd")
+const HorseTravelState = preload("res://src/horses/horse_travel_state.gd")
 
 signal session_started(seed: int)
 signal time_advanced(day: int, minute_of_day: int)
@@ -19,6 +20,7 @@ var day: int = 1
 var minute_of_day: int = 8 * 60
 var weather_id: StringName = &"clear"
 var farm
+var horse
 var _pause_reasons: Dictionary = {}
 var _time_accumulator := 0.0
 
@@ -35,6 +37,7 @@ func _process(delta: float) -> void:
 
 func _ready() -> void:
 	_ensure_farm()
+	_ensure_horse()
 
 
 func start_new_game(new_seed: int) -> void:
@@ -43,6 +46,7 @@ func start_new_game(new_seed: int) -> void:
 	minute_of_day = 8 * 60
 	weather_id = &"clear"
 	farm = null
+	horse = HorseTravelState.new()
 	_ensure_farm()
 	_pause_reasons.clear()
 	_time_accumulator = 0.0
@@ -109,6 +113,7 @@ func snapshot() -> Dictionary:
 		"minute_of_day": minute_of_day,
 		"weather_id": str(weather_id),
 		"farm": _ensure_farm().snapshot(),
+		"horse": _ensure_horse().snapshot(),
 	}
 
 
@@ -125,6 +130,9 @@ func restore(snapshot_data: Dictionary) -> Error:
 	weather_id = StringName(snapshot_data.get("weather_id", "clear"))
 	var farm_data_value = snapshot_data.get("farm", {})
 	if not farm_data_value is Dictionary or _ensure_farm().restore(farm_data_value) != OK:
+		return ERR_INVALID_DATA
+	var horse_data_value = snapshot_data.get("horse", {})
+	if not horse_data_value is Dictionary or _ensure_horse().restore(horse_data_value) != OK:
 		return ERR_INVALID_DATA
 	_pause_reasons.clear()
 	_time_accumulator = 0.0
@@ -159,3 +167,9 @@ func _ensure_farm():
 			if crop_data_value is Dictionary:
 				farm.register_definition(CropDefinition.new(crop_data_value))
 	return farm
+
+
+func _ensure_horse():
+	if horse == null:
+		horse = HorseTravelState.new()
+	return horse

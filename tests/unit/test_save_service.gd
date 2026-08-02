@@ -21,6 +21,8 @@ func run() -> Array[String]:
 	session.start_new_game(91)
 	session.farm.plant(Vector2i(0, 0), &"beans", 1)
 	session.farm.water(Vector2i(0, 0), 1)
+	session.horse.discover(&"wayward_farm")
+	session.horse.mount(true)
 	session.advance_minutes(90)
 	if service.save(&"manual_2", session.snapshot()) != OK:
 		failures.append("a full game-session snapshot should save")
@@ -28,7 +30,7 @@ func run() -> Array[String]:
 		var restored = GameSessionScript.new()
 		var saved_session := service.load_save(&"manual_2")
 		if restored.restore(saved_session.get("payload", {})) != OK or restored.snapshot() != session.snapshot():
-			failures.append("time, weather, and farm state should round-trip through SaveService")
+			failures.append("time, weather, farm, and horse state should round-trip through SaveService")
 		restored.free()
 	session.free()
 	service.free()

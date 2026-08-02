@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://src/world/wayward_farm.gd" id="1_world"]
 [ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
 [ext_resource type="Script" path="res://src/farm/farm_plot.gd" id="3_plot"]
 [ext_resource type="Script" path="res://src/world/bonfire.gd" id="4_fire"]
 [ext_resource type="Script" path="res://src/fishing/fishing_spot.gd" id="5_fishing"]
+[ext_resource type="Script" path="res://src/horses/horse_actor.gd" id="6_horse"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_plot"]
 radius = 26.0
@@ -14,6 +15,9 @@ radius = 34.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fishing"]
 radius = 34.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_horse"]
+radius = 42.0
 
 [node name="WaywardFarm" type="Node2D"]
 script = ExtResource("1_world")
@@ -84,6 +88,20 @@ prompt_text = "Fish"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FishingSpot"]
 shape = SubResource("CircleShape2D_fishing")
+
+[node name="Horse" type="Area2D" parent="."]
+position = Vector2(725, 240)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_horse")
+prompt_text = "Mount horse"
+travel_bounds = Rect2(60, 150, 840, 270)
+
+[node name="Sprite2D" type="Sprite2D" parent="Horse"]
+position = Vector2(0, -26)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Horse"]
+shape = SubResource("CircleShape2D_horse")
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
