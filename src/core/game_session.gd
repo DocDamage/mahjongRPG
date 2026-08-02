@@ -95,6 +95,7 @@ func advance_minutes(minutes: int) -> void:
 		minute_of_day -= MINUTES_PER_DAY
 		day += 1
 		set_weather(_weather_for_day(day))
+		_ensure_farm().advance_to_day(day)
 		_ensure_animals().advance_to_day(day)
 	time_advanced.emit(day, minute_of_day)
 func complete_mahjong_match() -> void:
