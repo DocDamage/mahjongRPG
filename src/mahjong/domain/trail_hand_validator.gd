@@ -1,5 +1,8 @@
 extends RefCounted
 
+const MahjongTile = preload("res://src/mahjong/domain/mahjong_tile.gd")
+const TileIdentity = preload("res://src/mahjong/domain/tile_identity.gd")
+
 const HAND_SIZE := 11
 
 
@@ -26,6 +29,18 @@ static func _identity_counts(tiles: Array) -> Dictionary:
 		var key: String = tile.identity_key()
 		counts[key] = int(counts.get(key, 0)) + 1
 	return counts
+
+
+static func winning_identity_keys(tiles: Array) -> Array[String]:
+	var waits: Array[String] = []
+	if tiles.size() != HAND_SIZE - 1:
+		return waits
+	for identity in TileIdentity.all_identities():
+		var candidate := tiles.duplicate()
+		candidate.append(MahjongTile.new(identity, &"blue"))
+		if is_winning_hand(candidate):
+			waits.append(identity.key())
+	return waits
 
 
 static func _can_form_groups(counts: Dictionary, groups_remaining: int) -> bool:
