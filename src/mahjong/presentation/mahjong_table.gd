@@ -127,7 +127,8 @@ func _refresh() -> void:
 			_add_action("Orange: claim group", _claim_brand.bind(&"orange_group", orange_claim[0], orange_claim[1]))
 		return
 	var advice := TenderfootAdvisor.recommend_discard(flow.hands[0], flow.discard_river, flow.open_groups)
-	result_label.text = "Your turn: choose one tile to discard. Recommendation: %s — %s" % [_tile_label(advice.get("tile")), advice.get("reason", "")]
+	var warning := String(advice.get("warning", ""))
+	result_label.text = "Your turn: choose one tile to discard. Recommendation: %s — %s%s" % [_tile_label(advice.get("tile")), advice.get("reason", ""), "\n" + warning if not warning.is_empty() else ""]
 	if TrailHandValidator.is_winning_hand(flow.combined_hand(0)):
 		_add_action("Declare Trail Rules win", _declare_win)
 	if flow.brand_state(0).activations(&"orange") > 0:

@@ -14,6 +14,11 @@ func run() -> Array[String]:
 		failures.append("Tenderfoot advice must recommend a tile from the player's own hand")
 	if not String(advice.get("reason", "")).contains("visible information"):
 		failures.append("Tenderfoot advice must explain its visible-information basis")
+	var warning := TenderfootAdvisor.public_warning(_tile(&"east", 0), [[], [[_tile(&"east", 0)]]])
+	if not warning.contains("public open group"):
+		failures.append("Tenderfoot warnings should use only matching public open groups")
+	if not TenderfootAdvisor.public_warning(_tile(&"east", 0), [[], []]).is_empty():
+		failures.append("Tenderfoot warnings should not invent hidden opponent risk")
 	if TenderfootAdvisor.recommend_discard([], public_river, [[], []]).get("error", OK) == OK:
 		failures.append("Tenderfoot advice should reject an empty hand")
 	return failures

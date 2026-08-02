@@ -17,4 +17,15 @@ static func recommend_discard(hand: Array, discard_river: Array, open_groups: Ar
 	var index := int(decision.get("index", -1))
 	if index < 0 or index >= hand.size():
 		return {"error": decision.get("error", ERR_INVALID_PARAMETER)}
-	return {"index": index, "tile": hand[index], "reason": decision.get("reason", "")}
+	var tile = hand[index]
+	return {"index": index, "tile": tile, "reason": decision.get("reason", ""), "warning": public_warning(tile, open_groups)}
+
+
+static func public_warning(tile, open_groups: Array) -> String:
+	if tile == null or open_groups.size() < 2:
+		return ""
+	for group in open_groups[1]:
+		for public_tile in group:
+			if public_tile != null and public_tile.identity.equals(tile.identity):
+				return "Caution: this matches %s's public open group." % "the opponent"
+	return ""
