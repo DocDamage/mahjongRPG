@@ -11,6 +11,8 @@ func run() -> Array[String]:
 		failures.append("the Hall restoration quest should be available in a new slice session")
 	if session.inventory.add_item(&"crop_beans") != OK or session.inventory.record_fish(&"anchovy", 45) != OK:
 		failures.append("slice quest requirements should accept farm and fishing inventory")
+	if session.quests.advance(&"first_lantern") != OK or session.quests.advance(&"first_lantern") != OK:
+		failures.append("the First Lantern story should reach its restoration stage before completion")
 	if session.quests.complete(&"first_lantern") != OK:
 		failures.append("the supplied requirements should complete the first Hall restoration milestone")
 	if not session.quests.unlocked_helpers.has(&"mabel") or not session.quests.hall_milestones.has(&"first_lantern"):

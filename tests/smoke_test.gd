@@ -11,6 +11,7 @@ const DATA_TABLES := {
 	&"opponents": "res://data/opponents/vertical_slice_opponents.json",
 	&"quests": "res://data/quests/vertical_slice_quests.json",
 	&"animals": "res://data/animals/vertical_slice_animals.json",
+	&"dialogue": "res://data/dialogue/vertical_slice_dialogue.json",
 	&"runtime_assets": "res://data/runtime_assets/vertical_slice_assets.json",
 }
 const REQUIRED_ASSETS := [

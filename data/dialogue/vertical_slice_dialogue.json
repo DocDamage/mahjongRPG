@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "lines": {
+    "first_lantern.intro": "Mabel: Mayor Bell calls this Hall a dead building. I call it a promise waiting on a match.",
+    "first_lantern.gather": "Mabel: Bring one bean crop and any fish. We will set the first lantern alight and settle Riverbend's access dispute.",
+    "first_lantern.missing": "Mabel: I still need one bean crop and any fish. Beans: {beans}; fish: {fish}.",
+    "first_lantern.delivery": "Mabel: Good. The beans will feed the wick and the fish oil will keep it through rain. Give me one moment at the lantern.",
+    "first_lantern.light": "Mabel: The wick is ready. Stand with me and light the first lantern.",
+    "first_lantern.complete": "The first lantern shines. Mabel joins Wayward Farm, the Hall begins to return, and Riverbend access is restored.",
+    "first_lantern.after": "Mabel keeps the first lantern bright. Helper unlocked: Mabel."
+  }
+}

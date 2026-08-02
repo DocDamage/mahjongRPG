@@ -1,11 +1,15 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "quests": [
     {
       "id": "first_lantern",
       "title": "The First Lantern",
-      "start_text": "Mayor Bell has disputed the Hall's Riverbend access. Mabel needs one bean crop and any one fish to light the first lantern and prove the Hall is active again.",
       "requirements": {"crop_beans": 1, "any_fish": 1},
+      "stages": [
+        {"id": "meet_mabel", "dialogue_id": "first_lantern.intro"},
+        {"id": "gather_provisions", "dialogue_id": "first_lantern.gather"},
+        {"id": "light_lantern", "dialogue_id": "first_lantern.light"}
+      ],
       "rewards": {"helper": "mabel", "hall_milestone": "first_lantern"}
     }
   ]
