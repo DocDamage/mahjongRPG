@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "opponents": [
-    {"id": "mayor_bell", "display_name": "Mayor Bell", "brands": ["dark", "green"]},
-    {"id": "river_rose", "display_name": "River Rose", "brands": ["blue", "pink"]},
-    {"id": "dynamite_bill", "display_name": "Dynamite Bill", "brands": ["orange", "purple"]}
+    {"id": "mayor_bell", "display_name": "Mayor Bell", "brands": ["dark", "green"], "availability": {"clear": [8, 18], "rain": [10, 16]}},
+    {"id": "river_rose", "display_name": "River Rose", "brands": ["blue", "pink"], "availability": {"clear": [6, 20], "rain": [8, 18]}},
+    {"id": "dynamite_bill", "display_name": "Dynamite Bill", "brands": ["orange", "purple"], "availability": {"clear": [12, 24], "rain": [14, 22]}}
   ]
 }

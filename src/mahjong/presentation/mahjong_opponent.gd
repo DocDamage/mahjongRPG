@@ -6,9 +6,16 @@ signal feedback(message: String)
 
 @export var opponent_id: StringName
 
+var _definition: Dictionary = {}
+var _available := true
+
 
 func _ready() -> void:
 	interacted.connect(_on_interacted)
+	_definition = _load_definition()
+	GameSession.time_advanced.connect(_on_schedule_changed)
+	GameSession.weather_changed.connect(_on_weather_changed)
+	_update_availability()
 	queue_redraw()
 
 
@@ -19,18 +26,39 @@ func _draw() -> void:
 
 
 func _on_interacted(_actor: Node2D) -> void:
+	if not _available:
+		feedback.emit("%s is away under the current %s schedule." % [_definition.get("display_name", "This opponent"), GameSession.weather_id])
+		return
 	if get_tree().get_first_node_in_group(&"mahjong_table_overlay") != null:
 		return
-	var definition := _load_definition()
-	if definition.is_empty():
+	if _definition.is_empty():
 		feedback.emit("This opponent's table is not ready.")
 		return
 	var table = MahjongTable.new()
-	table.opponent_name = String(definition["display_name"])
-	table.opponent_loadout = _as_brand_loadout(definition["brands"])
+	table.opponent_name = String(_definition["display_name"])
+	table.opponent_loadout = _as_brand_loadout(_definition["brands"])
 	table.add_to_group(&"mahjong_table_overlay")
 	get_tree().root.add_child(table)
 	feedback.emit("%s accepts your Trail Rules challenge." % table.opponent_name)
+
+
+func _on_schedule_changed(_day: int, _minute: int) -> void:
+	_update_availability()
+
+
+func _on_weather_changed(_weather_id: StringName) -> void:
+	_update_availability()
+
+
+func _update_availability() -> void:
+	if _definition.is_empty():
+		return
+	var availability_value: Variant = _definition.get("availability", {})
+	var hours_value: Variant = availability_value.get(String(GameSession.weather_id), []) if availability_value is Dictionary else []
+	_available = hours_value is Array and hours_value.size() == 2 and GameSession.minute_of_day / 60 >= int(hours_value[0]) and GameSession.minute_of_day / 60 < int(hours_value[1])
+	visible = _available
+	monitorable = _available
+	monitoring = _available
 
 
 func _load_definition() -> Dictionary:
