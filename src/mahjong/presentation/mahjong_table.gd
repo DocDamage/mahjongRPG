@@ -1,6 +1,7 @@
 extends Control
 
 const BasicTrailAi = preload("res://src/mahjong/ai/basic_trail_ai.gd")
+const ClaimResolver = preload("res://src/mahjong/domain/claim_resolver.gd")
 const MatchFlow = preload("res://src/mahjong/domain/match_flow.gd")
 const TrailHandValidator = preload("res://src/mahjong/domain/trail_hand_validator.gd")
 const VisibleKnowledge = preload("res://src/mahjong/ai/visible_knowledge.gd")
@@ -105,6 +106,12 @@ func _refresh() -> void:
 		_add_action("Declare High Noon", _declare_high_noon)
 		if flow.brand_state(0).activations(&"blue") > 0:
 			_add_action("Blue: reclaim latest discard", _activate_blue)
+		var blue_claim := _first_claim_indices(&"blue_run")
+		if not blue_claim.is_empty():
+			_add_action("Blue: claim Run", _claim_brand.bind(&"blue_run", blue_claim[0], blue_claim[1]))
+		var orange_claim := _first_claim_indices(&"orange_group")
+		if not orange_claim.is_empty():
+			_add_action("Orange: claim group", _claim_brand.bind(&"orange_group", orange_claim[0], orange_claim[1]))
 		return
 	result_label.text = "Your turn: choose one tile to discard."
 	if flow.brand_state(0).activations(&"orange") > 0:
@@ -141,6 +148,13 @@ func _activate_orange() -> void:
 func _activate_blue() -> void:
 	if flow.activate_blue(0) != OK:
 		result_label.text = "Blue can reclaim one of your two latest discards when available."
+		return
+	_refresh()
+
+
+func _claim_brand(kind: StringName, first_index: int, second_index: int) -> void:
+	if flow.claim_brand_group_from_last_discard(0, kind, [first_index, second_index]) != OK:
+		result_label.text = "That Brand claim is no longer legal."
 		return
 	_refresh()
 
@@ -207,3 +221,19 @@ func _tutorial_text() -> String:
 	if flow.phase == MatchFlow.Phase.DRAW and flow.turn_player == 0:
 		return "Tenderfoot: draw to eleven tiles, then discard back to ten. High Noon is a visible three-draw wait."
 	return "Tenderfoot: opponent decisions use only its hand plus the public discard river."
+
+
+func _first_claim_indices(kind: StringName) -> Array[int]:
+	if flow.turn_player != 0 or flow.phase != MatchFlow.Phase.DRAW or flow.discard_river.is_empty():
+		return []
+	var discard: Dictionary = flow.discard_river.back()
+	if int(discard.get("player", -1)) == 0 or bool(discard.get("claimed", false)):
+		return []
+	var tile: Variant = discard.get("tile")
+	for first_index in flow.hands[0].size():
+		for second_index in range(first_index + 1, flow.hands[0].size()):
+			var claim := {"player": 0, "kind": String(kind), "equipped": flow.brand_state(0).equipped, "tiles": [flow.hands[0][first_index], flow.hands[0][second_index]]}
+			var resolved := ClaimResolver.resolve(tile, [claim])
+			if not resolved.is_empty():
+				return [first_index, second_index]
+	return []
