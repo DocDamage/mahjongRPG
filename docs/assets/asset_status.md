@@ -72,6 +72,16 @@ Running initially accelerates the existing walk cycle. Farming, table, carrying,
 
 During import, long ambience is converted to OGG, the anomalous stone footstep is trimmed, and demo media plus bonus music are excluded from the runtime-oriented output.
 
+The vertical slice promotes these verified `Cozy SFX Volume 1` outputs into tracked runtime assets:
+
+- `assets/generated/audio/outdoor_generic_ambience.ogg`
+- `assets/generated/audio/rain_ambience.ogg`
+- `assets/generated/audio/footstep_grass.wav`
+- `assets/generated/audio/footstep_gravel.wav`
+- `assets/generated/audio/footstep_wood.wav`
+
+They are mapped by `data/audio/vertical_slice_audio.json`; the ignored `assets/source/supplemental/` copies remain import inputs only.
+
 Dedicated revolver, horse, livestock, door, bonfire, and specialized fishing-line sounds remain polish tasks, not foundation blockers.
 
 ## License
