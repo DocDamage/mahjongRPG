@@ -5,13 +5,14 @@ const FarmGrid = preload("res://src/farm/farm_grid.gd")
 const FarmService = preload("res://src/farm/farm_service.gd")
 const HorseTravelState = preload("res://src/horses/horse_travel_state.gd")
 const InventoryService = preload("res://src/inventory/inventory_service.gd")
+const QuestService = preload("res://src/quests/quest_service.gd")
 
 signal session_started(seed: int)
 signal time_advanced(day: int, minute_of_day: int)
 signal pause_changed(paused: bool)
 signal weather_changed(weather_id: StringName)
 
-const SAVE_SCHEMA_VERSION := 2
+const SAVE_SCHEMA_VERSION := 3
 const MATCH_TIME_COST_MINUTES := 90
 const MINUTES_PER_DAY := 24 * 60
 const REAL_SECONDS_PER_DAY := 60.0
@@ -23,6 +24,7 @@ var weather_id: StringName = &"clear"
 var farm
 var horse
 var inventory
+var quests
 var _pause_reasons: Dictionary = {}
 var _time_accumulator := 0.0
 
@@ -41,6 +43,7 @@ func _ready() -> void:
 	_ensure_farm()
 	_ensure_horse()
 	_ensure_inventory()
+	_ensure_quests()
 
 
 func start_new_game(new_seed: int) -> void:
@@ -51,6 +54,8 @@ func start_new_game(new_seed: int) -> void:
 	farm = null
 	horse = HorseTravelState.new()
 	inventory = InventoryService.new()
+	quests = null
+	_ensure_quests()
 	_ensure_farm()
 	_pause_reasons.clear()
 	_time_accumulator = 0.0
@@ -119,6 +124,7 @@ func snapshot() -> Dictionary:
 		"farm": _ensure_farm().snapshot(),
 		"horse": _ensure_horse().snapshot(),
 		"inventory": _ensure_inventory().snapshot(),
+		"quests": _ensure_quests().snapshot(),
 	}
 
 
@@ -142,6 +148,9 @@ func restore(snapshot_data: Dictionary) -> Error:
 		return ERR_INVALID_DATA
 	var inventory_data_value = migrated.get("inventory", {})
 	if not inventory_data_value is Dictionary or _ensure_inventory().restore(inventory_data_value) != OK:
+		return ERR_INVALID_DATA
+	var quest_data_value = migrated.get("quests", {})
+	if not quest_data_value is Dictionary or _ensure_quests().restore(quest_data_value) != OK:
 		return ERR_INVALID_DATA
 	_pause_reasons.clear()
 	_time_accumulator = 0.0
@@ -190,13 +199,33 @@ func _ensure_inventory():
 	return inventory
 
 
+func _ensure_quests():
+	if quests != null:
+		return quests
+	quests = QuestService.new()
+	var file := FileAccess.open("res://data/quests/vertical_slice_quests.json", FileAccess.READ)
+	if file == null:
+		push_error("Missing vertical-slice quest data")
+		return quests
+	var parsed: Variant = JSON.parse_string(file.get_as_text())
+	if parsed is Dictionary:
+		var quest_values: Variant = parsed.get("quests", [])
+		if quest_values is Array:
+			for quest_value in quest_values:
+				if quest_value is Dictionary:
+					quests.register_definition(quest_value)
+	return quests
+
+
 func _migrate_snapshot(snapshot_data: Dictionary) -> Dictionary:
 	var schema_version := int(snapshot_data.get("schema_version", -1))
 	if schema_version == SAVE_SCHEMA_VERSION:
 		return snapshot_data.duplicate(true)
-	if schema_version != 1:
+	if schema_version < 1 or schema_version > 2:
 		return {}
 	var migrated := snapshot_data.duplicate(true)
 	migrated["schema_version"] = SAVE_SCHEMA_VERSION
-	migrated["inventory"] = {"money_cents": 0, "items": {}, "fish_records": {}}
+	if schema_version == 1:
+		migrated["inventory"] = {"money_cents": 0, "items": {}, "fish_records": {}}
+	migrated["quests"] = {"active": {}, "completed": {}, "unlocked_helpers": {}, "hall_milestones": {}}
 	return migrated

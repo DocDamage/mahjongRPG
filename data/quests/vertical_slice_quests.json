@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "quests": [
+    {
+      "id": "first_lantern",
+      "title": "The First Lantern",
+      "start_text": "Mabel needs one bean crop and any one fish to light the Six Brands Hall's first lantern.",
+      "requirements": {"crop_beans": 1, "any_fish": 1},
+      "rewards": {"helper": "mabel", "hall_milestone": "first_lantern"}
+    }
+  ]
+}

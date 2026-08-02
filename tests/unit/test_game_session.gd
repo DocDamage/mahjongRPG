@@ -27,6 +27,11 @@ func run() -> Array[String]:
 	legacy.erase("inventory")
 	if restored.restore(legacy) != OK or restored.inventory.money_cents != 0:
 		failures.append("version-one session saves should migrate an empty inventory safely")
+	var version_two := snapshot.duplicate(true)
+	version_two["schema_version"] = 2
+	version_two.erase("quests")
+	if restored.restore(version_two) != OK or not restored.quests.completed.is_empty():
+		failures.append("version-two session saves should migrate empty quest state safely")
 	session.free()
 	restored.free()
 	return failures

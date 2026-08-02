@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://src/world/dustward.gd" id="1_world"]
 [ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://src/mahjong/presentation/mahjong_opponent.gd" id="4_opponent"]
 [ext_resource type="Script" path="res://src/horses/horse_actor.gd" id="5_horse"]
 [ext_resource type="Script" path="res://src/horses/hitching_post.gd" id="6_hitch"]
+[ext_resource type="Script" path="res://src/story/hall_foreman.gd" id="7_foreman"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_exit"]
 radius = 42.0
@@ -96,6 +97,16 @@ destination_scene = "res://src/world/wayward_farm.tscn"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DustwardHitch"]
 shape = SubResource("CircleShape2D_hitch")
+
+[node name="Mabel" type="Area2D" parent="."]
+position = Vector2(620, 420)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("7_foreman")
+prompt_text = "Speak with Mabel at Six Brands Hall"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mabel"]
+shape = SubResource("CircleShape2D_opponent")
 
 [node name="HUD" type="CanvasLayer" parent="."]
 

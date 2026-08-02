@@ -9,6 +9,7 @@ func _ready() -> void:
 	$FarmRoad.feedback.connect(_show_message)
 	$Horse.feedback.connect(_show_message)
 	$DustwardHitch.feedback.connect(_show_message)
+	$Mabel.feedback.connect(_show_message)
 	for opponent in get_tree().get_nodes_in_group(&"dustward_opponent"):
 		opponent.feedback.connect(_show_message)
 	_update_status()
@@ -24,7 +25,8 @@ func _draw() -> void:
 
 
 func _update_status() -> void:
-	status_label.text = "DUSTWARD  •  Three Trail Rules opponents await  •  $%.2f\nMeet Mayor Bell, River Rose, and Dynamite Bill. E / A challenges an opponent." % [GameSession.inventory.money_cents / 100.0]
+	var quest_status := "First Lantern restored" if GameSession.quests.completed.has(&"first_lantern") else "Speak with Mabel at Six Brands Hall"
+	status_label.text = "DUSTWARD  •  Three Trail Rules opponents await  •  $%.2f\n%s" % [GameSession.inventory.money_cents / 100.0, quest_status]
 
 
 func _show_message(message: String) -> void:
