@@ -2,7 +2,7 @@
 
 **Audited commit:** `f634a5a` (subsequent documentation commits should preserve these results)
 **Scope:** P1 and P2 in `plans/mahjongrpg-completion-playable-slices.md`
-**Method:** inspected runtime paths, save migrations, tests, CI logs, manifests, documentation, and current local archive directories.
+**Method:** inspected runtime paths, save migrations, tests, CI logs, manifests, documentation, and the current expanded source-asset trees under `assets/`.
 
 ## Phase 1
 
@@ -23,7 +23,7 @@
 | --- | --- | --- |
 | Target-engine CI | [GitHub Actions run 30770945127](https://github.com/DocDamage/mahjongRPG/actions/runs/30770945127): Linux import/validator/33 suites/smoke/editor and Windows export preflight | Passed |
 | Test-to-module coverage inventory | `docs/qa/test_to_module_coverage.md` | Present |
-| Complete source-archive evidence | Supplemental verification stops at missing Hero archive; master verification reports all nine split parts missing | Blocked by absent user-supplied archives |
+| Complete source-asset evidence | `assets/MahjongRPG/` cataloged as 4,430 master assets; four expanded supplemental directories verify through their importer | Passed |
 | Correct ffmpeg requirements | README, supplemental guide, and canonical recovery/setup guide name the required Vorbis-capable `ffmpeg` | Present |
 | Canonical setup/status/recovery docs | README plus `docs/release/setup_and_recovery.md`; duplicate production plan copies removed | Present |
 | Manual device/display matrix | `docs/qa/manual_device_display_matrix.md` | Present; execution pending |
@@ -33,4 +33,4 @@
 
 ## Conclusion
 
-All repository-controlled Phase 1–2 implementation, automation, CI, and documentation requirements have direct evidence. Neither phase should be declared fully accepted until the asset owner supplies the complete archive sets and a person records the physical device/display and clean-profile checkpoints. Those blockers are external inputs, not substitute-ready data.
+All repository-controlled Phase 1–2 implementation, automation, source-asset evidence, CI, and documentation requirements have direct evidence. Neither phase should be declared fully accepted until a person records the physical device/display and clean-profile checkpoints. Those remaining gates are external observations, not substitute-ready data.

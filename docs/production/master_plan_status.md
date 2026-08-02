@@ -7,7 +7,7 @@ This is an evidence ledger for `CODEX_MASTER_EXECUTION_PLAN.md`. It is not a com
 | Plan phase | Status | Current evidence / remaining work |
 | --- | --- | --- |
 | P1: honest vertical slice | Code complete / manual checkpoint pending | Save schema 8 adds starter Orange/Blue Brand ownership and persisted pre-match loadout state, Mabel's assigned once-per-day crop-watering action, first Silas evidence, four-crop picker, inspectable unavailable-opponent schedules, and mounted horse scene/position persistence. Focused migration/orchestration tests, progression, save, smoke, and editor checks pass with Godot 4.7.1; the physical player checkpoint is part of the pending manual matrix. |
-| P2: demo-grade delivery foundation | Partial / external evidence gate | Target-engine [GitHub Actions run 30770900107](https://github.com/DocDamage/mahjongRPG/actions/runs/30770900107) is green for validator, resource import, 33 suites, smoke, editor, and Windows template/export preflight. The 250-LOC report, canonical setup/recovery, manual matrix, coverage inventory, title/load/accessibility shell, persistent preferences, controller-glyph base, and proprietary code notice are present. Complete supplied source archives, physical controller/display matrix, and user-observed clean-profile pass remain evidence gates. |
+| P2: demo-grade delivery foundation | Partial / manual evidence gate | Target-engine [GitHub Actions run 30770987928](https://github.com/DocDamage/mahjongRPG/actions/runs/30770987928) is green for validator, resource import, 33 suites, smoke, editor, and Windows template/export preflight. The 250-LOC report, canonical setup/recovery, manual matrix, coverage inventory, title/load/accessibility shell, persistent preferences, controller-glyph base, and proprietary code notice are present. Expanded source verification passed for `assets/MahjongRPG/` (4,430 assets) and all four expanded supplemental directories. Physical controller/display matrix and user-observed clean-profile pass remain evidence gates. |
 | A–C: orientation and source import | Complete for the expanded canonical asset folder | `docs/assets/master_import.md` establishes `assets/MahjongRPG/` as the local source. The user explicitly retained archives outside the repo; no archive is committed. |
 | D: Godot 4.7.1 smoke | Complete | Official Godot `4.7.1.stable.official.a13da4feb` and matching Windows templates passed preflight, the 31-suite native runner, runtime smoke, and headless editor initialization. |
 | E: foundation integration | External gate | Work is on `agent/project-foundation`; no merge into `develop`, push, or PR is claimed. |
@@ -35,8 +35,7 @@ The current native run reports 33 suites. The complete commands and latest miles
 
 ## Required delivery actions
 
-1. Restore and verify the complete user-supplied supplemental and master archive sets against their manifests, then pin the master fingerprints.
-2. Perform the P2 manual controller, display, accessibility, backup recovery, and clean-Windows-profile matrix in `docs/qa/manual_device_display_matrix.md`.
-3. Execute and record the manual matrix against the debug export; target-engine CI is already green on the pushed branch.
+1. Perform the P2 manual controller, display, accessibility, backup recovery, and clean-Windows-profile matrix in `docs/qa/manual_device_display_matrix.md`.
+2. Execute and record the manual matrix against the debug export; target-engine CI and expanded source verification are already green on the pushed branch.
 
 Until those gates have evidence, the plan is not complete.

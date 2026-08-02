@@ -13,18 +13,18 @@ python tools/validate_repository.py
 python tools/verify_export_environment.py --godot $SixBrandsGodot
 ```
 
-For source-asset rebuilding, install `Python 3.12`, `ffmpeg` with a Vorbis encoder, and `7-Zip` for the master split archive. The tracked debug build does not require the ignored source archives because its generated runtime assets are versioned.
+For normal source-asset verification, install `Python 3.12`. Install `ffmpeg` with a Vorbis encoder only when regenerating normalized supplemental audio. Install `7-Zip` only when auditing optional historical master split archives. The tracked debug build does not require either source rebuilding or archive files because its generated runtime assets are versioned.
 
-## Source archive evidence
+## Source asset evidence
 
-Place the exact four supplemental ZIPs in `vendor/local/supplemental/` and all nine `MahjongRPG.z01`…`MahjongRPG.zip` parts in `vendor/local/master/`. These are deliberately ignored and must be supplied by the asset owner. Verify without modifying generated content:
+The expanded source asset trees already supplied in `assets/` are authoritative. Verify without modifying generated content:
 
 ```powershell
-python tools/import_supplemental_assets.py --archive-source-dir vendor/local/supplemental --verify-only
-python tools/import_master_assets.py --archive-source-dir vendor/local/master --verify-only --seven-zip 7z
+python tools/import_supplemental_assets.py --expanded-source-dir assets --verify-only
+python tools/import_master_assets.py --expanded-source-dir assets/MahjongRPG --verify-only
 ```
 
-The master manifest is only eligible to be pinned after the complete set passes integrity verification. Never substitute re-zipped or incomplete content for the supplied archives.
+The historical supplemental ZIPs and master split archive can be placed under `vendor/local/` to verify their provenance, but their absence does not block P2 while the expanded source trees are present. Never substitute re-zipped or incomplete content for an original archive when performing provenance verification.
 
 ## Save recovery
 

@@ -3,7 +3,7 @@
 **Created:** 2026-08-02
 **Baseline:** `agent/project-foundation` at `102a593`
 **Inputs:** `docs/production/REPOSITORY_COMPLETENESS_AUDIT_2026-08-02.md`, `docs/CODEX_MASTER_EXECUTION_PLAN.md`, and `docs/SIX_BRANDS_AT_HIGH_NOON_COMPLETE_GAME_PLAN.md`
-**Status:** Reviewed blueprint; critical and major review findings resolved
+**Status:** Reviewed blueprint; P1 implementation complete in code; P2 source-asset evidence resolved from the expanded `assets/` tree; manual acceptance evidence remains pending
 
 ## Objective
 
@@ -78,10 +78,10 @@ Asset preparation, map blockouts, dialogue drafts, and test fixtures for later r
 ## P2 — Demo-grade delivery foundation
 
 - **Context:** closes QA, release, reproducibility, documentation, engine-path, and integration findings without adding world scope.
-- **Build:** target-engine CI for validator/tests/smoke/editor and test-to-module coverage inventory; restore and verify the complete user-supplied source-archive evidence; correct `ffmpeg` requirements; canonical setup/status/recovery docs; manual device/display matrix; title/load/settings/accessibility shell with persistent text/UI scale, dialogue speed, hold/toggle, reduced motion, subtitles, and controller glyph base; code-license disposition.
+- **Build:** target-engine CI for validator/tests/smoke/editor and test-to-module coverage inventory; catalog and verify the complete user-supplied expanded source-asset trees under `assets/`; correct `ffmpeg` requirements; canonical setup/status/recovery docs; manual device/display matrix; title/load/settings/accessibility shell with persistent text/UI scale, dialogue speed, hold/toggle, reduced motion, subtitles, and controller glyph base; code-license disposition. Archive fingerprints remain optional provenance when the original ZIPs are available.
 - **Primary areas:** `.github/workflows`, `tools`, `docs/assets`, `docs/qa`, `docs/release`, `README.md`, manifests, UI/accessibility/settings, and save recovery guidance.
 - **Player checkpoint:** a clean Windows profile can launch the debug demo, configure keyboard/controller and accessibility settings, complete P1, recover a backed-up save, and relaunch.
-- **Exit/rollback:** P2 stays blocked while archive, license-disposition, CI, or manual evidence is missing; integrate the foundation and P1 into `develop` only after approval; operational changes must not alter gameplay saves.
+- **Exit/rollback:** P2 stays blocked while expanded-source verification, license disposition, CI, or manual evidence is missing; integrate the foundation and P1 into `develop` only after approval; operational changes must not alter gameplay saves.
 
 ## P3 — Four-Brand mastery
 
@@ -255,3 +255,7 @@ Asset preparation, map blockouts, dialogue drafts, and test fixtures for later r
 ## Registration
 
 This file is the execution blueprint. `docs/production/master_plan_status.md` remains the evidence ledger; it must report achieved gates rather than restating future work. No separate project memory index exists in this repository. An adversarial review completed on 2026-08-02; its Hall-stage, world-count, accessibility, sequencing, phase-size, branch-base, and migration findings are incorporated above.
+
+## Changelog
+
+- **2026-08-02:** Corrected P2 source-evidence terminology. `assets/MahjongRPG/` is the canonical expanded master source tree and `assets/Hero - Cowboy - AssetPack/`, `assets/horses/`, `assets/fishing UI/`, and `assets/Cozy SFX Volume 1/` are the canonical expanded supplemental trees. Verified with `tools/import_master_assets.py --expanded-source-dir assets/MahjongRPG --verify-only` (4,430 assets) and `tools/import_supplemental_assets.py --expanded-source-dir assets --verify-only` (four source directories). The ignored original ZIP archives are optional provenance, not a P2 acceptance prerequisite.

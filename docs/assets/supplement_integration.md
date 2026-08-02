@@ -1,14 +1,31 @@
 # Supplemental Asset Integration
 
-## Required local archives
+## Canonical expanded source tree
 
-Place the four verified source ZIPs in:
+The normal local source is already expanded under the repository's ignored `assets/` tree:
+
+```text
+assets/Hero - Cowboy - AssetPack/
+assets/horses/
+assets/fishing UI/
+assets/Cozy SFX Volume 1/
+```
+
+Verify these four directories without changing imported content:
+
+```powershell
+python tools/import_supplemental_assets.py --expanded-source-dir assets --verify-only
+```
+
+## Optional archive provenance
+
+When provided, place the four original ZIPs in:
 
 ```text
 vendor/local/supplemental/
 ```
 
-Their names and SHA-256 values are recorded in `manifests/supplemental_source_archives.json`.
+Their names and SHA-256 values are recorded in `manifests/supplemental_source_archives.json`. Archive verification is provenance checking; it is not required when the canonical expanded source tree above is available.
 
 ## Import
 
@@ -18,17 +35,17 @@ python tools/import_supplemental_assets.py
 
 The importer:
 
-1. Verifies every required archive and its ZIP CRC
+1. Reads the canonical expanded source directories under `assets/`
 2. Rejects unsafe paths
 3. Normalizes names to lowercase snake case
-4. Extracts Doc, horses, and fishing UI
-5. Requires `ffmpeg` with a Vorbis encoder and converts long ambience to OGG
+4. Imports Doc, horses, and fishing UI
+5. Requires `ffmpeg` with a Vorbis encoder only when converting long ambience to OGG
 6. Trims the anomalous stone footstep to 0.50 seconds
 7. Excludes demo video, demo track, and bonus music
 8. Atomically replaces `assets/source/supplemental/`
 9. Writes an import marker with checksums
 
-Use `--verify-only` to validate without extracting and `--source-dir` to use a different archive location.
+Use `--archive-source-dir vendor/local/supplemental --verify-only` to validate ZIP provenance without extracting.
 
 ## Generated correction
 

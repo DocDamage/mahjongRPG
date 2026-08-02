@@ -54,4 +54,4 @@ python tools/validate_repository.py
 <Godot 4.7.1 engine> --headless --path . --editor --quit
 ```
 
-The portable validation engine is official Godot 4.7.1 with matching Windows templates. The current run reports 33 suites plus smoke/editor success, and target-engine CI is green. The Windows debug export and isolated-AppData headless launch are verified; archive restoration, user-observed clean-profile, and manual device/display/accessibility passes remain external evidence gates. See [setup_and_recovery.md](../release/setup_and_recovery.md).
+The portable validation engine is official Godot 4.7.1 with matching Windows templates. The current run reports 33 suites plus smoke/editor success, and target-engine CI is green. The Windows debug export and isolated-AppData headless launch are verified. The expanded master source tree (4,430 assets) and four supplemental source directories also verify locally; user-observed clean-profile and manual device/display/accessibility passes remain external evidence gates. See [setup_and_recovery.md](../release/setup_and_recovery.md).

@@ -19,23 +19,20 @@ This checkout contains the Phase 1 honest vertical slice and Phase 2 demo-delive
 
 ## Setup and validation
 
-The large source archives are intentionally excluded from Git history. Place these verified ZIP files in `vendor/local/supplemental/`:
+The authoritative source assets are already expanded in the ignored `assets/` tree. Verify them with:
 
-```text
-Hero - Cowboy - AssetPack.zip
-horses.zip
-fishing UI.zip
-Cozy SFX Volume 1.zip
+```powershell
+python tools/import_supplemental_assets.py --expanded-source-dir assets --verify-only
+python tools/import_master_assets.py --expanded-source-dir assets/MahjongRPG --verify-only
 ```
 
-`ffmpeg` with a Vorbis encoder is required for source audio normalization. Then run:
+`ffmpeg` with a Vorbis encoder is required only when normalizing/reimporting audio. Original archives may be kept under `vendor/local/` for optional provenance verification. To regenerate supplemental imports, run:
 
 ```bash
-python tools/import_supplemental_assets.py
-python tools/validate_repository.py
+python tools/import_supplemental_assets.py --expanded-source-dir assets
 ```
 
-The importer verifies SHA-256 and ZIP integrity before normalizing the assets into the ignored `assets/source/supplemental/` directory. The approximately 838 MiB master split archive remains outside Git.
+The supplemental importer normalizes the expanded source into ignored `assets/source/supplemental/`; `assets/MahjongRPG/` remains the expanded master source tree.
 
 Use the target Godot 4.7.1 executable—not an arbitrary `godot` on `PATH`. The canonical setup, validation, recovery, archive, and troubleshooting instructions are in [Windows setup and recovery](docs/release/setup_and_recovery.md).
 

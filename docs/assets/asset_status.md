@@ -1,8 +1,10 @@
 # Asset Status
 
-## Main archive
+## Main source assets
 
-The reconstructed source archive passed CRC validation:
+The canonical master source is the expanded `assets/MahjongRPG/` tree. The repository's catalog verifier reports 4,430 master asset files from that tree.
+
+Historical archive-provenance records (not a normal checkout requirement) record that the reconstructed source archive passed CRC validation:
 
 - 5,791 archive entries tested
 - 4,607 extracted files inventoried
@@ -10,7 +12,7 @@ The reconstructed source archive passed CRC validation:
 - No CRC failures
 - Approximately 838 MiB reconstructed archive size
 
-The master archive remains outside Git.
+Original master archive parts remain outside Git and are optional provenance inputs.
 
 ## World coverage
 
@@ -53,7 +55,7 @@ Animated animal material includes birds, bunnies, cats, cows, foxes, mice, pigs,
 
 ## Supplemental visual assets
 
-The verified supplemental archives add:
+The verified expanded supplemental source directories add:
 
 - Doc's four-direction 64×64 hero animations
 - Idle, walk, gun draw, armed still, and shooting states
