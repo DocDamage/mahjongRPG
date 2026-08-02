@@ -10,6 +10,7 @@ var session
 var _definitions: Array = []
 var _actor: Node2D
 var _last_state := -1
+var _last_tension_band := -1
 var _catch_recorded := false
 var _overlay
 
@@ -75,6 +76,7 @@ func _begin(actor: Node2D) -> void:
 	_actor = actor
 	_actor.set_physics_process(false)
 	_last_state = -1
+	_last_tension_band = -1
 	_catch_recorded = false
 	_update_feedback()
 
@@ -86,6 +88,7 @@ func _finish() -> void:
 	session = null
 	_overlay.show_session(null)
 	_last_state = -1
+	_last_tension_band = -1
 	_catch_recorded = false
 	feedback.emit("Fishing finished.")
 
@@ -96,7 +99,8 @@ func _update_feedback() -> void:
 	_overlay.refresh(session)
 	if session.state == FishingSession.State.STRUGGLE:
 		var pull := "right" if session.target_direction > 0.0 else "left"
-		feedback.emit("Fish pulling %s • tension %d%% • counter left stick/keys, rod right stick • reel R/RT, release F/LT" % [pull, int(session.tension * 100.0)])
+		_pulse_tension(session.tension)
+		feedback.emit("Fish pulling %s • tension %d%% • counter left stick/keys, rod right stick • reel %s, release %s" % [pull, int(session.tension * 100.0), _binding(&"fish_reel"), _binding(&"fish_release")])
 		return
 	if _last_state == session.state:
 		return
@@ -105,13 +109,14 @@ func _update_feedback() -> void:
 		FishingSession.State.CAST, FishingSession.State.WAIT:
 			feedback.emit("Cast out. Wait for a bite.")
 		FishingSession.State.BITE:
-			feedback.emit("Bite! Press E / A to set the hook.")
+			_pulse(0.3, 0.9, 0.25)
+			feedback.emit("Bite! Press %s to set the hook." % _binding(&"interact"))
 		FishingSession.State.CATCH:
-			feedback.emit("Caught %s ($%.2f)! Press E / A to view it." % [session.fish.id.capitalize(), session.fish.sell_value_cents / 100.0])
+			feedback.emit("Caught %s ($%.2f)! Press %s to view it." % [session.fish.id.capitalize(), session.fish.sell_value_cents / 100.0, _binding(&"interact")])
 		FishingSession.State.ESCAPE:
-			feedback.emit("The fish escaped. Press E / A to continue.")
+			feedback.emit("The fish escaped. Press %s to continue." % _binding(&"interact"))
 		FishingSession.State.PRESENTATION:
-			feedback.emit("Catch presentation complete. Press E / A to return.")
+			feedback.emit("Catch presentation complete. Press %s to return." % _binding(&"interact"))
 
 
 func _load_definitions() -> void:
@@ -133,3 +138,22 @@ func _record_catch_if_needed() -> void:
 		return
 	if GameSession.inventory.record_fish(session.fish.id, session.fish.sell_value_cents) == OK:
 		_catch_recorded = true
+
+
+func _binding(action: StringName) -> String:
+	var input_service = get_node_or_null("/root/InputService")
+	return input_service.prompt_binding_text(action, input_service.using_controller) if input_service != null else String(action).capitalize()
+
+
+func _pulse_tension(tension: float) -> void:
+	var band := int(clampf(tension, 0.0, 0.999) * 4.0)
+	if band == _last_tension_band:
+		return
+	_last_tension_band = band
+	_pulse(0.15 + band * 0.1, 0.2 + band * 0.15, 0.12)
+
+
+func _pulse(weak: float, strong: float, duration: float) -> void:
+	var input_service = get_node_or_null("/root/InputService")
+	if input_service != null:
+		input_service.pulse_active_controller(weak, strong, duration)

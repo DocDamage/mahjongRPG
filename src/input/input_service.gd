@@ -61,6 +61,7 @@ const CONTROLLER_AXIS_LABELS := {
 }
 
 var using_controller := false
+var active_controller_device := -1
 
 
 func _ready() -> void:
@@ -208,8 +209,17 @@ func prompt_binding_text(action: StringName, prefer_controller: bool) -> String:
 	return String(action).capitalize()
 
 
+func pulse_active_controller(weak_magnitude: float, strong_magnitude: float, duration_seconds: float) -> bool:
+	if active_controller_device < 0 or DisplayServer.get_name() == "headless":
+		return false
+	Input.start_joy_vibration(active_controller_device, clampf(weak_magnitude, 0.0, 1.0), clampf(strong_magnitude, 0.0, 1.0), maxf(0.0, duration_seconds))
+	return true
+
+
 func _input(event: InputEvent) -> void:
 	var next_using_controller := event is InputEventJoypadButton or event is InputEventJoypadMotion
+	if next_using_controller:
+		active_controller_device = event.device
 	if event is InputEventKey or event is InputEventMouse:
 		next_using_controller = false
 	if next_using_controller != using_controller:

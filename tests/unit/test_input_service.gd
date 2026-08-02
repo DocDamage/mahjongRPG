@@ -34,5 +34,7 @@ func run() -> Array[String]:
 		failures.append("prompt labels should expose the active keyboard and controller bindings")
 	if service.remap_controller_button(&"interact", JOY_BUTTON_B) != OK or service.prompt_binding_text(&"interact", true) != "B / Circle":
 		failures.append("controller prompt labels should follow remapped bindings")
+	if service.pulse_active_controller(1.0, 1.0, 0.2):
+		failures.append("haptic feedback should stay inert until a controller device is active")
 	service.free()
 	return failures

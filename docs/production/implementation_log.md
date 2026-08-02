@@ -29,6 +29,7 @@
 | Farm construction | Added data-driven paths, fences, decorations, machines, pens, and buildings with protected-route checks, footprint validation, safe relocation/removal, persistent snapshots, and an in-game build palette. |
 | Display settings | Added persisted windowed, borderless, and fullscreen preferences through the pause menu, with safe headless-runtime handling. |
 | Mahjong patterns | Added six distinct, data-driven non-color Brand patterns to tile controls and tooltips for color-independent Brand identification. |
+| Fishing controller feedback | Added active-controller bite and escalating tension haptics, while making all fishing instructions reflect remapped live bindings. |
 
 ## Current local verification baseline
 
