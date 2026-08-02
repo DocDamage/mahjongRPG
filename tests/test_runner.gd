@@ -27,7 +27,7 @@ func _run_suites() -> void:
 	var failures: Array[String] = []
 	for suite_path in SUITES:
 		var suite_script = load(suite_path)
-		if suite_script == null:
+		if suite_script == null or not suite_script.can_instantiate():
 			failures.append("Unable to load test suite: %s" % suite_path)
 			continue
 		var suite = suite_script.new()
