@@ -3,6 +3,7 @@ extends SceneTree
 const SUITES := [
 	"res://tests/unit/test_game_session.gd",
 	"res://tests/unit/test_input_service.gd",
+	"res://tests/unit/test_audio_service.gd",
 	"res://tests/unit/test_inventory_service.gd",
 	"res://tests/unit/test_shipping_service.gd",
 	"res://tests/unit/test_quest_service.gd",

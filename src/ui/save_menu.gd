@@ -1,11 +1,14 @@
 extends CanvasLayer
 
+const AudioSettings = preload("res://src/ui/audio_settings.gd")
+
 const MENU_PAUSE_REASON := &"save_menu"
 
 var _shade: ColorRect
 var _panel: PanelContainer
 var _message: Label
 var _first_button: Button
+var _audio_settings
 
 
 func _ready() -> void:
@@ -15,7 +18,9 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"pause"):
-		if is_open():
+		if _audio_settings != null and _audio_settings.is_open():
+			_audio_settings.close()
+		elif is_open():
 			close()
 		else:
 			open()
@@ -52,8 +57,8 @@ func _build_menu() -> void:
 	_shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(_shade)
 	_panel = PanelContainer.new()
-	_panel.position = Vector2(230, 46)
-	_panel.size = Vector2(500, 448)
+	_panel.position = Vector2(230, 20)
+	_panel.size = Vector2(500, 500)
 	_shade.add_child(_panel)
 	var content := VBoxContainer.new()
 	content.add_theme_constant_override("separation", 10)
@@ -71,10 +76,20 @@ func _build_menu() -> void:
 	for slot_number in range(1, 7):
 		_add_slot_row(content, StringName("manual_%d" % slot_number), slot_number)
 	var close_button := Button.new()
-	close_button.text = "Resume"
-	close_button.custom_minimum_size = Vector2(0, 36)
-	close_button.pressed.connect(close)
+	close_button.text = "Audio settings"
+	close_button.custom_minimum_size = Vector2(0, 34)
+	close_button.pressed.connect(_open_audio_settings)
 	content.add_child(close_button)
+	var resume_button := Button.new()
+	resume_button.text = "Resume"
+	resume_button.custom_minimum_size = Vector2(0, 34)
+	resume_button.pressed.connect(close)
+	content.add_child(resume_button)
+	_audio_settings = AudioSettings.new()
+	_audio_settings.position = Vector2(280, 84)
+	_audio_settings.size = Vector2(400, 372)
+	_audio_settings.closed.connect(_restore_save_menu)
+	_shade.add_child(_audio_settings)
 	_shade.visible = false
 
 
@@ -124,3 +139,13 @@ func _load_slot(slot_id: StringName, slot_number: int) -> void:
 func _focus_first_button() -> void:
 	if _first_button != null:
 		_first_button.grab_focus()
+
+
+func _open_audio_settings() -> void:
+	_panel.visible = false
+	_audio_settings.open()
+
+
+func _restore_save_menu() -> void:
+	_panel.visible = true
+	_focus_first_button()

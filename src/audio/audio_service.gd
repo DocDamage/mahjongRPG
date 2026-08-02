@@ -43,3 +43,10 @@ func set_bus_volume(bus_name: StringName, linear_volume: float) -> Error:
 		return ERR_DOES_NOT_EXIST
 	AudioServer.set_bus_volume_db(index, linear_to_db(clamp(linear_volume, 0.0, 1.0)))
 	return OK
+
+
+func bus_volume(bus_name: StringName) -> float:
+	var index := AudioServer.get_bus_index(bus_name)
+	if index < 0:
+		return -1.0
+	return db_to_linear(AudioServer.get_bus_volume_db(index))
