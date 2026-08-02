@@ -11,6 +11,12 @@ func run() -> Array[String]:
 	var grid = FarmGrid.new(Rect2i(0, 0, 4, 4))
 	grid.set_blocked(Vector2i(0, 0))
 	grid.set_required_path([Vector2i(1, 0)])
+	var route_grid = FarmGrid.new(Rect2i(0, 0, 3, 1))
+	route_grid.set_route_guards([[Vector2i(0, 0), Vector2i(2, 0)]])
+	if route_grid.place(&"fence", [Vector2i(1, 0)]) != ERR_UNAVAILABLE:
+		failures.append("solid placement must not seal a guarded route")
+	if route_grid.place(&"path", [Vector2i(1, 0)], false, true) != OK:
+		failures.append("walkable paths should preserve a guarded route")
 	var farm = FarmService.new(grid)
 	var beans = CropDefinition.new({"id": "beans", "days_to_mature": 3, "wilt_after_days": 2, "die_after_days": 4})
 	farm.register_definition(beans)

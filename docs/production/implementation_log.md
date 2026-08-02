@@ -35,6 +35,7 @@
 | Export preflight | Added a deterministic Windows export preflight that verifies the required Godot 4.7.1 runtime, Windows templates, and archive-safe export preset before packaging. |
 | Resource audit | Deferred the native runner until autoloads exist and added a recursive `src` script/scene load suite, so broken resources now fail the automated gate. |
 | Fishing gear data | Added a validated default rod, bait, lure, hook, and line catalog, then applied its deterministic reel, bite-window, and line-tension modifiers to Riverbend fishing. |
+| Placement route safety | Added guarded-route breadth-first validation to construction placement, preventing a non-walkable build from sealing the farm's traversable route while allowing walkable paths. |
 
 ## Current local verification baseline
 

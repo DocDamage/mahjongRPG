@@ -120,7 +120,7 @@ func place_construction(construction_id: StringName, anchor: Vector2i) -> Error:
 		return placement
 	var definition := construction_definition(construction_id)
 	var cells := _construction_cells(anchor, construction_id)
-	if grid.place(_construction_owner(construction_id, anchor), cells, bool(definition["walkable"])) != OK:
+	if grid.place(_construction_owner(construction_id, anchor), cells, bool(definition["walkable"]), bool(definition["walkable"])) != OK:
 		return ERR_INVALID_DATA
 	_constructions[anchor] = {"id": construction_id}
 	return OK
@@ -141,7 +141,7 @@ func relocate_construction(from_anchor: Vector2i, to_anchor: Vector2i) -> Error:
 	var definition := construction_definition(construction_id)
 	var previous_cells := _construction_cells(from_anchor, construction_id)
 	var next_cells := _construction_cells(to_anchor, construction_id)
-	if grid.move(_construction_owner(construction_id, to_anchor), previous_cells, next_cells, bool(definition["walkable"])) != OK:
+	if grid.move(_construction_owner(construction_id, to_anchor), previous_cells, next_cells, bool(definition["walkable"]), bool(definition["walkable"])) != OK:
 		return ERR_INVALID_DATA
 	_constructions.erase(from_anchor)
 	_constructions[to_anchor] = {"id": construction_id}
@@ -255,6 +255,6 @@ func _validate_construction_cells(cells: Array, walkable: bool, ignored_cells: A
 		var cell: Vector2i = cell_value
 		if _fields.has(cell):
 			return ERR_ALREADY_EXISTS
-	return grid.validate(cells, walkable, ignored_cells)
+	return grid.validate(cells, walkable, ignored_cells, walkable)
 func _construction_owner(construction_id: StringName, anchor: Vector2i) -> StringName:
 	return StringName("construction:%s:%d:%d" % [construction_id, anchor.x, anchor.y])

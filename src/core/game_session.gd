@@ -215,6 +215,7 @@ func _ensure_farm():
 		return farm
 	var grid = FarmGrid.new(Rect2i(0, 0, 5, 3))
 	grid.set_required_path([Vector2i(4, 1)])
+	grid.set_route_guards([[Vector2i(0, 2), Vector2i(4, 0)]])
 	grid.set_blocked(Vector2i(4, 2))
 	farm = FarmService.new(grid)
 	for field_cell in [Vector2i(0, 0), Vector2i(1, 0), Vector2i(0, 1), Vector2i(1, 1)]:
