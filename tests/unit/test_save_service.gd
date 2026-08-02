@@ -27,6 +27,20 @@ func run() -> Array[String]:
 			failures.append("manual slot %d should independently round-trip" % slot_number)
 	if service.save_current_session(slot) != ERR_UNAVAILABLE or service.load_current_session(slot) != ERR_UNAVAILABLE:
 		failures.append("detached save services should report unavailable game sessions")
+	var recovery_slot := &"manual_6"
+	var backup_payload := {"revision": 1}
+	if service.save(recovery_slot, backup_payload) != OK or service.save(recovery_slot, {"revision": 2}) != OK:
+		failures.append("save recovery setup should write primary and backup documents")
+	else:
+		var corrupt_file := FileAccess.open("%s/%s.json" % [SaveServiceScript.SAVE_DIRECTORY, recovery_slot], FileAccess.WRITE)
+		if corrupt_file == null:
+			failures.append("save recovery test should be able to corrupt the primary document")
+		else:
+			corrupt_file.store_string("not valid json")
+			corrupt_file.close()
+			var recovered := service.load_save(recovery_slot)
+			if recovered.get("payload", {}) != backup_payload or not recovered.get("recovered_from_backup", false):
+				failures.append("a corrupt primary save should recover the prior backup")
 	var session = GameSessionScript.new()
 	session.start_new_game(91)
 	session.farm.plant(Vector2i(0, 0), &"beans", 1)

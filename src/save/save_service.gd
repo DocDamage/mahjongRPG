@@ -109,7 +109,10 @@ func _read_document(path: String) -> Dictionary:
 	var file := FileAccess.open(path, FileAccess.READ)
 	if file == null:
 		return {"error": FileAccess.get_open_error()}
-	var document: Variant = JSON.parse_string(file.get_as_text())
+	var parser := JSON.new()
+	if parser.parse(file.get_as_text()) != OK:
+		return {"error": ERR_FILE_CORRUPT}
+	var document: Variant = parser.data
 	if not document is Dictionary or int(document.get("schema_version", -1)) != SAVE_SCHEMA_VERSION:
 		return {"error": ERR_FILE_UNRECOGNIZED}
 	var payload: Variant = document.get("payload")
