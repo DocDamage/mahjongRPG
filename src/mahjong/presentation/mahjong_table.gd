@@ -4,6 +4,7 @@ const BasicTrailAi = preload("res://src/mahjong/ai/basic_trail_ai.gd")
 const ClaimResolver = preload("res://src/mahjong/domain/claim_resolver.gd")
 const MatchFlow = preload("res://src/mahjong/domain/match_flow.gd")
 const TrailHandValidator = preload("res://src/mahjong/domain/trail_hand_validator.gd")
+const TenderfootTutorial = preload("res://src/mahjong/presentation/tenderfoot_tutorial.gd")
 const VisibleKnowledge = preload("res://src/mahjong/ai/visible_knowledge.gd")
 
 var flow
@@ -14,6 +15,8 @@ var action_box: HBoxContainer
 var tiles_box: HBoxContainer
 var result_label: Label
 var tutorial_label: Label
+var tutorial_button: Button
+var tutorial
 var _ai_turn_pending := false
 
 
@@ -24,6 +27,7 @@ func _ready() -> void:
 	flow = MatchFlow.new(GameSession.seed + GameSession.day * 100 + GameSession.minute_of_day)
 	flow.configure_loadouts([&"orange", &"blue"], opponent_loadout)
 	flow.start_match()
+	tutorial = TenderfootTutorial.new(GameSession.tutorial_step(&"tenderfoot"))
 	_build_ui()
 	_refresh()
 
@@ -62,6 +66,9 @@ func _build_ui() -> void:
 	tutorial_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	tutorial_label.add_theme_color_override("font_color", Color("f4d08b"))
 	panel.add_child(tutorial_label)
+	tutorial_button = Button.new()
+	tutorial_button.pressed.connect(_advance_tutorial)
+	panel.add_child(tutorial_button)
 	var divider := HSeparator.new()
 	panel.add_child(divider)
 	tiles_box = HBoxContainer.new()
@@ -83,7 +90,7 @@ func _refresh() -> void:
 	_clear(action_box)
 	_clear(tiles_box)
 	status_label.text = "%s Hand  •  Renown: Doc %d — %s %d  •  Wall: %d\n%s has %d concealed tile(s), %d open group(s)." % [flow.hand_name().capitalize(), flow.renown[0], opponent_name, flow.renown[1], flow.wall.size(), opponent_name, flow.hands[1].size(), flow.open_groups[1].size()]
-	tutorial_label.text = _tutorial_text()
+	_refresh_tutorial()
 	result_label.text = ""
 	if flow.phase == MatchFlow.Phase.MATCH_COMPLETE:
 		result_label.text = "Match complete. %s" % ("Doc wins!" if flow.match_winner == 0 else "Opponent wins." if flow.match_winner == 1 else "The match ends tied.")
@@ -130,6 +137,7 @@ func _refresh() -> void:
 
 func _draw_player() -> void:
 	flow.draw()
+	_record_tutorial_action(&"draw")
 	_refresh()
 
 
@@ -137,6 +145,7 @@ func _declare_high_noon() -> void:
 	if flow.declare_high_noon() != OK:
 		result_label.text = "High Noon is available only with a valid one-tile wait."
 		return
+	_record_tutorial_action(&"high_noon")
 	_refresh()
 
 
@@ -144,6 +153,7 @@ func _activate_orange() -> void:
 	if flow.activate_orange(0) != OK:
 		result_label.text = "Orange needs a stored activation and two tiles left in the wall."
 		return
+	_record_tutorial_action(&"orange")
 	_refresh()
 
 
@@ -151,6 +161,7 @@ func _activate_blue() -> void:
 	if flow.activate_blue(0) != OK:
 		result_label.text = "Blue can reclaim one of your two latest discards when available."
 		return
+	_record_tutorial_action(&"blue")
 	_refresh()
 
 
@@ -163,6 +174,7 @@ func _claim_brand(kind: StringName, first_index: int, second_index: int) -> void
 
 func _discard_player(tile_index: int) -> void:
 	flow.discard_at(tile_index)
+	_record_tutorial_action(&"discard")
 	_refresh()
 
 
@@ -220,16 +232,22 @@ func _tile_label(tile) -> String:
 	return "%s%s\n%s" % [rank, suit, String(tile.brand).substr(0, 1).to_upper()]
 
 
-func _tutorial_text() -> String:
-	var orange_ready: int = flow.brand_state(0).activations(&"orange")
-	var blue_ready: int = flow.brand_state(0).activations(&"blue")
-	if orange_ready > 0 or blue_ready > 0:
-		return "Tenderfoot: matching Brand discards charge powers. Orange and Blue each show a legal button when ready."
-	if flow.phase == MatchFlow.Phase.DISCARD and flow.turn_player == 0:
-		return "Tenderfoot: Trail Rules wins use three groups plus one pair. Keep connected runs, matching sets, and a pair."
-	if flow.phase == MatchFlow.Phase.DRAW and flow.turn_player == 0:
-		return "Tenderfoot: draw to eleven tiles, then discard back to ten. High Noon is a visible three-draw wait."
-	return "Tenderfoot: opponent decisions use only its hand plus the public discard river."
+func _refresh_tutorial() -> void:
+	tutorial_label.text = tutorial.progress_text()
+	tutorial_button.visible = not tutorial.is_complete()
+	if tutorial_button.visible:
+		tutorial_button.text = "Continue lesson" if tutorial.can_continue_manually() else "Draw, then discard to continue"
+
+
+func _advance_tutorial() -> void:
+	if tutorial.advance():
+		GameSession.set_tutorial_step(&"tenderfoot", tutorial.step)
+	_refresh()
+
+
+func _record_tutorial_action(action: StringName) -> void:
+	if tutorial.record_action(action):
+		GameSession.set_tutorial_step(&"tenderfoot", tutorial.step)
 
 
 func _first_claim_indices(kind: StringName) -> Array[int]:

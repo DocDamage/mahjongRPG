@@ -13,7 +13,7 @@ signal pause_changed(paused: bool)
 signal weather_changed(weather_id: StringName)
 signal session_restored()
 
-const SAVE_SCHEMA_VERSION := 4
+const SAVE_SCHEMA_VERSION := 5
 const MATCH_TIME_COST_MINUTES := 90
 const MINUTES_PER_DAY := 24 * 60
 const REAL_SECONDS_PER_DAY := 60.0
@@ -28,6 +28,7 @@ var inventory
 var quests
 var player_scene := ""
 var player_position := Vector2.ZERO
+var tutorial_steps: Dictionary = {}
 var _pause_reasons: Dictionary = {}
 var _time_accumulator := 0.0
 
@@ -60,6 +61,7 @@ func start_new_game(new_seed: int) -> void:
 	quests = null
 	player_scene = ""
 	player_position = Vector2.ZERO
+	tutorial_steps.clear()
 	_ensure_quests()
 	_ensure_farm()
 	_pause_reasons.clear()
@@ -127,6 +129,16 @@ func record_player_state(scene_path: String, position: Vector2) -> void:
 	player_position = position
 
 
+func tutorial_step(tutorial_id: StringName) -> int:
+	return maxi(0, int(tutorial_steps.get(tutorial_id, 0)))
+
+
+func set_tutorial_step(tutorial_id: StringName, next_step: int) -> void:
+	if tutorial_id.is_empty() or next_step < 0:
+		return
+	tutorial_steps[tutorial_id] = next_step
+
+
 func snapshot() -> Dictionary:
 	return {
 		"schema_version": SAVE_SCHEMA_VERSION,
@@ -139,6 +151,7 @@ func snapshot() -> Dictionary:
 		"inventory": _ensure_inventory().snapshot(),
 		"quests": _ensure_quests().snapshot(),
 		"player": {"scene": player_scene, "position": [player_position.x, player_position.y]},
+		"tutorial_steps": tutorial_steps.duplicate(true),
 	}
 
 
@@ -175,6 +188,10 @@ func restore(snapshot_data: Dictionary) -> Error:
 		return ERR_INVALID_DATA
 	player_scene = String(player_data.get("scene", ""))
 	player_position = Vector2(float(position_value[0]), float(position_value[1]))
+	var tutorial_steps_value: Variant = migrated.get("tutorial_steps", {})
+	if not tutorial_steps_value is Dictionary:
+		return ERR_INVALID_DATA
+	tutorial_steps = tutorial_steps_value.duplicate(true)
 	_pause_reasons.clear()
 	_time_accumulator = 0.0
 	time_advanced.emit(day, minute_of_day)
@@ -263,7 +280,7 @@ func _migrate_snapshot(snapshot_data: Dictionary) -> Dictionary:
 	var schema_version := int(snapshot_data.get("schema_version", -1))
 	if schema_version == SAVE_SCHEMA_VERSION:
 		return snapshot_data.duplicate(true)
-	if schema_version < 1 or schema_version > 3:
+	if schema_version < 1 or schema_version > 4:
 		return {}
 	var migrated := snapshot_data.duplicate(true)
 	migrated["schema_version"] = SAVE_SCHEMA_VERSION
@@ -271,4 +288,5 @@ func _migrate_snapshot(snapshot_data: Dictionary) -> Dictionary:
 		migrated["inventory"] = {"money_cents": 0, "items": {}, "fish_records": {}}
 	migrated["quests"] = {"active": {}, "completed": {}, "unlocked_helpers": {}, "hall_milestones": {}}
 	migrated["player"] = {"scene": "", "position": [0, 0]}
+	migrated["tutorial_steps"] = {}
 	return migrated

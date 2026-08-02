@@ -19,6 +19,7 @@ func run() -> Array[String]:
 	if session.minute_of_day != 575:
 		failures.append("a Mahjong match should cost 90 minutes")
 	session.record_player_state("res://src/world/wayward_farm.tscn", Vector2(123, 234))
+	session.set_tutorial_step(&"tenderfoot", 4)
 	var weather_session = GameSessionScript.new()
 	weather_session.start_new_game(42)
 	weather_session.advance_minutes(24 * 60)
@@ -43,6 +44,11 @@ func run() -> Array[String]:
 	version_three.erase("player")
 	if restored.restore(version_three) != OK or not restored.player_scene.is_empty():
 		failures.append("version-three session saves should migrate empty player location safely")
+	var version_four := snapshot.duplicate(true)
+	version_four["schema_version"] = 4
+	version_four.erase("tutorial_steps")
+	if restored.restore(version_four) != OK or restored.tutorial_step(&"tenderfoot") != 0:
+		failures.append("version-four session saves should migrate empty tutorial progress safely")
 	session.free()
 	restored.free()
 	weather_session.free()
