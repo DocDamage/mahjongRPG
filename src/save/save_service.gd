@@ -11,6 +11,8 @@ const SLOT_EMERGENCY := &"emergency"
 const SLOT_PRE_FINALE := &"pre_finale"
 const SAVE_DIRECTORY := "user://saves"
 
+var _save_restrictions: Dictionary = {}
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"save_game"):
@@ -26,6 +28,8 @@ func _unhandled_input(event: InputEvent) -> void:
 func save_current_session(slot_id: StringName) -> Error:
 	if not is_inside_tree():
 		return ERR_UNAVAILABLE
+	if not can_save():
+		return ERR_BUSY
 	var session = get_node_or_null("/root/GameSession")
 	if session == null:
 		return ERR_UNAVAILABLE
@@ -50,6 +54,30 @@ func autosave(reason: StringName) -> Error:
 	if result == OK:
 		save_status.emit("Autosaved after %s." % String(reason).replace("_", " "))
 	return result
+
+
+func save_pre_finale() -> Error:
+	return save_current_session(SLOT_PRE_FINALE)
+
+
+func request_save_restriction(reason: StringName) -> void:
+	if reason.is_empty():
+		return
+	_save_restrictions[reason] = int(_save_restrictions.get(reason, 0)) + 1
+
+
+func release_save_restriction(reason: StringName) -> void:
+	if not _save_restrictions.has(reason):
+		return
+	var remaining := int(_save_restrictions[reason]) - 1
+	if remaining <= 0:
+		_save_restrictions.erase(reason)
+	else:
+		_save_restrictions[reason] = remaining
+
+
+func can_save() -> bool:
+	return _save_restrictions.is_empty()
 
 
 func save(slot_id: StringName, payload: Dictionary) -> Error:

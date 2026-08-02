@@ -23,6 +23,11 @@ func _ready() -> void:
 	queue_redraw()
 
 
+func _exit_tree() -> void:
+	if session != null:
+		SaveService.release_save_restriction(&"fishing")
+
+
 func _process(delta: float) -> void:
 	if session == null:
 		return
@@ -75,6 +80,7 @@ func _begin(actor: Node2D) -> void:
 		return
 	_actor = actor
 	_actor.set_physics_process(false)
+	SaveService.request_save_restriction(&"fishing")
 	_last_state = -1
 	_last_tension_band = -1
 	_catch_recorded = false
@@ -85,6 +91,7 @@ func _finish() -> void:
 	if _actor != null:
 		_actor.set_physics_process(true)
 	_actor = null
+	SaveService.release_save_restriction(&"fishing")
 	session = null
 	_overlay.show_session(null)
 	_last_state = -1

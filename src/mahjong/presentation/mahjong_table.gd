@@ -32,6 +32,7 @@ func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	GameSession.request_pause(&"mahjong")
+	SaveService.request_save_restriction(&"mahjong")
 	tutorial = TenderfootTutorial.new(GameSession.tutorial_step(&"tenderfoot"))
 	undo = TenderfootUndo.new()
 	_build_ui()
@@ -39,6 +40,7 @@ func _ready() -> void:
 
 func _exit_tree() -> void:
 	GameSession.release_pause(&"mahjong")
+	SaveService.release_save_restriction(&"mahjong")
 
 func _build_ui() -> void:
 	var background := ColorRect.new()
@@ -226,6 +228,7 @@ func _close_match() -> void:
 	if _match_started:
 		MatchWager.settle(GameSession.inventory, wager_tier, flow.match_winner)
 	GameSession.complete_mahjong_match()
+	SaveService.release_save_restriction(&"mahjong")
 	SaveService.autosave(&"mahjong_match")
 	queue_free()
 func _show_wager_selection() -> void:

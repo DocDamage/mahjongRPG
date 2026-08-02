@@ -31,6 +31,7 @@
 | Mahjong patterns | Added six distinct, data-driven non-color Brand patterns to tile controls and tooltips for color-independent Brand identification. |
 | Fishing controller feedback | Added active-controller bite and escalating tension haptics, while making all fishing instructions reflect remapped live bindings. |
 | Off-farm crop progression | Centralized crop day advancement in `GameSession` so crops process correctly during travel, inn rests, and any other off-farm time change. |
+| Save safety | Added nested, reason-based save restrictions for active fishing and Mahjong, preserving post-match autosaves and the dedicated pre-finale slot. |
 
 ## Current local verification baseline
 
