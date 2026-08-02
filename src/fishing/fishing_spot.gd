@@ -1,6 +1,7 @@
 extends "res://src/interaction/world_interactable.gd"
 
 const FishDefinition = preload("res://src/fishing/fish_definition.gd")
+const FishingOverlay = preload("res://src/fishing/fishing_overlay.gd")
 const FishingSession = preload("res://src/fishing/fishing_session.gd")
 
 signal feedback(message: String)
@@ -10,11 +11,14 @@ var _definitions: Array = []
 var _actor: Node2D
 var _last_state := -1
 var _catch_recorded := false
+var _overlay
 
 
 func _ready() -> void:
 	interacted.connect(_on_interacted)
 	_load_definitions()
+	_overlay = FishingOverlay.new()
+	add_child(_overlay)
 	queue_redraw()
 
 
@@ -78,6 +82,7 @@ func _finish() -> void:
 		_actor.set_physics_process(true)
 	_actor = null
 	session = null
+	_overlay.show_session(null)
 	_last_state = -1
 	_catch_recorded = false
 	feedback.emit("Fishing finished.")
@@ -86,6 +91,7 @@ func _finish() -> void:
 func _update_feedback() -> void:
 	if session == null:
 		return
+	_overlay.refresh(session)
 	if session.state == FishingSession.State.STRUGGLE:
 		var pull := "right" if session.target_direction > 0.0 else "left"
 		feedback.emit("Fish pulling %s • tension %d%% • reel R/RT, release F/LT" % [pull, int(session.tension * 100.0)])
