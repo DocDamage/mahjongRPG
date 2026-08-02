@@ -12,6 +12,7 @@ var status_label: Label
 var action_box: HBoxContainer
 var tiles_box: HBoxContainer
 var result_label: Label
+var tutorial_label: Label
 var _ai_turn_pending := false
 
 
@@ -55,6 +56,11 @@ func _build_ui() -> void:
 	result_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	result_label.add_theme_font_size_override("font_size", 18)
 	panel.add_child(result_label)
+	tutorial_label = Label.new()
+	tutorial_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	tutorial_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	tutorial_label.add_theme_color_override("font_color", Color("f4d08b"))
+	panel.add_child(tutorial_label)
 	var divider := HSeparator.new()
 	panel.add_child(divider)
 	tiles_box = HBoxContainer.new()
@@ -76,6 +82,7 @@ func _refresh() -> void:
 	_clear(action_box)
 	_clear(tiles_box)
 	status_label.text = "%s Hand  •  Renown: Doc %d — %s %d  •  Wall: %d\n%s has %d concealed tile(s), %d open group(s)." % [flow.hand_name().capitalize(), flow.renown[0], opponent_name, flow.renown[1], flow.wall.size(), opponent_name, flow.hands[1].size(), flow.open_groups[1].size()]
+	tutorial_label.text = _tutorial_text()
 	result_label.text = ""
 	if flow.phase == MatchFlow.Phase.MATCH_COMPLETE:
 		result_label.text = "Match complete. %s" % ("Doc wins!" if flow.match_winner == 0 else "Opponent wins." if flow.match_winner == 1 else "The match ends tied.")
@@ -96,8 +103,12 @@ func _refresh() -> void:
 		result_label.text = "Your turn: draw, or declare High Noon if this is a waiting hand."
 		_add_action("Draw", _draw_player)
 		_add_action("Declare High Noon", _declare_high_noon)
+		if flow.brand_state(0).activations(&"blue") > 0:
+			_add_action("Blue: reclaim latest discard", _activate_blue)
 		return
 	result_label.text = "Your turn: choose one tile to discard."
+	if flow.brand_state(0).activations(&"orange") > 0:
+		_add_action("Orange: draw two, keep first", _activate_orange)
 	for tile_index in flow.hands[0].size():
 		var tile: Variant = flow.hands[0][tile_index]
 		var button := Button.new()
@@ -116,6 +127,20 @@ func _draw_player() -> void:
 func _declare_high_noon() -> void:
 	if flow.declare_high_noon() != OK:
 		result_label.text = "High Noon is available only with a valid one-tile wait."
+		return
+	_refresh()
+
+
+func _activate_orange() -> void:
+	if flow.activate_orange(0) != OK:
+		result_label.text = "Orange needs a stored activation and two tiles left in the wall."
+		return
+	_refresh()
+
+
+func _activate_blue() -> void:
+	if flow.activate_blue(0) != OK:
+		result_label.text = "Blue can reclaim one of your two latest discards when available."
 		return
 	_refresh()
 
@@ -170,3 +195,15 @@ func _tile_label(tile) -> String:
 	var suit := String(tile.identity.suit).substr(0, 1).to_upper()
 	var rank := str(tile.identity.rank) if tile.identity.is_numbered() else String(tile.identity.suit).substr(0, 1).to_upper()
 	return "%s%s\n%s" % [rank, suit, String(tile.brand).substr(0, 1).to_upper()]
+
+
+func _tutorial_text() -> String:
+	var orange_ready: int = flow.brand_state(0).activations(&"orange")
+	var blue_ready: int = flow.brand_state(0).activations(&"blue")
+	if orange_ready > 0 or blue_ready > 0:
+		return "Tenderfoot: matching Brand discards charge powers. Orange and Blue each show a legal button when ready."
+	if flow.phase == MatchFlow.Phase.DISCARD and flow.turn_player == 0:
+		return "Tenderfoot: Trail Rules wins use three groups plus one pair. Keep connected runs, matching sets, and a pair."
+	if flow.phase == MatchFlow.Phase.DRAW and flow.turn_player == 0:
+		return "Tenderfoot: draw to eleven tiles, then discard back to ten. High Noon is a visible three-draw wait."
+	return "Tenderfoot: opponent decisions use only its hand plus the public discard river."
