@@ -19,6 +19,22 @@ const ACTIONS := {
 	&"pause": [KEY_ESCAPE],
 	&"place_field": [KEY_B],
 }
+const CONTROLLER_BUTTON_DEFAULTS := {
+	&"interact": JOY_BUTTON_A,
+	&"run": JOY_BUTTON_LEFT_STICK,
+	&"pause": JOY_BUTTON_START,
+	&"place_field": JOY_BUTTON_X,
+}
+const CONTROLLER_AXIS_DEFAULTS := {
+	&"move_left": [JOY_AXIS_LEFT_X, -1.0],
+	&"move_right": [JOY_AXIS_LEFT_X, 1.0],
+	&"move_up": [JOY_AXIS_LEFT_Y, -1.0],
+	&"move_down": [JOY_AXIS_LEFT_Y, 1.0],
+	&"fish_reel": [JOY_AXIS_TRIGGER_RIGHT, 1.0],
+	&"fish_release": [JOY_AXIS_TRIGGER_LEFT, 1.0],
+	&"fish_rod_left": [JOY_AXIS_RIGHT_X, -1.0],
+	&"fish_rod_right": [JOY_AXIS_RIGHT_X, 1.0],
+}
 
 var using_controller := false
 
@@ -54,6 +70,29 @@ func remap_key(action: StringName, keycode: Key) -> Error:
 	return OK
 
 
+func remap_controller_button(action: StringName, button: JoyButton) -> Error:
+	if not CONTROLLER_BUTTON_DEFAULTS.has(action):
+		return ERR_INVALID_PARAMETER
+	if not is_controller_button_available(button, action):
+		return ERR_ALREADY_EXISTS
+	_erase_controller_buttons(action)
+	_add_button(action, button)
+	binding_changed.emit(action)
+	return OK
+
+
+func remap_controller_axis(action: StringName, axis: JoyAxis, direction: float) -> Error:
+	if not CONTROLLER_AXIS_DEFAULTS.has(action) or is_zero_approx(direction):
+		return ERR_INVALID_PARAMETER
+	var normalized_direction := -1.0 if direction < 0.0 else 1.0
+	if not is_controller_axis_available(axis, normalized_direction, action):
+		return ERR_ALREADY_EXISTS
+	_erase_controller_axes(action)
+	_add_axis(action, axis, normalized_direction)
+	binding_changed.emit(action)
+	return OK
+
+
 func reset_key_bindings(action: StringName) -> Error:
 	if not ACTIONS.has(action):
 		return ERR_INVALID_PARAMETER
@@ -66,6 +105,24 @@ func reset_key_bindings(action: StringName) -> Error:
 	return OK
 
 
+func reset_controller_bindings(action: StringName) -> Error:
+	if CONTROLLER_BUTTON_DEFAULTS.has(action):
+		_erase_controller_buttons(action)
+		_add_button(action, CONTROLLER_BUTTON_DEFAULTS[action])
+	elif CONTROLLER_AXIS_DEFAULTS.has(action):
+		_erase_controller_axes(action)
+		var mapping: Array = CONTROLLER_AXIS_DEFAULTS[action]
+		_add_axis(action, mapping[0], mapping[1])
+	else:
+		return ERR_INVALID_PARAMETER
+	binding_changed.emit(action)
+	return OK
+
+
+func controller_action_supported(action: StringName) -> bool:
+	return CONTROLLER_BUTTON_DEFAULTS.has(action) or CONTROLLER_AXIS_DEFAULTS.has(action)
+
+
 func is_key_available(keycode: Key, ignored_action: StringName = &"") -> bool:
 	for action in ACTIONS:
 		if action == ignored_action:
@@ -74,6 +131,35 @@ func is_key_available(keycode: Key, ignored_action: StringName = &"") -> bool:
 			if event is InputEventKey and event.physical_keycode == keycode:
 				return false
 	return true
+
+
+func is_controller_button_available(button: JoyButton, ignored_action: StringName = &"") -> bool:
+	for action in CONTROLLER_BUTTON_DEFAULTS:
+		if action == ignored_action:
+			continue
+		for event in InputMap.action_get_events(action):
+			if event is InputEventJoypadButton and event.button_index == button:
+				return false
+	return true
+
+
+func is_controller_axis_available(axis: JoyAxis, direction: float, ignored_action: StringName = &"") -> bool:
+	for action in CONTROLLER_AXIS_DEFAULTS:
+		if action == ignored_action:
+			continue
+		for event in InputMap.action_get_events(action):
+			if event is InputEventJoypadMotion and event.axis == axis and is_equal_approx(sign(event.axis_value), sign(direction)):
+				return false
+	return true
+
+
+func binding_text(action: StringName) -> String:
+	if not ACTIONS.has(action):
+		return ""
+	var labels: Array[String] = []
+	for event in InputMap.action_get_events(action):
+		labels.append(event.as_text())
+	return ", ".join(labels)
 
 
 func _input(event: InputEvent) -> void:
@@ -92,18 +178,11 @@ func _add_key(action: StringName, keycode: Key) -> void:
 
 
 func _add_controller_actions() -> void:
-	_add_axis(&"move_left", JOY_AXIS_LEFT_X, -1.0)
-	_add_axis(&"move_right", JOY_AXIS_LEFT_X, 1.0)
-	_add_axis(&"move_up", JOY_AXIS_LEFT_Y, -1.0)
-	_add_axis(&"move_down", JOY_AXIS_LEFT_Y, 1.0)
-	_add_button(&"interact", JOY_BUTTON_A)
-	_add_button(&"run", JOY_BUTTON_LEFT_STICK)
-	_add_axis(&"fish_reel", JOY_AXIS_TRIGGER_RIGHT, 1.0)
-	_add_axis(&"fish_release", JOY_AXIS_TRIGGER_LEFT, 1.0)
-	_add_axis(&"fish_rod_left", JOY_AXIS_RIGHT_X, -1.0)
-	_add_axis(&"fish_rod_right", JOY_AXIS_RIGHT_X, 1.0)
-	_add_button(&"pause", JOY_BUTTON_START)
-	_add_button(&"place_field", JOY_BUTTON_X)
+	for action in CONTROLLER_BUTTON_DEFAULTS:
+		_add_button(action, CONTROLLER_BUTTON_DEFAULTS[action])
+	for action in CONTROLLER_AXIS_DEFAULTS:
+		var mapping: Array = CONTROLLER_AXIS_DEFAULTS[action]
+		_add_axis(action, mapping[0], mapping[1])
 
 
 func _add_axis(action: StringName, axis: JoyAxis, value: float) -> void:
@@ -129,3 +208,15 @@ func _has_joypad_event(action: StringName, axis: JoyAxis, value: float) -> bool:
 		if event is InputEventJoypadMotion and event.axis == axis and is_equal_approx(event.axis_value, value):
 			return true
 	return false
+
+
+func _erase_controller_buttons(action: StringName) -> void:
+	for event in InputMap.action_get_events(action):
+		if event is InputEventJoypadButton:
+			InputMap.action_erase_event(action, event)
+
+
+func _erase_controller_axes(action: StringName) -> void:
+	for event in InputMap.action_get_events(action):
+		if event is InputEventJoypadMotion:
+			InputMap.action_erase_event(action, event)

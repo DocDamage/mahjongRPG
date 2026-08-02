@@ -18,5 +18,17 @@ func run() -> Array[String]:
 		failures.append("keyboard binding resets should restore the default key")
 	if service.remap_key(&"missing", KEY_Q) != ERR_INVALID_PARAMETER:
 		failures.append("unknown remap actions should be rejected")
+	if service.remap_controller_button(&"interact", JOY_BUTTON_B) != OK or service.is_controller_button_available(JOY_BUTTON_B):
+		failures.append("controller buttons should be remappable and reserve their new button")
+	if service.remap_controller_button(&"run", JOY_BUTTON_B) != ERR_ALREADY_EXISTS:
+		failures.append("controller remapping should reject duplicate buttons")
+	if service.reset_controller_bindings(&"interact") != OK or service.is_controller_button_available(JOY_BUTTON_A):
+		failures.append("controller button resets should restore the default button")
+	if service.remap_controller_axis(&"fish_rod_left", JOY_AXIS_RIGHT_Y, -1.0) != OK or service.is_controller_axis_available(JOY_AXIS_RIGHT_Y, -1.0):
+		failures.append("controller axes should be remappable and reserve their direction")
+	if service.reset_controller_bindings(&"fish_rod_left") != OK or service.is_controller_axis_available(JOY_AXIS_RIGHT_X, -1.0):
+		failures.append("controller axis resets should restore the default axis")
+	if service.remap_controller_button(&"move_left", JOY_BUTTON_B) != ERR_INVALID_PARAMETER:
+		failures.append("movement axes should reject incompatible button remaps")
 	service.free()
 	return failures

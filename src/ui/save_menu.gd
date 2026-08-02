@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 const AudioSettings = preload("res://src/ui/audio_settings.gd")
+const InputSettings = preload("res://src/ui/input_settings.gd")
 
 const MENU_PAUSE_REASON := &"save_menu"
 
@@ -9,6 +10,7 @@ var _panel: PanelContainer
 var _message: Label
 var _first_button: Button
 var _audio_settings
+var _input_settings
 
 
 func _ready() -> void:
@@ -20,6 +22,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"pause"):
 		if _audio_settings != null and _audio_settings.is_open():
 			_audio_settings.close()
+		elif _input_settings != null and _input_settings.is_open():
+			_input_settings.close()
 		elif is_open():
 			close()
 		else:
@@ -61,7 +65,7 @@ func _build_menu() -> void:
 	_panel.size = Vector2(500, 500)
 	_shade.add_child(_panel)
 	var content := VBoxContainer.new()
-	content.add_theme_constant_override("separation", 10)
+	content.add_theme_constant_override("separation", 6)
 	_panel.add_child(content)
 	var title := Label.new()
 	title.text = "PAUSE  •  SAVE & LOAD"
@@ -77,12 +81,17 @@ func _build_menu() -> void:
 		_add_slot_row(content, StringName("manual_%d" % slot_number), slot_number)
 	var close_button := Button.new()
 	close_button.text = "Audio settings"
-	close_button.custom_minimum_size = Vector2(0, 34)
+	close_button.custom_minimum_size = Vector2(0, 28)
 	close_button.pressed.connect(_open_audio_settings)
 	content.add_child(close_button)
+	var controls_button := Button.new()
+	controls_button.text = "Controls"
+	controls_button.custom_minimum_size = Vector2(0, 28)
+	controls_button.pressed.connect(_open_input_settings)
+	content.add_child(controls_button)
 	var resume_button := Button.new()
 	resume_button.text = "Resume"
-	resume_button.custom_minimum_size = Vector2(0, 34)
+	resume_button.custom_minimum_size = Vector2(0, 28)
 	resume_button.pressed.connect(close)
 	content.add_child(resume_button)
 	_audio_settings = AudioSettings.new()
@@ -90,6 +99,11 @@ func _build_menu() -> void:
 	_audio_settings.size = Vector2(400, 372)
 	_audio_settings.closed.connect(_restore_save_menu)
 	_shade.add_child(_audio_settings)
+	_input_settings = InputSettings.new()
+	_input_settings.position = Vector2(200, 42)
+	_input_settings.size = Vector2(560, 454)
+	_input_settings.closed.connect(_restore_save_menu)
+	_shade.add_child(_input_settings)
 	_shade.visible = false
 
 
@@ -144,6 +158,11 @@ func _focus_first_button() -> void:
 func _open_audio_settings() -> void:
 	_panel.visible = false
 	_audio_settings.open()
+
+
+func _open_input_settings() -> void:
+	_panel.visible = false
+	_input_settings.open()
 
 
 func _restore_save_menu() -> void:
