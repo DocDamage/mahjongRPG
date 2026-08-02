@@ -88,4 +88,8 @@ func _commit() -> void:
 
 
 func _apply() -> void:
-	get_tree().root.content_scale_factor = ui_scale
+	if not is_inside_tree():
+		return
+	var tree := get_tree()
+	if tree != null:
+		tree.root.content_scale_factor = ui_scale

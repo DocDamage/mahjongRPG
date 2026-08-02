@@ -14,6 +14,7 @@ func run() -> Array[String]:
 	_test_helper_and_evidence(failures)
 	_test_mounted_location(failures)
 	_test_schedule_feedback(failures)
+	_test_schema_seven_migration(failures)
 	return failures
 
 
@@ -64,3 +65,19 @@ func _test_schedule_feedback(failures: Array[String]) -> void:
 	var unavailable := OpponentSchedule.state(&"mayor_bell", &"rain", 8)
 	if not bool(available.get("available", false)) or String(available.get("activity", "")).is_empty() or bool(unavailable.get("available", true)) or String(unavailable.get("activity", "")).is_empty():
 		failures.append("opponent schedules must expose availability and readable activity feedback")
+
+
+func _test_schema_seven_migration(failures: Array[String]) -> void:
+	var session := GameSessionScript.new()
+	session.start_new_game(22)
+	var legacy := session.snapshot()
+	legacy["schema_version"] = 7
+	legacy.erase("brands")
+	legacy.erase("helpers")
+	legacy.erase("evidence")
+	legacy["horse"] = {"selected_color": "brown", "mounted": true, "discovered_posts": {}}
+	var restored := GameSessionScript.new()
+	if restored.restore(legacy) != OK or not restored.brands.is_unlocked(&"orange") or not restored.brands.is_unlocked(&"blue") or not restored.helpers.assignments.is_empty() or restored.horse.mounted:
+		failures.append("schema-seven saves must receive starter Brands, no helper assignment, and a safe horse fallback")
+	session.free()
+	restored.free()
