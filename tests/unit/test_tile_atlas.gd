@@ -15,4 +15,12 @@ func run() -> Array[String]:
 	var honor_texture := TileAtlas.texture_for(honor)
 	if honor_texture.atlas == null or honor_texture.region.position != Vector2(0, 2112) or TileAtlas.brand_color(&"purple") == Color.WHITE:
 		failures.append("honor tiles should resolve through the final identity cell with a visible Brand tint")
+	var patterns: Array[String] = []
+	var pattern_set: Dictionary = {}
+	for brand in [&"blue", &"dark", &"green", &"orange", &"pink", &"purple"]:
+		var pattern := TileAtlas.brand_pattern(brand)
+		patterns.append(pattern)
+		pattern_set[pattern] = true
+	if patterns.has("?") or pattern_set.size() != 6 or TileAtlas.brand_pattern_label(&"orange") != "diagonal":
+		failures.append("every Brand should have a distinct non-color tile pattern")
 	return failures

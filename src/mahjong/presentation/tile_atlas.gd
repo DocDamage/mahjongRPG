@@ -22,6 +22,22 @@ static func brand_color(brand: StringName) -> Color:
 	return colors[index] if index >= 0 else Color.WHITE
 
 
+static func brand_pattern(brand: StringName) -> String:
+	var patterns_value: Variant = _table().get("brand_patterns", {})
+	if not patterns_value is Dictionary:
+		return "?"
+	var pattern_value: Variant = patterns_value.get(String(brand), {})
+	return String(pattern_value.get("symbol", "?")) if pattern_value is Dictionary else "?"
+
+
+static func brand_pattern_label(brand: StringName) -> String:
+	var patterns_value: Variant = _table().get("brand_patterns", {})
+	if not patterns_value is Dictionary:
+		return "unknown pattern"
+	var pattern_value: Variant = patterns_value.get(String(brand), {})
+	return String(pattern_value.get("label", "unknown pattern")) if pattern_value is Dictionary else "unknown pattern"
+
+
 static func _identity_index(identity) -> int:
 	for index in TileIdentity.all_identities().size():
 		var candidate = TileIdentity.all_identities()[index]

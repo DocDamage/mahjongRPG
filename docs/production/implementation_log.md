@@ -28,6 +28,7 @@
 | Accessible controls | Added a pause-menu controls screen with keyboard, controller button, stick, and trigger remapping, duplicate-binding protection, reset controls, controller-first focus, and remap-aware keyboard/controller prompt labels. |
 | Farm construction | Added data-driven paths, fences, decorations, machines, pens, and buildings with protected-route checks, footprint validation, safe relocation/removal, persistent snapshots, and an in-game build palette. |
 | Display settings | Added persisted windowed, borderless, and fullscreen preferences through the pause menu, with safe headless-runtime handling. |
+| Mahjong patterns | Added six distinct, data-driven non-color Brand patterns to tile controls and tooltips for color-independent Brand identification. |
 
 ## Current local verification baseline
 

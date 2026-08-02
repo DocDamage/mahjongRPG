@@ -10,6 +10,7 @@ const TenderfootUndo = preload("res://src/mahjong/presentation/tenderfoot_undo.g
 const TenderfootAdvisor = preload("res://src/mahjong/presentation/tenderfoot_advisor.gd")
 const VisibleKnowledge = preload("res://src/mahjong/ai/visible_knowledge.gd")
 const TileAtlas = preload("res://src/mahjong/presentation/tile_atlas.gd")
+const BrandPatternBadge = preload("res://src/mahjong/presentation/brand_pattern_badge.gd")
 
 var flow
 var opponent_name := "Trailhand"
@@ -141,9 +142,12 @@ func _refresh() -> void:
 		button.icon = TileAtlas.texture_for(tile)
 		button.expand_icon = true
 		button.modulate = TileAtlas.brand_color(tile.brand)
-		button.tooltip_text = "Discard %s" % tile.key()
+		button.tooltip_text = "Discard %s • %s Brand, %s pattern" % [tile.key(), String(tile.brand).capitalize(), TileAtlas.brand_pattern_label(tile.brand)]
 		button.custom_minimum_size = Vector2(56, 76)
 		button.pressed.connect(_discard_player.bind(tile_index))
+		var badge := BrandPatternBadge.new()
+		badge.configure(tile.brand)
+		button.add_child(badge)
 		tiles_box.add_child(button)
 
 func _draw_player() -> void:
