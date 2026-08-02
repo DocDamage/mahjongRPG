@@ -23,6 +23,7 @@
 | Runtime hero and horse catalog | Deterministically generate all directional hero actions and five horse colorways from the canonical `assets` folders, then resolve them through a runtime data catalog. |
 | First Lantern story arc | Persisted three-stage Mabel storyline with data-driven dialogue, a distinct hand-in and lighting return step, helper unlock, Riverbend access, and a visible Hall lantern. |
 | NPC schedules | Data-driven clear and rain schedules relocate all three Dustward opponents and preserve their authored challenge windows. |
+| Mahjong tile atlas | Deterministically rasterized the canonical 34 face set into one compact runtime atlas, with testable identity regions and presentation-layer Brand tinting. |
 
 ## Current local verification baseline
 

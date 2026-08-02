@@ -41,6 +41,8 @@ The collection contains 2,220 SVG assets covering:
 
 The raw faces support generated atlases, Brand marks, colorblind patterns, tutorial ghosts, locked states, highlights, and supernatural variants.
 
+The vertical slice now generates `assets/generated/mahjong/trail_rules_faces.png`: one compact 34-face Trail Rules atlas. The table resolves atlas regions at runtime and applies the six Brand colors in presentation, avoiding per-match SVG loading.
+
 ## Crops and animals
 
 Animated crop material covers twenty launch candidates, including vegetables, grain, fruit, bamboo, and tallgrass. Most provide approximately six to eight growth states.

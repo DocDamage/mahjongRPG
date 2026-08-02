@@ -45,6 +45,7 @@ RUNTIME_HERO_ACTIONS = ("walk", "idle", "draw", "armed", "shoot")
 RUNTIME_HERO_FRAME_COUNTS = {"walk": 8, "idle": 15, "draw": 6, "armed": 1, "shoot": 3}
 RUNTIME_DIRECTIONS = ("up", "down", "left", "right")
 RUNTIME_HORSE_COLORS = ("black", "brown", "golden", "gray", "white")
+MAHJONG_ATLAS_PATH = "assets/generated/mahjong/trail_rules_faces.png"
 
 
 def relative(path: Path) -> str:
@@ -152,6 +153,29 @@ def check_runtime_catalog(errors: list[str]) -> None:
             errors.append(f"Missing generated horse asset: {relative(path)}")
 
 
+def check_mahjong_atlas(errors: list[str]) -> None:
+    catalog_path = ROOT / "data" / "mahjong" / "vertical_slice_tile_atlas.json"
+    atlas_path = ROOT / MAHJONG_ATLAS_PATH
+    if not catalog_path.is_file() or not atlas_path.is_file():
+        errors.append("Missing Trail Rules Mahjong atlas or catalog")
+        return
+    try:
+        catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        errors.append(f"Invalid Trail Rules Mahjong atlas JSON: {error}")
+        return
+    if catalog.get("cell_size") != [48, 64] or catalog.get("columns") != 1 or catalog.get("rows") != 34:
+        errors.append("Trail Rules Mahjong atlas dimensions differ from the required 34-face layout")
+        return
+    data = atlas_path.read_bytes()
+    if data[:8] != b"\x89PNG\r\n\x1a\n" or data[12:16] != b"IHDR":
+        errors.append("Trail Rules Mahjong atlas is not a valid PNG header")
+        return
+    width, height = struct.unpack(">II", data[16:24])
+    if (width, height) != (48, 2176):
+        errors.append(f"Trail Rules Mahjong atlas is {width}x{height}, expected 48x2176")
+
+
 def main() -> int:
     errors: list[str] = []
     check_required(errors)
@@ -160,6 +184,7 @@ def main() -> int:
     check_master_manifest(errors)
     check_patch(errors)
     check_runtime_catalog(errors)
+    check_mahjong_atlas(errors)
     if errors:
         print("Repository validation failed:", file=sys.stderr)
         for error in errors:

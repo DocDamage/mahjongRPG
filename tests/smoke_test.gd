@@ -14,6 +14,7 @@ const DATA_TABLES := {
 	&"dialogue": "res://data/dialogue/vertical_slice_dialogue.json",
 	&"runtime_assets": "res://data/runtime_assets/vertical_slice_assets.json",
 	&"opponent_schedules": "res://data/schedules/vertical_slice_opponent_schedules.json",
+	&"mahjong_tile_atlas": "res://data/mahjong/vertical_slice_tile_atlas.json",
 }
 const REQUIRED_ASSETS := [
 	"res://assets/generated/player/cowboy_down_walk.png",
@@ -29,6 +30,7 @@ const REQUIRED_ASSETS := [
 	"res://assets/generated/horses/horse_golden.png",
 	"res://assets/generated/horses/horse_gray.png",
 	"res://assets/generated/horses/horse_white.png",
+	"res://assets/generated/mahjong/trail_rules_faces.png",
 	"res://assets/generated/audio/footstep_grass.wav",
 	"res://assets/generated/audio/footstep_gravel.wav",
 	"res://assets/generated/audio/footstep_wood.wav",

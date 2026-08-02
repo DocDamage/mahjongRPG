@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "atlas_path": "res://assets/generated/mahjong/trail_rules_faces.png",
+  "cell_size": [48, 64],
+  "columns": 1,
+  "rows": 34,
+  "brands": ["blue", "dark", "green", "orange", "pink", "purple"]
+}
