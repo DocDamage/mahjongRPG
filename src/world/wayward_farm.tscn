@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3]
+[gd_scene load_steps=20 format=3]
 
 [ext_resource type="Script" path="res://src/world/wayward_farm.gd" id="1_world"]
 [ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
@@ -34,6 +34,9 @@ radius = 42.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hitch"]
 radius = 32.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_river_exit"]
+radius = 42.0
 
 [node name="WaywardFarm" type="Node2D"]
 script = ExtResource("1_world")
@@ -162,6 +165,17 @@ destination_scene = "res://src/world/dustward.tscn"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WaywardHitch"]
 shape = SubResource("CircleShape2D_hitch")
+
+[node name="RiverbendPath" type="Area2D" parent="."]
+position = Vector2(430, 420)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("9_exit")
+prompt_text = "Travel to Riverbend"
+destination_scene = "res://src/world/riverbend.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RiverbendPath"]
+shape = SubResource("CircleShape2D_river_exit")
 
 [node name="HUD" type="CanvasLayer" parent="."]
 

@@ -18,6 +18,7 @@ func _ready() -> void:
 	$ShippingCrate.feedback.connect(_show_message)
 	$DustwardRoad.feedback.connect(_show_message)
 	$WaywardHitch.feedback.connect(_show_message)
+	$RiverbendPath.feedback.connect(_show_message)
 	_update_status(GameSession.day, GameSession.minute_of_day)
 
 

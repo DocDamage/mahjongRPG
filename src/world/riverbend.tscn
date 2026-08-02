@@ -1,0 +1,49 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://src/world/riverbend.gd" id="1_world"]
+[ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://src/world/scene_exit.gd" id="3_exit"]
+[ext_resource type="Script" path="res://src/fishing/fishing_spot.gd" id="4_fishing"]
+
+[sub_resource type="CircleShape2D" id="ExitShape"]
+radius = 42.0
+[sub_resource type="CircleShape2D" id="FishingShape"]
+radius = 34.0
+
+[node name="Riverbend" type="Node2D"]
+script = ExtResource("1_world")
+[node name="Doc" parent="." instance=ExtResource("2_player")]
+position = Vector2(170, 190)
+movement_bounds = Rect2(50, 120, 860, 345)
+[node name="FarmRoad" type="Area2D" parent="."]
+position = Vector2(80, 190)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_exit")
+prompt_text = "Return to Wayward Farm"
+destination_scene = "res://src/world/wayward_farm.tscn"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FarmRoad"]
+shape = SubResource("ExitShape")
+[node name="FishingSpot" type="Area2D" parent="."]
+position = Vector2(545, 310)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_fishing")
+prompt_text = "Fish Riverbend"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FishingSpot"]
+shape = SubResource("FishingShape")
+[node name="HUD" type="CanvasLayer" parent="."]
+[node name="Status" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 20.0
+offset_right = 910.0
+offset_bottom = 60.0
+theme_override_colors/font_color = Color(0.95, 0.89, 0.74, 1)
+theme_override_font_sizes/font_size = 18
+[node name="Message" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 480.0
+offset_right = 900.0
+offset_bottom = 520.0
+theme_override_colors/font_color = Color(1, 0.92, 0.67, 1)
+theme_override_font_sizes/font_size = 18
