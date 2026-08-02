@@ -25,12 +25,12 @@ jobs:
           chmod +x .godot-bin/Godot_v4.7.1-stable_linux.x86_64
       - name: Validate repository
         run: python tools/validate_repository.py
+      - name: Import project resources through editor initialization
+        run: ./.godot-bin/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --editor --quit
       - name: Run deterministic test suites
         run: ./.godot-bin/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --script res://tests/test_runner.gd
       - name: Run runtime smoke test
         run: ./.godot-bin/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --script res://tests/smoke_test.gd
-      - name: Load project through editor initialization
-        run: ./.godot-bin/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --editor --quit
 
   windows-export-preflight:
     name: Windows target/export preflight
