@@ -7,6 +7,7 @@ const MatchWager = preload("res://src/mahjong/domain/match_wager.gd")
 const TrailHandValidator = preload("res://src/mahjong/domain/trail_hand_validator.gd")
 const TenderfootTutorial = preload("res://src/mahjong/presentation/tenderfoot_tutorial.gd")
 const TenderfootUndo = preload("res://src/mahjong/presentation/tenderfoot_undo.gd")
+const TenderfootAdvisor = preload("res://src/mahjong/presentation/tenderfoot_advisor.gd")
 const VisibleKnowledge = preload("res://src/mahjong/ai/visible_knowledge.gd")
 
 var flow
@@ -125,7 +126,8 @@ func _refresh() -> void:
 		if not orange_claim.is_empty():
 			_add_action("Orange: claim group", _claim_brand.bind(&"orange_group", orange_claim[0], orange_claim[1]))
 		return
-	result_label.text = "Your turn: choose one tile to discard."
+	var advice := TenderfootAdvisor.recommend_discard(flow.hands[0], flow.discard_river, flow.open_groups)
+	result_label.text = "Your turn: choose one tile to discard. Recommendation: %s — %s" % [_tile_label(advice.get("tile")), advice.get("reason", "")]
 	if TrailHandValidator.is_winning_hand(flow.combined_hand(0)):
 		_add_action("Declare Trail Rules win", _declare_win)
 	if flow.brand_state(0).activations(&"orange") > 0:
