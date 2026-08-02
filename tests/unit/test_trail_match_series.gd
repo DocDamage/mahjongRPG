@@ -49,6 +49,13 @@ func _test_replay_reconstruction(failures: Array[String]) -> void:
 	var rebuilt = MatchFlow.rebuild_from_replay(flow.replay.snapshot())
 	if rebuilt == null or rebuilt.snapshot() != flow.snapshot():
 		failures.append("seed plus action history must reconstruct the exact match state")
+	var turn_start = MatchFlow.new(812)
+	turn_start.start_match()
+	var legal_turn_snapshot := turn_start.snapshot()
+	var undo_rebuilt = MatchFlow.rebuild_from_replay(turn_start.replay.snapshot())
+	turn_start.discard_at(0)
+	if undo_rebuilt == null or undo_rebuilt.snapshot() != legal_turn_snapshot:
+		failures.append("a replay checkpoint should restore the legal state before a turn action")
 
 
 func _test_high_noon_and_brand_abilities(failures: Array[String]) -> void:

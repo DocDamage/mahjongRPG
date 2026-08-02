@@ -6,6 +6,7 @@ const MatchFlow = preload("res://src/mahjong/domain/match_flow.gd")
 const MatchWager = preload("res://src/mahjong/domain/match_wager.gd")
 const TrailHandValidator = preload("res://src/mahjong/domain/trail_hand_validator.gd")
 const TenderfootTutorial = preload("res://src/mahjong/presentation/tenderfoot_tutorial.gd")
+const TenderfootUndo = preload("res://src/mahjong/presentation/tenderfoot_undo.gd")
 const VisibleKnowledge = preload("res://src/mahjong/ai/visible_knowledge.gd")
 
 var flow
@@ -18,6 +19,7 @@ var result_label: Label
 var tutorial_label: Label
 var tutorial_button: Button
 var tutorial
+var undo
 var wager_tier: StringName = &"friendly"
 var _match_started := false
 var _ai_turn_pending := false
@@ -27,6 +29,7 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	GameSession.request_pause(&"mahjong")
 	tutorial = TenderfootTutorial.new(GameSession.tutorial_step(&"tenderfoot"))
+	undo = TenderfootUndo.new()
 	_build_ui()
 	_show_wager_selection()
 
@@ -107,6 +110,10 @@ func _refresh() -> void:
 			call_deferred("_take_ai_turn")
 		return
 	if flow.phase == MatchFlow.Phase.DRAW:
+		undo.begin_turn(flow)
+	if undo.can_undo():
+		_add_action("Undo turn", _undo_turn)
+	if flow.phase == MatchFlow.Phase.DRAW:
 		result_label.text = "Your turn: draw, or declare High Noon if this is a waiting hand."
 		_add_action("Draw", _draw_player)
 		_add_action("Declare High Noon", _declare_high_noon)
@@ -135,54 +142,53 @@ func _refresh() -> void:
 
 func _draw_player() -> void:
 	flow.draw()
+	undo.record_player_action()
 	_record_tutorial_action(&"draw")
 	_refresh()
-
-
 func _declare_high_noon() -> void:
 	if flow.declare_high_noon() != OK:
 		result_label.text = "High Noon is available only with a valid one-tile wait."
 		return
 	_record_tutorial_action(&"high_noon")
+	undo.record_player_action()
 	_refresh()
-
-
 func _activate_orange() -> void:
 	if flow.activate_orange(0) != OK:
 		result_label.text = "Orange needs a stored activation and two tiles left in the wall."
 		return
 	_record_tutorial_action(&"orange")
+	undo.record_player_action()
 	_refresh()
-
-
 func _activate_blue() -> void:
 	if flow.activate_blue(0) != OK:
 		result_label.text = "Blue can reclaim one of your two latest discards when available."
 		return
 	_record_tutorial_action(&"blue")
+	undo.record_player_action()
 	_refresh()
-
-
 func _claim_brand(kind: StringName, first_index: int, second_index: int) -> void:
 	if flow.claim_brand_group_from_last_discard(0, kind, [first_index, second_index]) != OK:
 		result_label.text = "That Brand claim is no longer legal."
 		return
+	undo.record_player_action()
 	_refresh()
-
-
 func _discard_player(tile_index: int) -> void:
 	flow.discard_at(tile_index)
+	undo.record_player_action()
 	_record_tutorial_action(&"discard")
 	_refresh()
-
-
 func _declare_win() -> void:
 	if flow.declare_win() != OK:
 		result_label.text = "This hand is not a legal Trail Rules win."
 		return
 	_refresh()
-
-
+func _undo_turn() -> void:
+	var restored: Variant = undo.restore()
+	if restored == null:
+		result_label.text = "No turn action is available to undo."
+		return
+	flow = restored
+	_refresh()
 func _take_ai_turn() -> void:
 	_ai_turn_pending = false
 	if flow.phase != MatchFlow.Phase.DRAW or flow.turn_player != 1:
@@ -199,20 +205,14 @@ func _take_ai_turn() -> void:
 			var decision: Dictionary = BasicTrailAi.new().choose_discard_index(flow.hands[1], knowledge)
 			flow.discard_at(int(decision.get("index", 0)))
 	_refresh()
-
-
 func _advance_match() -> void:
 	flow.advance_match()
 	_refresh()
-
-
 func _close_match() -> void:
 	if _match_started:
 		MatchWager.settle(GameSession.inventory, wager_tier, flow.match_winner)
 	GameSession.complete_mahjong_match()
 	queue_free()
-
-
 func _show_wager_selection() -> void:
 	_clear(action_box)
 	_clear(tiles_box)
@@ -224,8 +224,6 @@ func _show_wager_selection() -> void:
 		var stake := MatchWager.stake_cents(tier)
 		var label := "%s — %s" % [MatchWager.label(tier), "no cash" if stake == 0 else "$%.2f" % (stake / 100.0)]
 		_add_action(label, _start_match.bind(StringName(tier)))
-
-
 func _start_match(next_wager_tier: StringName) -> void:
 	if not MatchWager.can_start(next_wager_tier, GameSession.inventory.money_cents):
 		result_label.text = "You need $%.2f available for that wager." % (MatchWager.stake_cents(next_wager_tier) / 100.0)
@@ -236,53 +234,37 @@ func _start_match(next_wager_tier: StringName) -> void:
 	flow.start_match()
 	_match_started = true
 	_refresh()
-
-
 func _match_outcome_text() -> String:
 	var outcome := "Doc wins!" if flow.match_winner == 0 else "Opponent wins." if flow.match_winner == 1 else "The match ends tied."
 	var stake := MatchWager.stake_cents(wager_tier)
 	if stake == 0 or flow.match_winner < 0:
 		return outcome
 	return "%s %s $%.2f settles when you return to the world." % [outcome, "You win" if flow.match_winner == 0 else "You lose", stake / 100.0]
-
-
 func _add_action(text_value: String, callback: Callable) -> void:
 	var button := Button.new()
 	button.text = text_value
 	button.custom_minimum_size = Vector2(150, 42)
 	button.pressed.connect(callback)
 	action_box.add_child(button)
-
-
 func _clear(node: Node) -> void:
 	for child in node.get_children():
 		child.queue_free()
-
-
 func _tile_label(tile) -> String:
 	var suit := String(tile.identity.suit).substr(0, 1).to_upper()
 	var rank := str(tile.identity.rank) if tile.identity.is_numbered() else String(tile.identity.suit).substr(0, 1).to_upper()
 	return "%s%s\n%s" % [rank, suit, String(tile.brand).substr(0, 1).to_upper()]
-
-
 func _refresh_tutorial() -> void:
 	tutorial_label.text = tutorial.progress_text()
 	tutorial_button.visible = not tutorial.is_complete()
 	if tutorial_button.visible:
 		tutorial_button.text = "Continue lesson" if tutorial.can_continue_manually() else "Draw, then discard to continue"
-
-
 func _advance_tutorial() -> void:
 	if tutorial.advance():
 		GameSession.set_tutorial_step(&"tenderfoot", tutorial.step)
 	_refresh()
-
-
 func _record_tutorial_action(action: StringName) -> void:
 	if tutorial.record_action(action):
 		GameSession.set_tutorial_step(&"tenderfoot", tutorial.step)
-
-
 func _first_claim_indices(kind: StringName) -> Array[int]:
 	if flow.turn_player != 0 or flow.phase != MatchFlow.Phase.DRAW or flow.discard_river.is_empty():
 		return []
