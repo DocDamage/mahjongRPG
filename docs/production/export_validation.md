@@ -18,5 +18,6 @@ C:/Users/Doc/AppData/Roaming/Godot/export_templates/4.6.2.stable/windows_release
 Therefore no Windows binary is claimed as validated. Install the exact Godot 4.7.1 executable and its matching export templates, then run:
 
 ```powershell
+python tools/verify_export_environment.py
 godot --headless --path . --export-debug "Windows Desktop" "exports/SixBrandsAtHighNoon.exe"
 ```
