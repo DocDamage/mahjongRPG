@@ -21,6 +21,7 @@ const WALK_TEXTURE_PATHS := {
 
 var facing: StringName = &"down"
 var _interaction_targets: Array[Area2D] = []
+var _prompt_label: Label
 
 
 func _ready() -> void:
@@ -28,6 +29,8 @@ func _ready() -> void:
 	_set_animation(false)
 	interaction_area.area_entered.connect(_on_interaction_area_entered)
 	interaction_area.area_exited.connect(_on_interaction_area_exited)
+	interaction_target_changed.connect(_update_interaction_prompt)
+	_create_interaction_prompt()
 
 
 func _physics_process(delta: float) -> void:
@@ -122,6 +125,30 @@ func _on_interaction_area_exited(area: Area2D) -> void:
 	if area.has_method("interact"):
 		_interaction_targets.erase(area)
 		interaction_target_changed.emit(nearest_interaction_target())
+
+
+func _create_interaction_prompt() -> void:
+	var layer := CanvasLayer.new()
+	layer.layer = 3
+	add_child(layer)
+	_prompt_label = Label.new()
+	_prompt_label.position = Vector2(28, 442)
+	_prompt_label.size = Vector2(600, 28)
+	_prompt_label.add_theme_font_size_override("font_size", 17)
+	_prompt_label.add_theme_color_override("font_color", Color("fff0bf"))
+	_prompt_label.visible = false
+	layer.add_child(_prompt_label)
+
+
+func _update_interaction_prompt(target: Area2D) -> void:
+	if _prompt_label == null:
+		return
+	if target == null or not is_instance_valid(target):
+		_prompt_label.visible = false
+		return
+	var prompt := String(target.get("prompt_text"))
+	_prompt_label.text = "E / A  •  %s" % prompt
+	_prompt_label.visible = not prompt.is_empty()
 
 
 func _is_game_paused() -> bool:
