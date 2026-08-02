@@ -22,7 +22,7 @@ The importer:
 2. Rejects unsafe paths
 3. Normalizes names to lowercase snake case
 4. Extracts Doc, horses, and fishing UI
-5. Converts long ambience to OGG when `ffmpeg` is available
+5. Requires `ffmpeg` with a Vorbis encoder and converts long ambience to OGG
 6. Trims the anomalous stone footstep to 0.50 seconds
 7. Excludes demo video, demo track, and bonus music
 8. Atomically replaces `assets/source/supplemental/`

@@ -8,6 +8,10 @@ const FarmService = preload("res://src/farm/farm_service.gd")
 const HorseTravelState = preload("res://src/horses/horse_travel_state.gd")
 const InventoryService = preload("res://src/inventory/inventory_service.gd")
 const QuestService = preload("res://src/quests/quest_service.gd")
+const BrandLoadoutState = preload("res://src/mahjong/application/brand_loadout_state.gd")
+const HelperService = preload("res://src/helpers/helper_service.gd")
+const EvidenceService = preload("res://src/story/evidence_service.gd")
+const GameSessionSnapshot = preload("res://src/save/game_session_snapshot.gd")
 const SessionSnapshotMigrator = preload("res://src/save/session_snapshot_migrator.gd")
 const WeatherCatalog = preload("res://src/weather/weather_catalog.gd")
 
@@ -17,7 +21,7 @@ signal pause_changed(paused: bool)
 signal weather_changed(weather_id: StringName)
 signal session_restored()
 
-const SAVE_SCHEMA_VERSION := 7
+const SAVE_SCHEMA_VERSION := 8
 const MATCH_TIME_COST_MINUTES := 90
 const MINUTES_PER_DAY := 24 * 60
 const REAL_SECONDS_PER_DAY := 60.0
@@ -31,6 +35,9 @@ var horse
 var inventory
 var quests
 var animals
+var brands
+var helpers
+var evidence
 var player_scene := ""
 var player_position := Vector2.ZERO
 var tutorial_steps: Dictionary = {}
@@ -50,6 +57,12 @@ func _ready() -> void:
 	_ensure_inventory()
 	_ensure_quests()
 	_ensure_animals()
+	_ensure_brands()
+	_ensure_helpers()
+	_ensure_evidence()
+	_ensure_brands()
+	_ensure_helpers()
+	_ensure_evidence()
 func start_new_game(new_seed: int) -> void:
 	seed = new_seed
 	day = 1
@@ -60,11 +73,17 @@ func start_new_game(new_seed: int) -> void:
 	inventory = InventoryService.new()
 	quests = null
 	animals = null
+	brands = null
+	helpers = null
+	evidence = null
 	player_scene = ""
 	player_position = Vector2.ZERO
 	tutorial_steps.clear()
 	_ensure_quests()
 	_ensure_animals()
+	_ensure_brands()
+	_ensure_helpers()
+	_ensure_evidence()
 	_ensure_farm()
 	_pause_reasons.clear()
 	_time_accumulator = 0.0
@@ -132,62 +151,15 @@ func set_tutorial_step(tutorial_id: StringName, next_step: int) -> void:
 
 
 func snapshot() -> Dictionary:
-	return {
-		"schema_version": SAVE_SCHEMA_VERSION,
-		"seed": seed,
-		"day": day,
-		"minute_of_day": minute_of_day,
-		"weather_id": str(weather_id),
-		"farm": _ensure_farm().snapshot(),
-		"horse": _ensure_horse().snapshot(),
-		"inventory": _ensure_inventory().snapshot(),
-		"quests": _ensure_quests().snapshot(),
-		"animals": _ensure_animals().snapshot(),
-		"player": {"scene": player_scene, "position": [player_position.x, player_position.y]},
-		"tutorial_steps": tutorial_steps.duplicate(true),
-	}
+	return GameSessionSnapshot.capture(self)
 
 
 func restore(snapshot_data: Dictionary) -> Error:
 	var migrated := SessionSnapshotMigrator.migrate(snapshot_data, SAVE_SCHEMA_VERSION)
 	if migrated.is_empty():
 		return ERR_FILE_UNRECOGNIZED
-	var next_day := int(migrated.get("day", 0))
-	var next_minute := int(migrated.get("minute_of_day", -1))
-	if next_day < 1 or next_minute < 0 or next_minute >= MINUTES_PER_DAY:
+	if GameSessionSnapshot.restore(self, migrated) != OK:
 		return ERR_INVALID_DATA
-	seed = int(migrated.get("seed", 0))
-	day = next_day
-	minute_of_day = next_minute
-	weather_id = StringName(migrated.get("weather_id", "clear"))
-	var farm_data_value = migrated.get("farm", {})
-	if not farm_data_value is Dictionary or _ensure_farm().restore(farm_data_value) != OK:
-		return ERR_INVALID_DATA
-	var horse_data_value = migrated.get("horse", {})
-	if not horse_data_value is Dictionary or _ensure_horse().restore(horse_data_value) != OK:
-		return ERR_INVALID_DATA
-	var inventory_data_value = migrated.get("inventory", {})
-	if not inventory_data_value is Dictionary or _ensure_inventory().restore(inventory_data_value) != OK:
-		return ERR_INVALID_DATA
-	var quest_data_value = migrated.get("quests", {})
-	if not quest_data_value is Dictionary or _ensure_quests().restore(quest_data_value) != OK:
-		return ERR_INVALID_DATA
-	var animal_data_value = migrated.get("animals", {})
-	if not animal_data_value is Dictionary or _ensure_animals().restore(animal_data_value) != OK:
-		return ERR_INVALID_DATA
-	var player_data_value = migrated.get("player", {})
-	if not player_data_value is Dictionary:
-		return ERR_INVALID_DATA
-	var player_data: Dictionary = player_data_value
-	var position_value: Variant = player_data.get("position", [])
-	if not position_value is Array or position_value.size() != 2:
-		return ERR_INVALID_DATA
-	player_scene = String(player_data.get("scene", ""))
-	player_position = Vector2(float(position_value[0]), float(position_value[1]))
-	var tutorial_steps_value: Variant = migrated.get("tutorial_steps", {})
-	if not tutorial_steps_value is Dictionary:
-		return ERR_INVALID_DATA
-	tutorial_steps = tutorial_steps_value.duplicate(true)
 	_pause_reasons.clear()
 	_time_accumulator = 0.0
 	time_advanced.emit(day, minute_of_day)
@@ -283,6 +255,38 @@ func _ensure_animals():
 				if animal_value is Dictionary:
 					animals.register_definition(animal_value)
 	return animals
+
+
+func _ensure_brands():
+	if brands == null:
+		brands = BrandLoadoutState.new()
+	return brands
+
+
+func _ensure_helpers():
+	if helpers == null:
+		helpers = HelperService.new()
+		_load_service_catalog("res://data/helpers/vertical_slice_helpers.json", "helpers", helpers)
+	return helpers
+
+
+func _ensure_evidence():
+	if evidence == null:
+		evidence = EvidenceService.new()
+		_load_service_catalog("res://data/story/vertical_slice_evidence.json", "evidence", evidence)
+	return evidence
+
+
+func _load_service_catalog(path: String, collection_key: String, service) -> void:
+	var file := FileAccess.open(path, FileAccess.READ)
+	var parsed: Variant = JSON.parse_string(file.get_as_text()) if file != null else {}
+	var entries: Variant = parsed.get(collection_key, []) if parsed is Dictionary else []
+	if not entries is Array:
+		push_error("Invalid service catalog: %s" % path)
+		return
+	for entry in entries:
+		if entry is Dictionary and service.register_definition(entry) != OK:
+			push_error("Invalid service definition in: %s" % path)
 
 
 func _restore_player_scene() -> void:

@@ -1,0 +1,56 @@
+name: Godot 4.7.1 Validation
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop, agent/**]
+
+permissions:
+  contents: read
+
+jobs:
+  runtime:
+    name: Target engine runtime checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Godot 4.7.1 console engine
+        shell: bash
+        run: |
+          curl --fail --location --retry 3 --output godot.zip https://github.com/godotengine/godot/releases/download/4.7.1-stable/Godot_v4.7.1-stable_linux.x86_64.zip
+          unzip -q godot.zip -d .godot-bin
+          chmod +x .godot-bin/Godot_v4.7.1-stable_linux.x86_64
+      - name: Validate repository
+        run: python tools/validate_repository.py
+      - name: Run deterministic test suites
+        run: ./.godot-bin/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --script res://tests/test_runner.gd
+      - name: Run runtime smoke test
+        run: ./.godot-bin/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --script res://tests/smoke_test.gd
+      - name: Load project through editor initialization
+        run: ./.godot-bin/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --editor --quit
+
+  windows-export-preflight:
+    name: Windows target/export preflight
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Godot 4.7.1 and Windows templates
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri https://github.com/godotengine/godot/releases/download/4.7.1-stable/Godot_v4.7.1-stable_win64.zip -OutFile godot.zip
+          Expand-Archive godot.zip -DestinationPath .godot-bin
+          Invoke-WebRequest -Uri https://github.com/godotengine/godot/releases/download/4.7.1-stable/Godot_v4.7.1-stable_export_templates.tpz -OutFile templates.tpz
+          Expand-Archive templates.tpz -DestinationPath .template-unpack
+          $target = Join-Path $env:APPDATA 'Godot\export_templates\4.7.1.stable'
+          New-Item -ItemType Directory -Force -Path $target | Out-Null
+          Get-ChildItem .template-unpack -Recurse -Filter windows_debug_x86_64.exe | Copy-Item -Destination $target
+          Get-ChildItem .template-unpack -Recurse -Filter windows_release_x86_64.exe | Copy-Item -Destination $target
+      - name: Verify target engine and export configuration
+        shell: pwsh
+        run: python tools/verify_export_environment.py --godot .\.godot-bin\Godot_v4.7.1-stable_win64_console.exe

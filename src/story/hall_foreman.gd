@@ -26,7 +26,7 @@ func _draw() -> void:
 
 func _on_interacted(_actor: Node2D) -> void:
 	if GameSession.quests.completed.has(QUEST_ID):
-		feedback.emit(DialogueCatalog.text(&"first_lantern.after"))
+		feedback.emit("%s\n%s" % [DialogueCatalog.text(&"first_lantern.after"), _silas_evidence_text()])
 		return
 	if not GameSession.quests.is_active(QUEST_ID):
 		GameSession.quests.start(QUEST_ID)
@@ -58,12 +58,18 @@ func _remove_one_fish() -> void:
 func _complete_lantern() -> void:
 	if GameSession.quests.complete(QUEST_ID) != OK:
 		return
+	GameSession.helpers.assign(&"mabel")
+	GameSession.evidence.discover(&"silas_first_lantern_note")
 	var save_result: Error = SaveService.autosave(&"quest_completion")
 	var completion_text := DialogueCatalog.text(&"first_lantern.complete")
-	feedback.emit("%s%s" % [completion_text, " Autosaved." if save_result == OK else ""])
+	feedback.emit("%s\n%s%s" % [completion_text, _silas_evidence_text(), " Autosaved." if save_result == OK else ""])
 	queue_redraw()
 
 
 func _on_quest_completed(quest_id: StringName) -> void:
 	if quest_id == QUEST_ID:
 		queue_redraw()
+
+
+func _silas_evidence_text() -> String:
+	return DialogueCatalog.text(&"evidence.silas_first_lantern_note.text") if GameSession.evidence.has(&"silas_first_lantern_note") else ""

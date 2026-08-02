@@ -23,6 +23,8 @@ func register_definition(definition) -> Error:
 		return ERR_INVALID_PARAMETER
 	_definitions[definition.id] = definition
 	return OK
+func definition(crop_id: StringName):
+	return _definitions.get(crop_id)
 func register_construction_definition(definition: Dictionary) -> Error:
 	var construction_id := StringName(definition.get("id", ""))
 	var footprint_value: Variant = definition.get("footprint", [])

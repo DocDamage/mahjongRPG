@@ -4,7 +4,7 @@
 
 - Active local branch: `agent/project-foundation`
 - Integration target defined by the plan: `develop`
-- Local foundation work remains unpushed and is ahead of `origin/agent/project-foundation`.
+- Local Phase 1–2 work is pending the requested commit and push after the final audit.
 - This log records verified local milestones; it does not claim that the full execution plan is complete.
 
 ## Verified milestones
@@ -39,6 +39,8 @@
 | Controller focus regression | Added a viewport-attached controls-screen test that verifies initial binding focus and focus retention when the controller tab becomes active. |
 | Weather catalog | Moved deterministic clear/rain selection into validated weather data while defining cloudy, thunderstorm, dust wind, and supernatural fog for later activation. |
 | Godot 4.7.1 Windows export | Validated the official 4.7.1 runtime and matching templates, passed repository validation plus 31 native suites/smoke/editor checks, packaged the ignored Windows debug build, and headlessly launched it with an isolated AppData environment. |
+| P1 honest vertical slice | Added persisted Orange/Blue ownership/loadout selection, Mabel's visible daily crop-watering action, four-crop picker, first localized Silas evidence, inspectable schedule feedback, and safe mounted-location persistence with schema-8 migration. |
+| P2 demo delivery foundation | Added target-engine GitHub Actions checks, a 250-LOC warning report, title/load/accessibility shell with persistent preferences, canonical setup/recovery guidance, coverage inventory, manual QA matrix, and a proprietary-code disposition. |
 
 ## Current local verification baseline
 
@@ -51,4 +53,4 @@ python tools/validate_repository.py
 <Godot 4.7.1 engine> --headless --path . --editor --quit
 ```
 
-The portable validation engine is official Godot 4.7.1 with matching Windows templates. The Windows debug export and isolated-AppData headless launch are verified; the plan's user-observed clean-profile and manual device/display passes remain outstanding. See [export_validation.md](export_validation.md).
+The portable validation engine is official Godot 4.7.1 with matching Windows templates. The current run reports 32 suites plus smoke/editor success. The Windows debug export and isolated-AppData headless launch are verified; archive restoration, target-engine remote CI, user-observed clean-profile, and manual device/display/accessibility passes remain external evidence gates. See [setup_and_recovery.md](../release/setup_and_recovery.md).

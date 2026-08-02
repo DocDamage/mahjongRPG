@@ -54,7 +54,7 @@ func run() -> Array[String]:
 	session.farm.plant(Vector2i(0, 0), &"beans", 1)
 	session.farm.water(Vector2i(0, 0), 1)
 	session.horse.discover(&"wayward_farm")
-	session.horse.mount(true)
+	session.horse.mount(true, "res://src/world/wayward_farm.tscn", Vector2(260, 280))
 	session.advance_minutes(90)
 	if service.save(&"manual_2", session.snapshot()) != OK:
 		failures.append("a full game-session snapshot should save")

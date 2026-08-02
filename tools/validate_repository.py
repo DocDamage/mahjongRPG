@@ -11,6 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MAX_BYTES = 95 * 1024 * 1024
 MAX_LINES = 300
+WARNING_LINES = 250
 SOURCE_EXTENSIONS = {".gd", ".py", ".cs", ".js", ".ts", ".tsx", ".jsx", ".sh"}
 EXCLUDED_PREFIXES = (
     ".git/",
@@ -64,7 +65,7 @@ def check_required(errors: list[str]) -> None:
             errors.append(f"Missing required file: {rel}")
 
 
-def check_files(errors: list[str]) -> None:
+def check_files(errors: list[str], warnings: list[str]) -> None:
     for path in ROOT.rglob("*"):
         if not path.is_file() or excluded(path):
             continue
@@ -79,6 +80,8 @@ def check_files(errors: list[str]) -> None:
                 continue
             if lines > MAX_LINES:
                 errors.append(f"Handwritten source exceeds 300 LOC: {rel} ({lines})")
+            elif lines >= WARNING_LINES:
+                warnings.append(f"Handwritten source is at the 250 LOC review threshold: {rel} ({lines})")
 
 
 def check_manifest(errors: list[str]) -> None:
@@ -179,8 +182,9 @@ def check_mahjong_atlas(errors: list[str]) -> None:
 
 def main() -> int:
     errors: list[str] = []
+    warnings: list[str] = []
     check_required(errors)
-    check_files(errors)
+    check_files(errors, warnings)
     check_manifest(errors)
     check_master_manifest(errors)
     check_patch(errors)
@@ -191,6 +195,10 @@ def main() -> int:
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
+    if warnings:
+        print("Repository size warnings:")
+        for warning in warnings:
+            print(f"- {warning}")
     print("Repository validation passed.")
     return 0
 

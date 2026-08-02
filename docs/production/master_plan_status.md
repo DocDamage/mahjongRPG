@@ -6,6 +6,8 @@ This is an evidence ledger for `CODEX_MASTER_EXECUTION_PLAN.md`. It is not a com
 
 | Plan phase | Status | Current evidence / remaining work |
 | --- | --- | --- |
+| P1: honest vertical slice | Complete locally | Save schema 8 adds starter Orange/Blue Brand ownership and persisted pre-match loadout state, Mabel's assigned once-per-day crop-watering action, first Silas evidence, four-crop picker, inspectable unavailable-opponent schedules, and mounted horse scene/position persistence. `test_phase_one_services.gd`, progression, save, smoke, and editor checks pass with Godot 4.7.1. |
+| P2: demo-grade delivery foundation | Partial / external evidence gate | Target-engine GitHub Actions workflow, 250-LOC validator report, canonical setup/recovery, manual matrix, coverage inventory, title/load/accessibility shell, persistent preferences, controller-glyph base, and proprietary code notice are present. Complete supplied source archives, physical controller/display matrix, user-observed clean-profile pass, and remote CI execution remain evidence gates. |
 | A–C: orientation and source import | Complete for the expanded canonical asset folder | `docs/assets/master_import.md` establishes `assets/MahjongRPG/` as the local source. The user explicitly retained archives outside the repo; no archive is committed. |
 | D: Godot 4.7.1 smoke | Complete | Official Godot `4.7.1.stable.official.a13da4feb` and matching Windows templates passed preflight, the 31-suite native runner, runtime smoke, and headless editor initialization. |
 | E: foundation integration | External gate | Work is on `agent/project-foundation`; no merge into `develop`, push, or PR is claimed. |
@@ -29,11 +31,12 @@ python tools/validate_repository.py
 <Godot 4.7.1 engine> --headless --path . --editor --quit
 ```
 
-The current native run reports 31 suites. The complete commands and latest milestones are maintained in `implementation_log.md`.
+The current native run reports 32 suites. The complete commands and latest milestones are maintained in `implementation_log.md`.
 
 ## Required delivery actions
 
-1. Perform the plan's manual controller, display, crop, fishing, horse, schedule, Hall, and audio passes, including a user-observed clean-Windows-profile development-export launch.
-2. With user authorization, push the focused branch and open the required draft PR into `develop`.
+1. Restore and verify the complete user-supplied supplemental and master archive sets against their manifests, then pin the master fingerprints.
+2. Perform the P2 manual controller, display, accessibility, backup recovery, and clean-Windows-profile matrix in `docs/qa/manual_device_display_matrix.md`.
+3. With user authorization, push the focused branch and inspect the target-engine CI result. No PR is opened automatically.
 
 Until those gates have evidence, the plan is not complete.

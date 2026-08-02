@@ -63,9 +63,10 @@ func _update_availability() -> void:
 	var position_value: Variant = schedule.get("position")
 	if position_value is Vector2:
 		position = position_value
-	visible = _available
-	monitorable = _available
-	monitoring = _available
+	visible = true
+	monitorable = true
+	monitoring = true
+	prompt_text = "Challenge %s" % String(_definition.get("display_name", "opponent")) if _available else "Inspect %s's schedule" % String(_definition.get("display_name", "opponent"))
 
 
 func _load_definition() -> Dictionary:

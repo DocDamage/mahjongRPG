@@ -23,6 +23,10 @@ func _ready() -> void:
 	$Sprite2D.region_rect = Rect2(0, 0, 128, 128)
 	queue_redraw()
 	if GameSession.horse.mounted:
+		if GameSession.horse.mounted_scene == get_tree().current_scene.scene_file_path:
+			global_position = GameSession.horse.mounted_position
+		else:
+			GameSession.horse.mounted = false
 		call_deferred("_restore_mounted_rider")
 
 
@@ -37,6 +41,8 @@ func _process(delta: float) -> void:
 	global_position += direction * MOUNTED_SPEED * delta
 	if travel_bounds.has_area():
 		global_position = global_position.clamp(travel_bounds.position, travel_bounds.end)
+	GameSession.horse.record_mounted_location(get_tree().current_scene.scene_file_path, global_position)
+	GameSession.record_player_state(get_tree().current_scene.scene_file_path, global_position)
 	if Input.is_action_just_pressed(&"interact"):
 		_dismount()
 
@@ -44,7 +50,7 @@ func _process(delta: float) -> void:
 func _on_interacted(actor: Node2D) -> void:
 	if GameSession.horse.mounted:
 		return
-	if GameSession.horse.mount(true) != OK:
+	if GameSession.horse.mount(true, get_tree().current_scene.scene_file_path, global_position) != OK:
 		feedback.emit("The horse cannot be mounted here.")
 		return
 	_rider = actor

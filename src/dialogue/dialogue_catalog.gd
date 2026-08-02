@@ -4,8 +4,12 @@ const TABLE_ID := &"dialogue"
 const TABLE_PATH := "res://data/dialogue/vertical_slice_dialogue.json"
 
 
-static func text(line_id: StringName, values: Dictionary = {}) -> String:
-	var lines_value: Variant = _table().get("lines", {})
+static func text(line_id: StringName, values: Dictionary = {}, locale := "") -> String:
+	var table := _table()
+	var selected_locale := locale if not locale.is_empty() else String(table.get("default_locale", "en"))
+	var locales_value: Variant = table.get("locales", {})
+	var localized: Variant = locales_value.get(selected_locale, {}) if locales_value is Dictionary else table
+	var lines_value: Variant = localized.get("lines", {}) if localized is Dictionary else {}
 	if not lines_value is Dictionary:
 		return ""
 	var result := String(lines_value.get(line_id, ""))

@@ -13,6 +13,7 @@ SaveService="*res://src/save/save_service.gd"
 AudioService="*res://src/audio/audio_service.gd"
 InputService="*res://src/input/input_service.gd"
 DisplayPreferences="*res://src/accessibility/display_preferences.gd"
+GamePreferences="*res://src/accessibility/game_preferences.gd"
 ContentRegistry="*res://src/content/content_registry.gd"
 SaveMenu="*res://src/ui/save_menu.gd"
 

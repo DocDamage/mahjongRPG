@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "helpers": [
+    {
+      "id": "mabel",
+      "display_name": "Mabel",
+      "action": "water_all",
+      "success_text": "Mabel waters every planted field. She can help again tomorrow."
+    }
+  ]
+}

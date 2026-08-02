@@ -7,6 +7,7 @@ const FarmPlot = preload("res://src/farm/farm_plot.gd")
 @onready var message_label: Label = $HUD/Message
 
 var _placement_menu
+var _mabel_button: Button
 
 
 func _ready() -> void:
@@ -27,6 +28,7 @@ func _ready() -> void:
 	$WaywardHitch.feedback.connect(_show_message)
 	$RiverbendPath.feedback.connect(_show_message)
 	_create_placement_menu()
+	_create_helper_action()
 	_sync_field_plots()
 	_update_status(GameSession.day, GameSession.minute_of_day)
 
@@ -114,3 +116,32 @@ func _ensure_field_plot(cell: Vector2i) -> void:
 	add_child(plot)
 	queue_redraw()
 	_show_message("Field placed. Plant a crop there when you are ready.")
+
+
+func _create_helper_action() -> void:
+	_mabel_button = Button.new()
+	_mabel_button.position = Vector2(700, 100)
+	_mabel_button.size = Vector2(228, 42)
+	_mabel_button.pressed.connect(_ask_mabel_for_help)
+	add_child(_mabel_button)
+	_update_helper_action()
+	GameSession.time_advanced.connect(func(_day: int, _minute: int) -> void: _update_helper_action())
+	GameSession.quests.quest_completed.connect(func(_quest_id: StringName) -> void: _update_helper_action())
+
+
+func _update_helper_action() -> void:
+	if _mabel_button == null:
+		return
+	var assigned: bool = GameSession.helpers != null and GameSession.helpers.is_assigned(&"mabel")
+	_mabel_button.visible = assigned
+	_mabel_button.disabled = not assigned or int(GameSession.helpers.last_used_day.get(&"mabel", 0)) == GameSession.day
+	_mabel_button.text = "Ask Mabel to water crops" if not _mabel_button.disabled else "Mabel helped today"
+
+
+func _ask_mabel_for_help() -> void:
+	var result: Dictionary = GameSession.helpers.activate(&"mabel", GameSession.farm, GameSession.day)
+	if result.has("error"):
+		_show_message("Mabel cannot help again until tomorrow.")
+	else:
+		_show_message("%s (%d crop%s watered.)" % [result.get("message", "Mabel helped."), int(result.get("watered", 0)), "" if int(result.get("watered", 0)) == 1 else "s"])
+	_update_helper_action()

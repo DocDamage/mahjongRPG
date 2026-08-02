@@ -2,48 +2,76 @@ extends Control
 
 const IMPORT_MARKER := "res://assets/source/supplemental/.import_complete.json"
 const WAYWARD_FARM_SCENE := "res://src/world/wayward_farm.tscn"
+const AccessibilitySettings = preload("res://src/ui/accessibility_settings.gd")
+
+var _panel: VBoxContainer
+var _status: Label
+var _accessibility
 
 func _ready() -> void:
-    _build_foundation_status()
+	_build_title_shell()
 
-func _build_foundation_status() -> void:
-    var background := ColorRect.new()
-    background.color = Color("241b16")
-    background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-    add_child(background)
+func _build_title_shell() -> void:
+	var background := ColorRect.new()
+	background.color = Color("241b16")
+	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	add_child(background)
 
-    var panel := VBoxContainer.new()
-    panel.alignment = BoxContainer.ALIGNMENT_CENTER
-    panel.set_anchors_preset(Control.PRESET_CENTER)
-    panel.position = Vector2(-250, -90)
-    panel.size = Vector2(500, 180)
-    background.add_child(panel)
+	_panel = VBoxContainer.new()
+	_panel.alignment = BoxContainer.ALIGNMENT_CENTER
+	_panel.set_anchors_preset(Control.PRESET_CENTER)
+	_panel.position = Vector2(-250, -180)
+	_panel.size = Vector2(500, 360)
+	_panel.add_theme_constant_override("separation", 10)
+	background.add_child(_panel)
 
-    var title := Label.new()
-    title.text = "SIX BRANDS AT HIGH NOON"
-    title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-    title.add_theme_font_size_override("font_size", 30)
-    panel.add_child(title)
+	var title := Label.new()
+	title.text = "SIX BRANDS AT HIGH NOON"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 30)
+	_panel.add_child(title)
 
-    var status := Label.new()
-    status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-    status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    status.text = _status_text()
-    panel.add_child(status)
+	_status = Label.new()
+	_status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_status.text = _status_text()
+	_panel.add_child(_status)
 
-    var start_button := Button.new()
-    start_button.text = "Start at Wayward Farm"
-    start_button.custom_minimum_size = Vector2(240, 42)
-    start_button.pressed.connect(_start_game)
-    panel.add_child(start_button)
-    start_button.grab_focus()
+	var start_button := _add_button("New game", _start_game)
+	start_button.grab_focus()
+	_add_button("Load autosave", _load_autosave)
+	_add_button("Accessibility & settings", _open_accessibility)
+	_add_button("Quit", get_tree().quit)
+	_accessibility = AccessibilitySettings.new()
+	_accessibility.configure(GamePreferences)
+	_accessibility.position = Vector2(230, 78)
+	_accessibility.size = Vector2(500, 386)
+	add_child(_accessibility)
 
 func _status_text() -> String:
-    if FileAccess.file_exists(IMPORT_MARKER):
-        return "Foundation initialized. Supplemental assets verified and imported."
-    return "Foundation initialized. Run: python tools/import_supplemental_assets.py"
+	if FileAccess.file_exists(IMPORT_MARKER):
+		return "Demo foundation ready. New Game begins at Wayward Farm; loading supports automatic backup recovery."
+	return "Demo foundation ready. Supplemental source assets are optional for the tracked debug build."
 
 
 func _start_game() -> void:
-    GameSession.start_new_game(0x5EED)
-    SceneRouter.change_scene(WAYWARD_FARM_SCENE)
+	GameSession.start_new_game(0x5EED)
+	SceneRouter.change_scene(WAYWARD_FARM_SCENE)
+
+
+func _load_autosave() -> void:
+	var result := SaveService.load_current_session(SaveService.SLOT_AUTOSAVE)
+	_status.text = "Autosave loaded." if result == OK else "No valid autosave was found. A corrupt primary save will use its backup automatically."
+
+
+func _open_accessibility() -> void:
+	_accessibility.open()
+
+
+func _add_button(label: String, callback: Callable) -> Button:
+	var button := Button.new()
+	button.text = label
+	button.custom_minimum_size = Vector2(280, 42)
+	button.pressed.connect(callback)
+	_panel.add_child(button)
+	return button

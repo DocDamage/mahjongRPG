@@ -11,23 +11,18 @@ const TenderfootAdvisor = preload("res://src/mahjong/presentation/tenderfoot_adv
 const VisibleKnowledge = preload("res://src/mahjong/ai/visible_knowledge.gd")
 const TileAtlas = preload("res://src/mahjong/presentation/tile_atlas.gd")
 const BrandPatternBadge = preload("res://src/mahjong/presentation/brand_pattern_badge.gd")
-
+const BrandLoadoutPicker = preload("res://src/mahjong/presentation/brand_loadout_picker.gd")
 var flow
 var opponent_name := "Trailhand"
 var opponent_loadout: Array[StringName] = [&"dark", &"green"]
 var opponent_ai_profile: Dictionary = {}
-var status_label: Label
-var action_box: HBoxContainer
-var tiles_box: HBoxContainer
-var result_label: Label
-var tutorial_label: Label
-var tutorial_button: Button
+var status_label: Label; var action_box: HBoxContainer; var tiles_box: HBoxContainer
+var result_label: Label; var tutorial_label: Label; var tutorial_button: Button
 var tutorial
 var undo
 var wager_tier: StringName = &"friendly"
 var _match_started := false
 var _ai_turn_pending := false
-
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
@@ -36,12 +31,10 @@ func _ready() -> void:
 	tutorial = TenderfootTutorial.new(GameSession.tutorial_step(&"tenderfoot"))
 	undo = TenderfootUndo.new()
 	_build_ui()
-	_show_wager_selection()
-
+	_show_loadout_selection()
 func _exit_tree() -> void:
 	GameSession.release_pause(&"mahjong")
 	SaveService.release_save_restriction(&"mahjong")
-
 func _build_ui() -> void:
 	var background := ColorRect.new()
 	background.color = Color(0.08, 0.055, 0.035, 0.96)
@@ -90,7 +83,6 @@ func _build_ui() -> void:
 	help.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	panel.add_child(help)
-
 func _refresh() -> void:
 	if not _match_started:
 		_show_wager_selection()
@@ -234,7 +226,7 @@ func _close_match() -> void:
 func _show_wager_selection() -> void:
 	_clear(action_box)
 	_clear(tiles_box)
-	status_label.text = "Choose the table terms with %s. You have $%.2f available." % [opponent_name, GameSession.inventory.money_cents / 100.0]
+	status_label.text = "Loadout: %s. Choose the table terms with %s. You have $%.2f available." % [", ".join(GameSession.brands.last_selected).capitalize(), opponent_name, GameSession.inventory.money_cents / 100.0]
 	result_label.text = "Friendly matches have no cash stake. Serious and High Stakes losses deduct cash only after the final result."
 	tutorial_label.text = tutorial.progress_text()
 	tutorial_button.visible = false
@@ -248,7 +240,7 @@ func _start_match(next_wager_tier: StringName) -> void:
 		return
 	wager_tier = next_wager_tier
 	flow = MatchFlow.new(GameSession.seed + GameSession.day * 100 + GameSession.minute_of_day)
-	flow.configure_loadouts([&"orange", &"blue"], opponent_loadout)
+	flow.configure_loadouts(GameSession.brands.last_selected, opponent_loadout)
 	flow.start_match()
 	_match_started = true
 	_refresh()
@@ -258,6 +250,14 @@ func _match_outcome_text() -> String:
 	if stake == 0 or flow.match_winner < 0:
 		return outcome
 	return "%s %s $%.2f settles when you return to the world." % [outcome, "You win" if flow.match_winner == 0 else "You lose", stake / 100.0]
+func _show_loadout_selection() -> void:
+	var picker := BrandLoadoutPicker.new()
+	picker.configure(GameSession.brands)
+	picker.confirmed.connect(_on_loadout_confirmed)
+	get_tree().root.add_child(picker)
+	picker.open()
+func _on_loadout_confirmed(_loadout: Array[StringName]) -> void:
+	_show_wager_selection()
 func _add_action(text_value: String, callback: Callable) -> void:
 	var button := Button.new()
 	button.text = text_value

@@ -24,4 +24,13 @@ static func migrate(snapshot_data: Dictionary, current_version: int) -> Dictiona
 		var farm_data: Dictionary = migrated.get("farm", {})
 		farm_data["constructions"] = []
 		migrated["farm"] = farm_data
+	if schema_version <= 7:
+		migrated["brands"] = {"unlocked": {"orange": true, "blue": true}, "last_selected": ["orange", "blue"]}
+		migrated["helpers"] = {"assignments": {}, "last_used_day": {}}
+		migrated["evidence"] = {"discovered": {}}
+		var horse_data: Dictionary = migrated.get("horse", {})
+		horse_data["mounted"] = false
+		horse_data["mounted_scene"] = ""
+		horse_data["mounted_position"] = []
+		migrated["horse"] = horse_data
 	return migrated

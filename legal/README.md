@@ -9,4 +9,4 @@ It does not automatically license:
 - Patents
 - Publicity or privacy rights
 
-No separate open-source license has been granted for original project code at this time.
+Original source-code disposition is explicitly recorded in `PROPRIETARY_SOURCE_NOTICE.md`. This repository is not open source unless that notice is replaced by an authorized license.
