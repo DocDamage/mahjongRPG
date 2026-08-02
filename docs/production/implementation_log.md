@@ -33,6 +33,7 @@
 | Off-farm crop progression | Centralized crop day advancement in `GameSession` so crops process correctly during travel, inn rests, and any other off-farm time change. |
 | Save safety | Added nested, reason-based save restrictions for active fishing and Mahjong, preserving post-match autosaves and the dedicated pre-finale slot. |
 | Export preflight | Added a deterministic Windows export preflight that verifies the required Godot 4.7.1 runtime, Windows templates, and archive-safe export preset before packaging. |
+| Resource audit | Deferred the native runner until autoloads exist and added a recursive `src` script/scene load suite, so broken resources now fail the automated gate. |
 
 ## Current local verification baseline
 
