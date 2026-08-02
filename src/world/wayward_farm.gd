@@ -1,7 +1,12 @@
 extends Node2D
 
+const FarmPlacementMenu = preload("res://src/farm/farm_placement_menu.gd")
+const FarmPlot = preload("res://src/farm/farm_plot.gd")
+
 @onready var status_label: Label = $HUD/Status
 @onready var message_label: Label = $HUD/Message
+
+var _placement_menu
 
 
 func _ready() -> void:
@@ -20,6 +25,9 @@ func _ready() -> void:
 	$DustwardRoad.feedback.connect(_show_message)
 	$WaywardHitch.feedback.connect(_show_message)
 	$RiverbendPath.feedback.connect(_show_message)
+	_create_placement_menu()
+	for field_cell in GameSession.farm.field_cells():
+		_ensure_field_plot(field_cell)
 	_update_status(GameSession.day, GameSession.minute_of_day)
 
 
@@ -41,7 +49,7 @@ func _draw() -> void:
 func _update_status(_day: int, _minute_of_day: int) -> void:
 	var hour := GameSession.minute_of_day / 60
 	var minute := GameSession.minute_of_day % 60
-	status_label.text = "WAYWARD FARM  •  Day %d  •  %02d:%02d  •  %s  •  $%.2f\nMove: WASD / Left Stick  •  Run: Shift / L3  •  Fish: R/RT reel, F/LT release" % [GameSession.day, hour, minute, GameSession.weather_id.capitalize(), GameSession.inventory.money_cents / 100.0]
+	status_label.text = "WAYWARD FARM  •  Day %d  •  %02d:%02d  •  %s  •  $%.2f\nMove: WASD / Left Stick  •  Run: Shift / L3  •  Fields: B / X  •  Fish: R/RT reel, F/LT release" % [GameSession.day, hour, minute, GameSession.weather_id.capitalize(), GameSession.inventory.money_cents / 100.0]
 
 
 func _show_message(message: String) -> void:
@@ -50,3 +58,41 @@ func _show_message(message: String) -> void:
 
 func _redraw_for_weather(_weather_id: StringName) -> void:
 	queue_redraw()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed(&"place_field"):
+		if _placement_menu.is_open():
+			_placement_menu.close()
+		else:
+			_placement_menu.open()
+		get_viewport().set_input_as_handled()
+
+
+func _create_placement_menu() -> void:
+	_placement_menu = FarmPlacementMenu.new()
+	_placement_menu.configure(GameSession.farm)
+	_placement_menu.field_placed.connect(_ensure_field_plot)
+	add_child(_placement_menu)
+
+
+func _ensure_field_plot(cell: Vector2i) -> void:
+	for plot in get_tree().get_nodes_in_group(&"farm_plot"):
+		if plot.grid_cell == cell:
+			return
+	var plot := Area2D.new()
+	plot.name = "FarmField_%d_%d" % [cell.x, cell.y]
+	plot.position = Vector2(130 + cell.x * 100, 200 + cell.y * 100)
+	plot.collision_layer = 2
+	plot.collision_mask = 0
+	plot.set_script(FarmPlot)
+	plot.grid_cell = cell
+	plot.add_to_group(&"farm_plot")
+	var collision := CollisionShape2D.new()
+	var shape := CircleShape2D.new()
+	shape.radius = 26.0
+	collision.shape = shape
+	plot.add_child(collision)
+	plot.feedback.connect(_show_message)
+	add_child(plot)
+	_show_message("Field placed. Plant a crop there when you are ready.")

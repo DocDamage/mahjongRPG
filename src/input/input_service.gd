@@ -14,6 +14,7 @@ const ACTIONS := {
 	&"fish_reel": [KEY_R],
 	&"fish_release": [KEY_F],
 	&"pause": [KEY_ESCAPE],
+	&"place_field": [KEY_B],
 }
 
 var using_controller := false
@@ -62,6 +63,7 @@ func _add_controller_actions() -> void:
 	_add_axis(&"fish_reel", JOY_AXIS_TRIGGER_RIGHT, 1.0)
 	_add_axis(&"fish_release", JOY_AXIS_TRIGGER_LEFT, 1.0)
 	_add_button(&"pause", JOY_BUTTON_START)
+	_add_button(&"place_field", JOY_BUTTON_X)
 
 
 func _add_axis(action: StringName, axis: JoyAxis, value: float) -> void:

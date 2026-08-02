@@ -7,6 +7,7 @@ const FarmGrid = preload("res://src/farm/farm_grid.gd")
 var grid
 var _definitions: Dictionary = {}
 var _crops: Dictionary = {}
+var _fields: Dictionary = {}
 
 
 func _init(next_grid) -> void:
@@ -25,6 +26,8 @@ func register_definition(definition) -> Error:
 func plant(cell: Vector2i, crop_id: StringName, day: int) -> Error:
 	if not _definitions.has(crop_id):
 		return ERR_DOES_NOT_EXIST
+	if not _fields.has(cell):
+		return ERR_UNAVAILABLE
 	var placement: int = grid.place(crop_id, [cell])
 	if placement != OK:
 		return placement
@@ -58,20 +61,71 @@ func crop_at(cell: Vector2i):
 	return _crops.get(cell)
 
 
+func place_field(cell: Vector2i) -> Error:
+	var placement := can_place_field(cell)
+	if placement != OK:
+		return placement
+	_fields[cell] = true
+	return OK
+
+
+func can_place_field(cell: Vector2i) -> Error:
+	if _fields.has(cell):
+		return ERR_ALREADY_EXISTS
+	return grid.validate([cell])
+
+
+func remove_field(cell: Vector2i) -> Error:
+	if not _fields.has(cell):
+		return ERR_DOES_NOT_EXIST
+	if _crops.has(cell):
+		return ERR_BUSY
+	_fields.erase(cell)
+	return OK
+
+
+func has_field(cell: Vector2i) -> bool:
+	return _fields.has(cell)
+
+
+func field_cells() -> Array[Vector2i]:
+	var cells: Array[Vector2i] = []
+	for cell_value in _fields:
+		cells.append(cell_value)
+	cells.sort_custom(func(first: Vector2i, second: Vector2i) -> bool:
+		return first.y < second.y or (first.y == second.y and first.x < second.x)
+	)
+	return cells
+
+
 func snapshot() -> Dictionary:
 	var crops: Array = []
 	for cell_value in _crops.keys():
 		var cell: Vector2i = cell_value
 		crops.append({"cell": [cell.x, cell.y], "crop": _crops[cell].snapshot()})
-	return {"crops": crops}
+	var fields: Array = []
+	for cell in field_cells():
+		fields.append([cell.x, cell.y])
+	return {"crops": crops, "fields": fields}
 
 
 func restore(snapshot_data: Dictionary) -> Error:
 	var entries_value = snapshot_data.get("crops", [])
 	if not entries_value is Array:
 		return ERR_INVALID_DATA
+	var fields_value: Variant = snapshot_data.get("fields", null)
+	if fields_value != null and not fields_value is Array:
+		return ERR_INVALID_DATA
 	grid.clear(_crops.keys())
 	_crops.clear()
+	if fields_value is Array:
+		_fields.clear()
+		for field_value in fields_value:
+			if not field_value is Array or field_value.size() != 2:
+				return ERR_INVALID_DATA
+			var field_cell := Vector2i(int(field_value[0]), int(field_value[1]))
+			if place_field(field_cell) != OK:
+				return ERR_INVALID_DATA
 	for entry_value in entries_value:
 		if not entry_value is Dictionary:
 			return ERR_INVALID_DATA

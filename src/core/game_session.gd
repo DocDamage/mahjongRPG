@@ -218,8 +218,10 @@ func _weather_for_day(next_day: int) -> StringName:
 func _ensure_farm():
 	if farm != null:
 		return farm
-	var grid = FarmGrid.new(Rect2i(0, 0, 8, 4))
+	var grid = FarmGrid.new(Rect2i(0, 0, 3, 3))
 	farm = FarmService.new(grid)
+	for field_cell in [Vector2i(0, 0), Vector2i(1, 0), Vector2i(0, 1), Vector2i(1, 1)]:
+		farm.place_field(field_cell)
 	var file := FileAccess.open("res://data/crops/vertical_slice_crops.json", FileAccess.READ)
 	if file == null:
 		push_error("Missing vertical-slice crop data")

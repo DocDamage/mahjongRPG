@@ -8,6 +8,7 @@ signal feedback(message: String)
 
 func _ready() -> void:
 	interacted.connect(_on_interacted)
+	GameSession.farm.place_field(grid_cell)
 	GameSession.time_advanced.connect(_on_time_advanced)
 	queue_redraw()
 
