@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "ambience": {
+    "clear": "res://assets/generated/audio/outdoor_generic_ambience.ogg",
+    "rain": "res://assets/generated/audio/rain_ambience.ogg"
+  }
+}
