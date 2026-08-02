@@ -36,6 +36,7 @@
 | Resource audit | Deferred the native runner until autoloads exist and added a recursive `src` script/scene load suite, so broken resources now fail the automated gate. |
 | Fishing gear data | Added a validated default rod, bait, lure, hook, and line catalog, then applied its deterministic reel, bite-window, and line-tension modifiers to Riverbend fishing. |
 | Placement route safety | Added guarded-route breadth-first validation to construction placement, preventing a non-walkable build from sealing the farm's traversable route while allowing walkable paths. |
+| Controller focus regression | Added a viewport-attached controls-screen test that verifies initial binding focus and focus retention when the controller tab becomes active. |
 
 ## Current local verification baseline
 

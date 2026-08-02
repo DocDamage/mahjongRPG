@@ -75,6 +75,7 @@ func _build() -> void:
 	_message.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	content.add_child(_message)
 	var tabs := TabContainer.new()
+	tabs.name = "ControlTabs"
 	tabs.custom_minimum_size = Vector2(0, 282)
 	content.add_child(tabs)
 	_keyboard_rows = _add_tab(tabs, "Keyboard")
