@@ -35,6 +35,30 @@ const CONTROLLER_AXIS_DEFAULTS := {
 	&"fish_rod_left": [JOY_AXIS_RIGHT_X, -1.0],
 	&"fish_rod_right": [JOY_AXIS_RIGHT_X, 1.0],
 }
+const CONTROLLER_BUTTON_LABELS := {
+	JOY_BUTTON_A: "A / Cross",
+	JOY_BUTTON_B: "B / Circle",
+	JOY_BUTTON_X: "X / Square",
+	JOY_BUTTON_Y: "Y / Triangle",
+	JOY_BUTTON_BACK: "View / Share",
+	JOY_BUTTON_START: "Menu / Options",
+	JOY_BUTTON_LEFT_STICK: "Left stick press",
+	JOY_BUTTON_RIGHT_STICK: "Right stick press",
+	JOY_BUTTON_LEFT_SHOULDER: "Left bumper",
+	JOY_BUTTON_RIGHT_SHOULDER: "Right bumper",
+	JOY_BUTTON_DPAD_UP: "D-pad up",
+	JOY_BUTTON_DPAD_DOWN: "D-pad down",
+	JOY_BUTTON_DPAD_LEFT: "D-pad left",
+	JOY_BUTTON_DPAD_RIGHT: "D-pad right",
+}
+const CONTROLLER_AXIS_LABELS := {
+	JOY_AXIS_LEFT_X: "Left stick",
+	JOY_AXIS_LEFT_Y: "Left stick",
+	JOY_AXIS_RIGHT_X: "Right stick",
+	JOY_AXIS_RIGHT_Y: "Right stick",
+	JOY_AXIS_TRIGGER_LEFT: "Left trigger",
+	JOY_AXIS_TRIGGER_RIGHT: "Right trigger",
+}
 
 var using_controller := false
 
@@ -162,6 +186,28 @@ func binding_text(action: StringName) -> String:
 	return ", ".join(labels)
 
 
+func prompt_binding_text(action: StringName, prefer_controller: bool) -> String:
+	if not ACTIONS.has(action):
+		return ""
+	for event in InputMap.action_get_events(action):
+		if prefer_controller and event is InputEventJoypadButton:
+			return String(CONTROLLER_BUTTON_LABELS.get(event.button_index, "Button %d" % event.button_index))
+		if prefer_controller and event is InputEventJoypadMotion:
+			return _axis_binding_label(event.axis, event.axis_value)
+		if not prefer_controller and event is InputEventKey:
+			var keycode: Key = event.physical_keycode
+			if keycode == KEY_NONE:
+				keycode = event.keycode
+			return OS.get_keycode_string(keycode)
+	for event in InputMap.action_get_events(action):
+		if event is InputEventKey:
+			var keycode: Key = event.physical_keycode
+			if keycode == KEY_NONE:
+				keycode = event.keycode
+			return OS.get_keycode_string(keycode)
+	return String(action).capitalize()
+
+
 func _input(event: InputEvent) -> void:
 	var next_using_controller := event is InputEventJoypadButton or event is InputEventJoypadMotion
 	if event is InputEventKey or event is InputEventMouse:
@@ -208,6 +254,16 @@ func _has_joypad_event(action: StringName, axis: JoyAxis, value: float) -> bool:
 		if event is InputEventJoypadMotion and event.axis == axis and is_equal_approx(event.axis_value, value):
 			return true
 	return false
+
+
+func _axis_binding_label(axis: JoyAxis, value: float) -> String:
+	var label := String(CONTROLLER_AXIS_LABELS.get(axis, "Axis %d" % axis))
+	if axis in [JOY_AXIS_TRIGGER_LEFT, JOY_AXIS_TRIGGER_RIGHT]:
+		return label
+	var direction := "right" if value > 0.0 else "left"
+	if axis in [JOY_AXIS_LEFT_Y, JOY_AXIS_RIGHT_Y]:
+		direction = "down" if value > 0.0 else "up"
+	return "%s %s" % [label, direction]
 
 
 func _erase_controller_buttons(action: StringName) -> void:

@@ -184,7 +184,7 @@ func _update_interaction_prompt(target: Area2D) -> void:
 		_prompt_label.visible = false
 		return
 	var prompt := String(target.get("prompt_text"))
-	_prompt_label.text = "%s  •  %s" % ["A" if _using_controller else "E", prompt]
+	_prompt_label.text = "%s  •  %s" % [_binding_text(&"interact"), prompt]
 	_prompt_label.visible = not prompt.is_empty()
 
 
@@ -196,8 +196,15 @@ func _on_active_device_changed(using_controller: bool) -> void:
 func _show_pause_prompt() -> void:
 	if _prompt_label == null:
 		return
-	_prompt_label.text = "PAUSED  •  %s to resume" % ("Start" if _using_controller else "Esc")
+	_prompt_label.text = "PAUSED  •  %s to resume" % _binding_text(&"pause")
 	_prompt_label.visible = true
+
+
+func _binding_text(action: StringName) -> String:
+	var input_service = get_node_or_null("/root/InputService")
+	if input_service != null:
+		return input_service.prompt_binding_text(action, _using_controller)
+	return String(action).capitalize()
 
 
 func _restore_or_record_session_position() -> void:

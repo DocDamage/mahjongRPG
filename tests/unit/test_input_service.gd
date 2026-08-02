@@ -30,5 +30,9 @@ func run() -> Array[String]:
 		failures.append("controller axis resets should restore the default axis")
 	if service.remap_controller_button(&"move_left", JOY_BUTTON_B) != ERR_INVALID_PARAMETER:
 		failures.append("movement axes should reject incompatible button remaps")
+	if service.prompt_binding_text(&"interact", false) != "E" or service.prompt_binding_text(&"interact", true) != "A / Cross":
+		failures.append("prompt labels should expose the active keyboard and controller bindings")
+	if service.remap_controller_button(&"interact", JOY_BUTTON_B) != OK or service.prompt_binding_text(&"interact", true) != "B / Circle":
+		failures.append("controller prompt labels should follow remapped bindings")
 	service.free()
 	return failures

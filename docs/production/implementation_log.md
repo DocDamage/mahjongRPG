@@ -25,7 +25,7 @@
 | NPC schedules | Data-driven clear and rain schedules relocate all three Dustward opponents and preserve their authored challenge windows. |
 | Mahjong tile atlas | Deterministically rasterized the canonical 34 face set into one compact runtime atlas, with testable identity regions and presentation-layer Brand tinting. |
 | Crop catalog | Cataloged all 20 canonical ranch crops while enforcing the four balanced active slice crops at the farm-service boundary. |
-| Accessible controls | Added a pause-menu controls screen with keyboard, controller button, stick, and trigger remapping, duplicate-binding protection, reset controls, and controller-first focus. |
+| Accessible controls | Added a pause-menu controls screen with keyboard, controller button, stick, and trigger remapping, duplicate-binding protection, reset controls, controller-first focus, and remap-aware keyboard/controller prompt labels. |
 
 ## Current local verification baseline
 

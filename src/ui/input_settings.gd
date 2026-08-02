@@ -155,6 +155,8 @@ func _reset_current_bindings(tabs: TabContainer) -> void:
 
 
 func _binding_text(action: StringName, kind: StringName) -> String:
+	if kind == &"controller":
+		return _service().prompt_binding_text(action, true)
 	var labels: Array[String] = []
 	for event in InputMap.action_get_events(action):
 		if (kind == &"keyboard" and event is InputEventKey) or (kind == &"controller" and (event is InputEventJoypadButton or event is InputEventJoypadMotion)):
