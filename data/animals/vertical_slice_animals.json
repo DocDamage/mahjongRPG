@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "animals": [
+    {"id": "juniper_hens", "display_name": "Juniper's hens", "product_id": "animal_egg", "product_quantity": 2}
+  ]
+}

@@ -31,6 +31,11 @@ func run() -> Array[String]:
 	var restored = GameSessionScript.new()
 	if restored.restore(snapshot) != OK or restored.snapshot() != snapshot:
 		failures.append("session snapshot should round-trip")
+	if session.animals.feed(&"juniper_hens", session.day) != OK:
+		failures.append("a new game should initialize the vertical-slice animal group")
+	session.advance_minutes(24 * 60)
+	if session.animals.collect(&"juniper_hens", session.day) != 2:
+		failures.append("daily time progression should generate products for fed animal groups")
 	var legacy := snapshot.duplicate(true)
 	legacy["schema_version"] = 1
 	legacy.erase("inventory")
@@ -51,6 +56,11 @@ func run() -> Array[String]:
 	version_four.erase("tutorial_steps")
 	if restored.restore(version_four) != OK or restored.tutorial_step(&"tenderfoot") != 0:
 		failures.append("version-four session saves should migrate empty tutorial progress safely")
+	var version_five := snapshot.duplicate(true)
+	version_five["schema_version"] = 5
+	version_five.erase("animals")
+	if restored.restore(version_five) != OK or restored.animals.happiness(&"juniper_hens") != 55 or int(restored.animals.snapshot()["animals"]["juniper_hens"]["last_progress_day"]) != int(snapshot["day"]):
+		failures.append("version-five session saves should migrate default animal care safely")
 	session.free()
 	restored.free()
 	weather_session.free()

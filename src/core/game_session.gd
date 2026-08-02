@@ -1,11 +1,13 @@
 extends Node
 
 const CropDefinition = preload("res://src/crops/crop_definition.gd")
+const AnimalCareService = preload("res://src/animals/animal_care_service.gd")
 const FarmGrid = preload("res://src/farm/farm_grid.gd")
 const FarmService = preload("res://src/farm/farm_service.gd")
 const HorseTravelState = preload("res://src/horses/horse_travel_state.gd")
 const InventoryService = preload("res://src/inventory/inventory_service.gd")
 const QuestService = preload("res://src/quests/quest_service.gd")
+const SessionSnapshotMigrator = preload("res://src/save/session_snapshot_migrator.gd")
 
 signal session_started(seed: int)
 signal time_advanced(day: int, minute_of_day: int)
@@ -13,7 +15,7 @@ signal pause_changed(paused: bool)
 signal weather_changed(weather_id: StringName)
 signal session_restored()
 
-const SAVE_SCHEMA_VERSION := 5
+const SAVE_SCHEMA_VERSION := 6
 const MATCH_TIME_COST_MINUTES := 90
 const MINUTES_PER_DAY := 24 * 60
 const REAL_SECONDS_PER_DAY := 60.0
@@ -26,13 +28,12 @@ var farm
 var horse
 var inventory
 var quests
+var animals
 var player_scene := ""
 var player_position := Vector2.ZERO
 var tutorial_steps: Dictionary = {}
 var _pause_reasons: Dictionary = {}
 var _time_accumulator := 0.0
-
-
 func _process(delta: float) -> void:
 	if is_paused():
 		return
@@ -41,15 +42,12 @@ func _process(delta: float) -> void:
 	if whole_minutes > 0:
 		_time_accumulator -= whole_minutes
 		advance_minutes(whole_minutes)
-
-
 func _ready() -> void:
 	_ensure_farm()
 	_ensure_horse()
 	_ensure_inventory()
 	_ensure_quests()
-
-
+	_ensure_animals()
 func start_new_game(new_seed: int) -> void:
 	seed = new_seed
 	day = 1
@@ -59,29 +57,25 @@ func start_new_game(new_seed: int) -> void:
 	horse = HorseTravelState.new()
 	inventory = InventoryService.new()
 	quests = null
+	animals = null
 	player_scene = ""
 	player_position = Vector2.ZERO
 	tutorial_steps.clear()
 	_ensure_quests()
+	_ensure_animals()
 	_ensure_farm()
 	_pause_reasons.clear()
 	_time_accumulator = 0.0
 	session_started.emit(seed)
 	time_advanced.emit(day, minute_of_day)
 	weather_changed.emit(weather_id)
-
-
 func is_paused() -> bool:
 	return not _pause_reasons.is_empty()
-
-
 func request_pause(reason: StringName) -> void:
 	var was_paused := is_paused()
 	_pause_reasons[reason] = int(_pause_reasons.get(reason, 0)) + 1
 	if not was_paused:
 		pause_changed.emit(true)
-
-
 func release_pause(reason: StringName) -> void:
 	if not _pause_reasons.has(reason):
 		return
@@ -92,8 +86,6 @@ func release_pause(reason: StringName) -> void:
 		_pause_reasons[reason] = remaining
 	if not is_paused():
 		pause_changed.emit(false)
-
-
 func advance_minutes(minutes: int) -> void:
 	if minutes <= 0 or is_paused():
 		return
@@ -102,13 +94,10 @@ func advance_minutes(minutes: int) -> void:
 		minute_of_day -= MINUTES_PER_DAY
 		day += 1
 		set_weather(_weather_for_day(day))
+		_ensure_animals().advance_to_day(day)
 	time_advanced.emit(day, minute_of_day)
-
-
 func complete_mahjong_match() -> void:
 	advance_minutes(MATCH_TIME_COST_MINUTES)
-
-
 func set_weather(next_weather_id: StringName) -> void:
 	if next_weather_id == weather_id:
 		return
@@ -150,13 +139,14 @@ func snapshot() -> Dictionary:
 		"horse": _ensure_horse().snapshot(),
 		"inventory": _ensure_inventory().snapshot(),
 		"quests": _ensure_quests().snapshot(),
+		"animals": _ensure_animals().snapshot(),
 		"player": {"scene": player_scene, "position": [player_position.x, player_position.y]},
 		"tutorial_steps": tutorial_steps.duplicate(true),
 	}
 
 
 func restore(snapshot_data: Dictionary) -> Error:
-	var migrated := _migrate_snapshot(snapshot_data)
+	var migrated := SessionSnapshotMigrator.migrate(snapshot_data, SAVE_SCHEMA_VERSION)
 	if migrated.is_empty():
 		return ERR_FILE_UNRECOGNIZED
 	var next_day := int(migrated.get("day", 0))
@@ -178,6 +168,9 @@ func restore(snapshot_data: Dictionary) -> Error:
 		return ERR_INVALID_DATA
 	var quest_data_value = migrated.get("quests", {})
 	if not quest_data_value is Dictionary or _ensure_quests().restore(quest_data_value) != OK:
+		return ERR_INVALID_DATA
+	var animal_data_value = migrated.get("animals", {})
+	if not animal_data_value is Dictionary or _ensure_animals().restore(animal_data_value) != OK:
 		return ERR_INVALID_DATA
 	var player_data_value = migrated.get("player", {})
 	if not player_data_value is Dictionary:
@@ -270,6 +263,24 @@ func _ensure_quests():
 	return quests
 
 
+func _ensure_animals():
+	if animals != null:
+		return animals
+	animals = AnimalCareService.new()
+	var file := FileAccess.open("res://data/animals/vertical_slice_animals.json", FileAccess.READ)
+	if file == null:
+		push_error("Missing vertical-slice animal data")
+		return animals
+	var parsed: Variant = JSON.parse_string(file.get_as_text())
+	if parsed is Dictionary:
+		var animal_values: Variant = parsed.get("animals", [])
+		if animal_values is Array:
+			for animal_value in animal_values:
+				if animal_value is Dictionary:
+					animals.register_definition(animal_value)
+	return animals
+
+
 func _restore_player_scene() -> void:
 	if player_scene.is_empty() or not ResourceLoader.exists(player_scene):
 		return
@@ -278,19 +289,3 @@ func _restore_player_scene() -> void:
 		var router = get_node_or_null("/root/SceneRouter")
 		if router != null:
 			router.change_scene(player_scene)
-
-
-func _migrate_snapshot(snapshot_data: Dictionary) -> Dictionary:
-	var schema_version := int(snapshot_data.get("schema_version", -1))
-	if schema_version == SAVE_SCHEMA_VERSION:
-		return snapshot_data.duplicate(true)
-	if schema_version < 1 or schema_version > 4:
-		return {}
-	var migrated := snapshot_data.duplicate(true)
-	migrated["schema_version"] = SAVE_SCHEMA_VERSION
-	if schema_version == 1:
-		migrated["inventory"] = {"money_cents": 0, "items": {}, "fish_records": {}}
-	migrated["quests"] = {"active": {}, "completed": {}, "unlocked_helpers": {}, "hall_milestones": {}}
-	migrated["player"] = {"scene": "", "position": [0, 0]}
-	migrated["tutorial_steps"] = {}
-	return migrated

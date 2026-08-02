@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3]
+[gd_scene load_steps=21 format=3]
 
 [ext_resource type="Script" path="res://src/world/wayward_farm.gd" id="1_world"]
 [ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://src/economy/shipping_crate.gd" id="8_shipping"]
 [ext_resource type="Script" path="res://src/world/scene_exit.gd" id="9_exit"]
 [ext_resource type="Script" path="res://src/horses/hitching_post.gd" id="10_hitch"]
+[ext_resource type="Script" path="res://src/animals/animal_pen.gd" id="11_animals"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_plot"]
 radius = 26.0
@@ -37,6 +38,9 @@ radius = 32.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_river_exit"]
 radius = 42.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_animals"]
+radius = 36.0
 
 [node name="WaywardFarm" type="Node2D"]
 script = ExtResource("1_world")
@@ -121,6 +125,16 @@ position = Vector2(0, -26)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Horse"]
 shape = SubResource("CircleShape2D_horse")
+
+[node name="AnimalPen" type="Area2D" parent="."]
+position = Vector2(790, 330)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("11_animals")
+prompt_text = "Care for Juniper's hens"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimalPen"]
+shape = SubResource("CircleShape2D_animals")
 
 [node name="MahjongTable" type="Area2D" parent="."]
 position = Vector2(660, 190)

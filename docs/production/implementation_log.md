@@ -18,6 +18,7 @@
 | `c4b7c05` | Safe, save-persistent farm-field placement on Wayward Farm. |
 | `e703035` | Runtime smoke test for autoloads, inputs, content tables, scenes, and generated assets. |
 | `b62fc4e` | Independent Master, Music, Ambience, SFX, Mahjong, and UI volume controls. |
+| Animal care foundation | Feed Juniper's hens once per day, collect next-day eggs, track happiness, and sell eggs through existing shipping and store flows. |
 
 ## Current local verification baseline
 

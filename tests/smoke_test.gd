@@ -10,6 +10,7 @@ const DATA_TABLES := {
 	&"items": "res://data/items/vertical_slice_items.json",
 	&"opponents": "res://data/opponents/vertical_slice_opponents.json",
 	&"quests": "res://data/quests/vertical_slice_quests.json",
+	&"animals": "res://data/animals/vertical_slice_animals.json",
 }
 const REQUIRED_ASSETS := [
 	"res://assets/generated/player/cowboy_down_walk.png",
