@@ -144,6 +144,7 @@ func _refresh() -> void:
 
 func _draw_player() -> void:
 	flow.draw()
+	AudioService.play_catalog_event(&"mahjong_tile")
 	undo.record_player_action()
 	_record_tutorial_action(&"draw")
 	_refresh()
@@ -176,6 +177,7 @@ func _claim_brand(kind: StringName, first_index: int, second_index: int) -> void
 	_refresh()
 func _discard_player(tile_index: int) -> void:
 	flow.discard_at(tile_index)
+	AudioService.play_catalog_event(&"mahjong_tile")
 	undo.record_player_action()
 	_record_tutorial_action(&"discard")
 	_refresh()
@@ -197,6 +199,7 @@ func _take_ai_turn() -> void:
 		_refresh()
 		return
 	flow.draw()
+	AudioService.play_catalog_event(&"mahjong_tile")
 	if flow.phase == MatchFlow.Phase.DISCARD:
 		if TrailHandValidator.is_winning_hand(flow.combined_hand(1)):
 			flow.declare_win()
@@ -206,6 +209,7 @@ func _take_ai_turn() -> void:
 				knowledge.observe_discard(int(entry["player"]), entry["tile"])
 			var decision: Dictionary = BasicTrailAi.new().choose_discard_index(flow.hands[1], knowledge)
 			flow.discard_at(int(decision.get("index", 0)))
+			AudioService.play_catalog_event(&"mahjong_tile")
 	_refresh()
 func _advance_match() -> void:
 	flow.advance_match()

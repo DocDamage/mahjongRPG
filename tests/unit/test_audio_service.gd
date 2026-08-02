@@ -9,7 +9,7 @@ func run() -> Array[String]:
 	service.ensure_buses()
 	if service.load_runtime_catalog() != OK or not ResourceLoader.exists(service.ambience_path(&"clear")) or not ResourceLoader.exists(service.ambience_path(&"rain")):
 		failures.append("runtime audio catalog should resolve clear and rain ambience assets")
-	for event_id in [&"footstep_grass", &"footstep_gravel", &"footstep_wood"]:
+	for event_id in [&"footstep_grass", &"footstep_gravel", &"footstep_wood", &"mahjong_tile"]:
 		if not ResourceLoader.exists(service.event_path(event_id)):
 			failures.append("runtime audio catalog should resolve %s" % event_id)
 	if service.set_bus_volume(&"Music", 0.5) != OK or not is_equal_approx(service.bus_volume(&"Music"), 0.5):

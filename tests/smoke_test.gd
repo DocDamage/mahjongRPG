@@ -20,6 +20,7 @@ const REQUIRED_ASSETS := [
 	"res://assets/generated/audio/footstep_grass.wav",
 	"res://assets/generated/audio/footstep_gravel.wav",
 	"res://assets/generated/audio/footstep_wood.wav",
+	"res://assets/generated/audio/mahjong_tile_wood.wav",
 ]
 
 

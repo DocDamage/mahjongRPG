@@ -79,6 +79,7 @@ The vertical slice promotes these verified `Cozy SFX Volume 1` outputs into trac
 - `assets/generated/audio/footstep_grass.wav`
 - `assets/generated/audio/footstep_gravel.wav`
 - `assets/generated/audio/footstep_wood.wav`
+- `assets/generated/audio/mahjong_tile_wood.wav`
 
 They are mapped by `data/audio/vertical_slice_audio.json`; the ignored `assets/source/supplemental/` copies remain import inputs only.
 
