@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 const AudioSettings = preload("res://src/ui/audio_settings.gd")
+const DisplaySettings = preload("res://src/ui/display_settings.gd")
 const InputSettings = preload("res://src/ui/input_settings.gd")
 
 const MENU_PAUSE_REASON := &"save_menu"
@@ -10,6 +11,7 @@ var _panel: PanelContainer
 var _message: Label
 var _first_button: Button
 var _audio_settings
+var _display_settings
 var _input_settings
 
 
@@ -22,6 +24,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"pause"):
 		if _audio_settings != null and _audio_settings.is_open():
 			_audio_settings.close()
+		elif _display_settings != null and _display_settings.is_open():
+			_display_settings.close()
 		elif _input_settings != null and _input_settings.is_open():
 			_input_settings.close()
 		elif is_open():
@@ -89,6 +93,11 @@ func _build_menu() -> void:
 	controls_button.custom_minimum_size = Vector2(0, 28)
 	controls_button.pressed.connect(_open_input_settings)
 	content.add_child(controls_button)
+	var display_button := Button.new()
+	display_button.text = "Display settings"
+	display_button.custom_minimum_size = Vector2(0, 28)
+	display_button.pressed.connect(_open_display_settings)
+	content.add_child(display_button)
 	var resume_button := Button.new()
 	resume_button.text = "Resume"
 	resume_button.custom_minimum_size = Vector2(0, 28)
@@ -99,6 +108,11 @@ func _build_menu() -> void:
 	_audio_settings.size = Vector2(400, 372)
 	_audio_settings.closed.connect(_restore_save_menu)
 	_shade.add_child(_audio_settings)
+	_display_settings = DisplaySettings.new()
+	_display_settings.position = Vector2(280, 128)
+	_display_settings.size = Vector2(400, 300)
+	_display_settings.closed.connect(_restore_save_menu)
+	_shade.add_child(_display_settings)
 	_input_settings = InputSettings.new()
 	_input_settings.position = Vector2(200, 42)
 	_input_settings.size = Vector2(560, 454)
@@ -163,6 +177,11 @@ func _open_audio_settings() -> void:
 func _open_input_settings() -> void:
 	_panel.visible = false
 	_input_settings.open()
+
+
+func _open_display_settings() -> void:
+	_panel.visible = false
+	_display_settings.open()
 
 
 func _restore_save_menu() -> void:

@@ -1,6 +1,6 @@
 extends SceneTree
 
-const REQUIRED_AUTOLOADS := [&"GameSession", &"SceneRouter", &"SaveService", &"AudioService", &"InputService", &"ContentRegistry", &"SaveMenu"]
+const REQUIRED_AUTOLOADS := [&"GameSession", &"SceneRouter", &"SaveService", &"AudioService", &"InputService", &"DisplayPreferences", &"ContentRegistry", &"SaveMenu"]
 const REQUIRED_INPUTS := [&"move_up", &"move_down", &"move_left", &"move_right", &"interact", &"run", &"save_game", &"load_game", &"fish_reel", &"fish_release", &"fish_rod_left", &"fish_rod_right", &"pause", &"place_field"]
 const DATA_TABLES := {
 	&"crops": "res://data/crops/vertical_slice_crops.json",
