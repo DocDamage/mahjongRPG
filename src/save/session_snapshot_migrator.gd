@@ -20,4 +20,8 @@ static func migrate(snapshot_data: Dictionary, current_version: int) -> Dictiona
 	if schema_version <= 5:
 		var migration_day := maxi(1, int(migrated.get("day", 1)))
 		migrated["animals"] = {"animals": {"juniper_hens": {"last_care_day": 0, "last_progress_day": migration_day, "happiness": 55, "products_ready": 0}}}
+	if schema_version <= 6:
+		var farm_data: Dictionary = migrated.get("farm", {})
+		farm_data["constructions"] = []
+		migrated["farm"] = farm_data
 	return migrated

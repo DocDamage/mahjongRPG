@@ -26,6 +26,7 @@
 | Mahjong tile atlas | Deterministically rasterized the canonical 34 face set into one compact runtime atlas, with testable identity regions and presentation-layer Brand tinting. |
 | Crop catalog | Cataloged all 20 canonical ranch crops while enforcing the four balanced active slice crops at the farm-service boundary. |
 | Accessible controls | Added a pause-menu controls screen with keyboard, controller button, stick, and trigger remapping, duplicate-binding protection, reset controls, controller-first focus, and remap-aware keyboard/controller prompt labels. |
+| Farm construction | Added data-driven paths, fences, decorations, machines, pens, and buildings with protected-route checks, footprint validation, safe relocation/removal, persistent snapshots, and an in-game build palette. |
 
 ## Current local verification baseline
 

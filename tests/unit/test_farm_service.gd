@@ -14,6 +14,13 @@ func run() -> Array[String]:
 	var farm = FarmService.new(grid)
 	var beans = CropDefinition.new({"id": "beans", "days_to_mature": 3, "wilt_after_days": 2, "die_after_days": 4})
 	farm.register_definition(beans)
+	for construction in [
+		{"id": "path", "name": "Path", "footprint": [1, 1], "walkable": true},
+		{"id": "fence", "name": "Fence", "footprint": [1, 1], "walkable": false},
+		{"id": "building", "name": "Building", "footprint": [2, 2], "walkable": false},
+	]:
+		if farm.register_construction_definition(construction) != OK:
+			failures.append("construction definitions should validate")
 	if farm.plant(Vector2i(1, 1), &"beans", 1) != ERR_UNAVAILABLE:
 		failures.append("crops should require a placed field")
 	if farm.place_field(Vector2i(0, 0)) != ERR_ALREADY_EXISTS:
@@ -36,13 +43,29 @@ func run() -> Array[String]:
 		failures.append("harvesting should produce the crop and release its grid cell")
 	if farm.remove_field(plot) != OK or farm.has_field(plot):
 		failures.append("empty fields should be safely removable")
+	if farm.place_construction(&"fence", Vector2i(1, 0)) != ERR_UNAVAILABLE:
+		failures.append("solid structures must not block required routes")
+	if farm.place_construction(&"path", Vector2i(1, 0)) != OK:
+		failures.append("walkable paths should be allowed on a protected route")
+	if farm.place_construction(&"building", Vector2i(2, 1)) != OK:
+		failures.append("multi-cell buildings should place on clear terrain")
+	if farm.relocate_construction(Vector2i(2, 1), Vector2i(0, 0)) != ERR_ALREADY_EXISTS:
+		failures.append("relocation should reject blocked terrain")
+	if farm.relocate_construction(Vector2i(2, 1), Vector2i(0, 2)) != OK or farm.construction_at(Vector2i(0, 2)).get("id", "") != "building":
+		failures.append("structures should relocate safely across their complete footprint")
 	if farm.place_field(plot) != OK:
 		failures.append("a removed field should be placeable again")
 	var snapshot := farm.snapshot()
 	var restored = FarmService.new(FarmGrid.new(Rect2i(0, 0, 4, 4)))
 	restored.register_definition(beans)
-	if restored.restore(snapshot) != OK or not restored.has_field(plot):
-		failures.append("placed fields should survive a farm save round-trip")
+	for construction in [
+		{"id": "path", "name": "Path", "footprint": [1, 1], "walkable": true},
+		{"id": "fence", "name": "Fence", "footprint": [1, 1], "walkable": false},
+		{"id": "building", "name": "Building", "footprint": [2, 2], "walkable": false},
+	]:
+		restored.register_construction_definition(construction)
+	if restored.restore(snapshot) != OK or not restored.has_field(plot) or restored.construction_at(Vector2i(0, 2)).get("id", "") != "building":
+		failures.append("placed fields and structures should survive a farm save round-trip")
 	var catalog_only := CropDefinition.new({"id": "radish", "days_to_mature": 3, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": false})
 	restored.register_definition(catalog_only)
 	if restored.plant(plot, &"radish", 1) != ERR_UNAVAILABLE:

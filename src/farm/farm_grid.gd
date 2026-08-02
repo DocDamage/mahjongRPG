@@ -23,22 +23,25 @@ func set_required_path(cells: Array) -> void:
 		_required_path[cell_value] = true
 
 
-func validate(cells: Array) -> Error:
+func validate(cells: Array, allow_required_path := false, ignored_cells: Array = []) -> Error:
 	if cells.is_empty():
 		return ERR_INVALID_PARAMETER
+	var ignored: Dictionary = {}
+	for ignored_cell in ignored_cells:
+		ignored[ignored_cell] = true
 	for cell_value in cells:
 		var cell: Vector2i = cell_value
 		if not bounds.has_point(cell):
 			return ERR_PARAMETER_RANGE_ERROR
-		if _blocked.has(cell) or _occupied.has(cell):
+		if _blocked.has(cell) or (_occupied.has(cell) and not ignored.has(cell)):
 			return ERR_ALREADY_EXISTS
-		if _required_path.has(cell):
+		if _required_path.has(cell) and not allow_required_path:
 			return ERR_UNAVAILABLE
 	return OK
 
 
-func place(owner_id: StringName, cells: Array) -> Error:
-	var result := validate(cells)
+func place(owner_id: StringName, cells: Array, allow_required_path := false) -> Error:
+	var result := validate(cells, allow_required_path)
 	if result != OK:
 		return result
 	for cell_value in cells:
@@ -49,6 +52,16 @@ func place(owner_id: StringName, cells: Array) -> Error:
 func clear(cells: Array) -> void:
 	for cell_value in cells:
 		_occupied.erase(cell_value)
+
+
+func move(owner_id: StringName, previous_cells: Array, next_cells: Array, allow_required_path := false) -> Error:
+	var result := validate(next_cells, allow_required_path, previous_cells)
+	if result != OK:
+		return result
+	clear(previous_cells)
+	for cell_value in next_cells:
+		_occupied[cell_value] = owner_id
+	return OK
 
 
 func is_occupied(cell: Vector2i) -> bool:

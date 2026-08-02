@@ -27,8 +27,7 @@ func _ready() -> void:
 	$WaywardHitch.feedback.connect(_show_message)
 	$RiverbendPath.feedback.connect(_show_message)
 	_create_placement_menu()
-	for field_cell in GameSession.farm.field_cells():
-		_ensure_field_plot(field_cell)
+	_sync_field_plots()
 	_update_status(GameSession.day, GameSession.minute_of_day)
 
 
@@ -40,6 +39,13 @@ func _draw() -> void:
 	draw_rect(Rect2(460, 126, 400, 154), Color("5a8cc4"))
 	draw_rect(Rect2(460, 300, 400, 130), Color("d3ad6e"))
 	draw_line(Vector2(398, 292), Vector2(460, 292), Color("d8c18b"), 18.0)
+	for anchor in GameSession.farm.construction_anchors():
+		var construction: Dictionary = GameSession.farm.construction_at(anchor)
+		var definition: Dictionary = GameSession.farm.construction_definition(StringName(construction["id"]))
+		var footprint: Vector2i = definition["footprint"]
+		var color := Color(String(definition["color"]))
+		draw_rect(Rect2(Vector2(112 + anchor.x * 100, 182 + anchor.y * 100), Vector2(36 + (footprint.x - 1) * 100, 36 + (footprint.y - 1) * 100)), color)
+		draw_rect(Rect2(Vector2(112 + anchor.x * 100, 182 + anchor.y * 100), Vector2(36 + (footprint.x - 1) * 100, 36 + (footprint.y - 1) * 100)), Color("fff0bf"), false, 2.0)
 	if GameSession.weather_id == &"rain":
 		for index in 28:
 			var x := float((index * 73) % 960)
@@ -50,7 +56,7 @@ func _draw() -> void:
 func _update_status(_day: int, _minute_of_day: int) -> void:
 	var hour := GameSession.minute_of_day / 60
 	var minute := GameSession.minute_of_day % 60
-	status_label.text = "WAYWARD FARM  •  Day %d  •  %02d:%02d  •  %s  •  $%.2f\nMove: WASD / Left Stick  •  Run: Shift / L3  •  Fields: B / X  •  Fish: R/RT reel, F/LT release" % [GameSession.day, hour, minute, GameSession.weather_id.capitalize(), GameSession.inventory.money_cents / 100.0]
+	status_label.text = "WAYWARD FARM  •  Day %d  •  %02d:%02d  •  %s  •  $%.2f\nMove: WASD / Left Stick  •  Run: Shift / L3  •  Build: B / X  •  Fish: R/RT reel, F/LT release" % [GameSession.day, hour, minute, GameSession.weather_id.capitalize(), GameSession.inventory.money_cents / 100.0]
 
 
 func _show_message(message: String) -> void:
@@ -74,7 +80,17 @@ func _create_placement_menu() -> void:
 	_placement_menu = FarmPlacementMenu.new()
 	_placement_menu.configure(GameSession.farm)
 	_placement_menu.field_placed.connect(_ensure_field_plot)
+	_placement_menu.construction_changed.connect(_sync_field_plots)
+	_placement_menu.construction_changed.connect(queue_redraw)
 	add_child(_placement_menu)
+
+
+func _sync_field_plots() -> void:
+	for plot in get_tree().get_nodes_in_group(&"farm_plot"):
+		if not GameSession.farm.has_field(plot.grid_cell):
+			plot.queue_free()
+	for field_cell in GameSession.farm.field_cells():
+		_ensure_field_plot(field_cell)
 
 
 func _ensure_field_plot(cell: Vector2i) -> void:
@@ -96,4 +112,5 @@ func _ensure_field_plot(cell: Vector2i) -> void:
 	plot.add_child(collision)
 	plot.feedback.connect(_show_message)
 	add_child(plot)
+	queue_redraw()
 	_show_message("Field placed. Plant a crop there when you are ready.")

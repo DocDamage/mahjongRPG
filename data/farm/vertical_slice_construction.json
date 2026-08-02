@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "constructions": [
+    {"id": "path", "name": "Path", "footprint": [1, 1], "walkable": true, "color": "d9c18b"},
+    {"id": "fence", "name": "Fence", "footprint": [1, 1], "walkable": false, "color": "8a5a3b"},
+    {"id": "decoration", "name": "Decoration", "footprint": [1, 1], "walkable": false, "color": "c56f48"},
+    {"id": "machine", "name": "Machine", "footprint": [1, 1], "walkable": false, "color": "718ba5"},
+    {"id": "pen", "name": "Pen", "footprint": [2, 1], "walkable": false, "color": "c99a55"},
+    {"id": "building", "name": "Building", "footprint": [2, 2], "walkable": false, "color": "84564c"}
+  ]
+}

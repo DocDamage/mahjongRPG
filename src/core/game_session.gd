@@ -2,6 +2,7 @@ extends Node
 
 const CropDefinition = preload("res://src/crops/crop_definition.gd")
 const AnimalCareService = preload("res://src/animals/animal_care_service.gd")
+const ConstructionCatalog = preload("res://src/farm/construction_catalog.gd")
 const FarmGrid = preload("res://src/farm/farm_grid.gd")
 const FarmService = preload("res://src/farm/farm_service.gd")
 const HorseTravelState = preload("res://src/horses/horse_travel_state.gd")
@@ -15,7 +16,7 @@ signal pause_changed(paused: bool)
 signal weather_changed(weather_id: StringName)
 signal session_restored()
 
-const SAVE_SCHEMA_VERSION := 6
+const SAVE_SCHEMA_VERSION := 7
 const MATCH_TIME_COST_MINUTES := 90
 const MINUTES_PER_DAY := 24 * 60
 const REAL_SECONDS_PER_DAY := 60.0
@@ -211,9 +212,9 @@ func _weather_for_day(next_day: int) -> StringName:
 func _ensure_farm():
 	if farm != null:
 		return farm
-	var grid = FarmGrid.new(Rect2i(0, 0, 3, 3))
-	grid.set_required_path([Vector2i(2, 1)])
-	grid.set_blocked(Vector2i(2, 2))
+	var grid = FarmGrid.new(Rect2i(0, 0, 5, 3))
+	grid.set_required_path([Vector2i(4, 1)])
+	grid.set_blocked(Vector2i(4, 2))
 	farm = FarmService.new(grid)
 	for field_cell in [Vector2i(0, 0), Vector2i(1, 0), Vector2i(0, 1), Vector2i(1, 1)]:
 		farm.place_field(field_cell)
@@ -230,6 +231,8 @@ func _ensure_farm():
 		for crop_data_value in crops_value:
 			if crop_data_value is Dictionary:
 				farm.register_definition(CropDefinition.new(crop_data_value))
+	if ConstructionCatalog.register_definitions(farm) != OK:
+		push_error("Invalid vertical-slice construction data")
 	return farm
 
 
