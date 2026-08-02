@@ -22,6 +22,8 @@ const WALK_TEXTURE_PATHS := {
 var facing: StringName = &"down"
 var _interaction_targets: Array[Area2D] = []
 var _prompt_label: Label
+var _current_prompt_target: Area2D
+var _using_controller := false
 
 
 func _ready() -> void:
@@ -31,6 +33,10 @@ func _ready() -> void:
 	interaction_area.area_exited.connect(_on_interaction_area_exited)
 	interaction_target_changed.connect(_update_interaction_prompt)
 	_create_interaction_prompt()
+	var input_service = get_node_or_null("/root/InputService")
+	if input_service != null:
+		_using_controller = input_service.using_controller
+		input_service.active_device_changed.connect(_on_active_device_changed)
 
 
 func _physics_process(delta: float) -> void:
@@ -145,14 +151,20 @@ func _create_interaction_prompt() -> void:
 
 
 func _update_interaction_prompt(target: Area2D) -> void:
+	_current_prompt_target = target
 	if _prompt_label == null:
 		return
 	if target == null or not is_instance_valid(target):
 		_prompt_label.visible = false
 		return
 	var prompt := String(target.get("prompt_text"))
-	_prompt_label.text = "E / A  •  %s" % prompt
+	_prompt_label.text = "%s  •  %s" % ["A" if _using_controller else "E", prompt]
 	_prompt_label.visible = not prompt.is_empty()
+
+
+func _on_active_device_changed(using_controller: bool) -> void:
+	_using_controller = using_controller
+	_update_interaction_prompt(_current_prompt_target)
 
 
 func _toggle_pause() -> void:
@@ -168,7 +180,7 @@ func _toggle_pause() -> void:
 func _show_pause_prompt() -> void:
 	if _prompt_label == null:
 		return
-	_prompt_label.text = "PAUSED  •  Esc / Start to resume"
+	_prompt_label.text = "PAUSED  •  %s to resume" % ("Start" if _using_controller else "Esc")
 	_prompt_label.visible = true
 
 
