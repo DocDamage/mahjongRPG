@@ -1,7 +1,6 @@
 # Godot-generated data
 .godot/
 .import/
-*.import
 
 # Export output
 build/
@@ -18,6 +17,7 @@ assets/source/supplemental/
 assets/*
 !assets/generated/
 !assets/generated/**
+*.import
 
 # Local validation and environment snapshots are reproducibility evidence, not
 # source-controlled project content.
