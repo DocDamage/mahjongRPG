@@ -13,6 +13,7 @@ const DATA_TABLES := {
 	&"animals": "res://data/animals/vertical_slice_animals.json",
 	&"dialogue": "res://data/dialogue/vertical_slice_dialogue.json",
 	&"runtime_assets": "res://data/runtime_assets/vertical_slice_assets.json",
+	&"opponent_schedules": "res://data/schedules/vertical_slice_opponent_schedules.json",
 }
 const REQUIRED_ASSETS := [
 	"res://assets/generated/player/cowboy_down_walk.png",

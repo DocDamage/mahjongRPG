@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "opponents": [
-    {"id": "mayor_bell", "display_name": "Mayor Bell", "brands": ["dark", "green"], "availability": {"clear": [8, 18], "rain": [10, 16]}, "ai": {"set_weight": 1.4, "run_weight": 1.2, "seen_tile_weight": 0.4}},
-    {"id": "river_rose", "display_name": "River Rose", "brands": ["blue", "pink"], "availability": {"clear": [6, 20], "rain": [8, 18]}, "ai": {"set_weight": 0.9, "run_weight": 1.8, "seen_tile_weight": 0.2}},
-    {"id": "dynamite_bill", "display_name": "Dynamite Bill", "brands": ["orange", "purple"], "availability": {"clear": [12, 24], "rain": [14, 22]}, "ai": {"set_weight": 1.7, "run_weight": 0.7, "seen_tile_weight": 0.6}}
+    {"id": "mayor_bell", "display_name": "Mayor Bell", "brands": ["dark", "green"], "ai": {"set_weight": 1.4, "run_weight": 1.2, "seen_tile_weight": 0.4}},
+    {"id": "river_rose", "display_name": "River Rose", "brands": ["blue", "pink"], "ai": {"set_weight": 0.9, "run_weight": 1.8, "seen_tile_weight": 0.2}},
+    {"id": "dynamite_bill", "display_name": "Dynamite Bill", "brands": ["orange", "purple"], "ai": {"set_weight": 1.7, "run_weight": 0.7, "seen_tile_weight": 0.6}}
   ]
 }

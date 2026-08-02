@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "opponents": {
+    "mayor_bell": {
+      "clear": {"hours": [8, 18], "position": [190, 270], "activity": "reviewing claims at the courthouse table"},
+      "rain": {"hours": [10, 16], "position": [255, 330], "activity": "sheltering beneath the saloon awning"}
+    },
+    "river_rose": {
+      "clear": {"hours": [6, 20], "position": [470, 260], "activity": "dealing beside the stockyard rail"},
+      "rain": {"hours": [8, 18], "position": [530, 315], "activity": "watching the rain from the covered porch"}
+    },
+    "dynamite_bill": {
+      "clear": {"hours": [12, 24], "position": [750, 270], "activity": "taking noon challenges by the Hall"},
+      "rain": {"hours": [14, 22], "position": [690, 320], "activity": "warming up by the inn's stove"}
+    }
+  }
+}

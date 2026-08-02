@@ -22,6 +22,7 @@
 | Autosave recovery | Autosave safely after travel, rest, quest completion, and finished Mahjong matches using the existing checksum and backup flow. |
 | Runtime hero and horse catalog | Deterministically generate all directional hero actions and five horse colorways from the canonical `assets` folders, then resolve them through a runtime data catalog. |
 | First Lantern story arc | Persisted three-stage Mabel storyline with data-driven dialogue, a distinct hand-in and lighting return step, helper unlock, Riverbend access, and a visible Hall lantern. |
+| NPC schedules | Data-driven clear and rain schedules relocate all three Dustward opponents and preserve their authored challenge windows. |
 
 ## Current local verification baseline
 

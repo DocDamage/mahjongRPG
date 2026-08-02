@@ -1,6 +1,7 @@
 extends "res://src/interaction/world_interactable.gd"
 
 const MahjongTable = preload("res://src/mahjong/presentation/mahjong_table.gd")
+const OpponentSchedule = preload("res://src/npcs/opponent_schedule.gd")
 
 signal feedback(message: String)
 
@@ -8,6 +9,7 @@ signal feedback(message: String)
 
 var _definition: Dictionary = {}
 var _available := true
+var _activity := ""
 
 
 func _ready() -> void:
@@ -27,7 +29,7 @@ func _draw() -> void:
 
 func _on_interacted(_actor: Node2D) -> void:
 	if not _available:
-		feedback.emit("%s is away under the current %s schedule." % [_definition.get("display_name", "This opponent"), GameSession.weather_id])
+		feedback.emit("%s is %s. Check back during the %s schedule." % [_definition.get("display_name", "This opponent"), _activity, GameSession.weather_id])
 		return
 	if get_tree().get_first_node_in_group(&"mahjong_table_overlay") != null:
 		return
@@ -55,9 +57,12 @@ func _on_weather_changed(_weather_id: StringName) -> void:
 func _update_availability() -> void:
 	if _definition.is_empty():
 		return
-	var availability_value: Variant = _definition.get("availability", {})
-	var hours_value: Variant = availability_value.get(String(GameSession.weather_id), []) if availability_value is Dictionary else []
-	_available = hours_value is Array and hours_value.size() == 2 and GameSession.minute_of_day / 60 >= int(hours_value[0]) and GameSession.minute_of_day / 60 < int(hours_value[1])
+	var schedule := OpponentSchedule.state(opponent_id, GameSession.weather_id, GameSession.minute_of_day / 60)
+	_available = bool(schedule.get("available", false))
+	_activity = String(schedule.get("activity", "away"))
+	var position_value: Variant = schedule.get("position")
+	if position_value is Vector2:
+		position = position_value
 	visible = _available
 	monitorable = _available
 	monitoring = _available
