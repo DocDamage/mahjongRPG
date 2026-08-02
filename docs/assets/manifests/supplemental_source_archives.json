@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "source_root": "vendor/local/supplemental",
+  "import_root": "assets/source/supplemental",
+  "archives": [
+    {
+      "file": "Hero - Cowboy - AssetPack.zip",
+      "kind": "hero",
+      "sha256": "a0bd34206dab443c525125f645ceca08d479ece0e7a5426f4264d610711b9a55",
+      "bytes": 318207,
+      "usable_entries": 49
+    },
+    {
+      "file": "horses.zip",
+      "kind": "horses",
+      "sha256": "03b43e94e73e23724064970fc89afb3bf907d21c5f40203f0920546d7f003c15",
+      "bytes": 190574,
+      "usable_entries": 5
+    },
+    {
+      "file": "fishing UI.zip",
+      "kind": "fishing_ui",
+      "sha256": "26246e9147a47cbd6e7d44652151bb4c18d3139528516d989dcb5a3a031480d2",
+      "bytes": 352294,
+      "usable_entries": 38
+    },
+    {
+      "file": "Cozy SFX Volume 1.zip",
+      "kind": "cozy_sfx",
+      "sha256": "787d64278927114d3c27a0b118ee90ffbc6053d33eae1d524f81b664df07067e",
+      "bytes": 132251131,
+      "usable_entries": 59
+    }
+  ]
+}

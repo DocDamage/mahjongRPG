@@ -1,0 +1,31 @@
+# Godot-generated data
+.godot/
+.import/
+
+# Export output
+build/
+dist/
+exports/
+*.pck
+
+# Source archives and normalized imports are local-only.
+vendor/local/
+assets/source/supplemental/
+
+# Local tooling
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Editors and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
+*.swp

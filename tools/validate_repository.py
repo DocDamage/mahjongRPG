@@ -1,0 +1,101 @@
+#!/usr/bin/env python3
+"""Validate repository size, source length, manifests, and generated patch."""
+
+from __future__ import annotations
+
+import json
+import struct
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+MAX_BYTES = 95 * 1024 * 1024
+MAX_LINES = 300
+SOURCE_EXTENSIONS = {".gd", ".py", ".cs", ".js", ".ts", ".tsx", ".jsx", ".sh"}
+EXCLUDED_PREFIXES = (".git/", ".godot/", "assets/source/", "vendor/local/")
+REQUIRED = (
+    "project.godot",
+    "legal/THIRD_PARTY_ASSET_LICENSE_CC0.txt",
+    "docs/assets/manifests/supplemental_source_archives.json",
+    "docs/architecture/file_size_policy.md",
+    "assets/generated/npcs/dynamite_bill/rotations/east.png",
+)
+
+
+def relative(path: Path) -> str:
+    return path.relative_to(ROOT).as_posix()
+
+
+def excluded(path: Path) -> bool:
+    rel = relative(path)
+    return rel.startswith(EXCLUDED_PREFIXES)
+
+
+def check_required(errors: list[str]) -> None:
+    for rel in REQUIRED:
+        if not (ROOT / rel).is_file():
+            errors.append(f"Missing required file: {rel}")
+
+
+def check_files(errors: list[str]) -> None:
+    for path in ROOT.rglob("*"):
+        if not path.is_file() or excluded(path):
+            continue
+        rel = relative(path)
+        if path.stat().st_size > MAX_BYTES:
+            errors.append(f"File exceeds 95 MiB: {rel}")
+        if path.suffix.lower() in SOURCE_EXTENSIONS:
+            try:
+                lines = len(path.read_text(encoding="utf-8").splitlines())
+            except UnicodeDecodeError:
+                errors.append(f"Source is not UTF-8: {rel}")
+                continue
+            if lines > MAX_LINES:
+                errors.append(f"Handwritten source exceeds 300 LOC: {rel} ({lines})")
+
+
+def check_manifest(errors: list[str]) -> None:
+    path = ROOT / "docs/assets/manifests/supplemental_source_archives.json"
+    if not path.is_file():
+        return
+    data = json.loads(path.read_text(encoding="utf-8"))
+    expected = {"hero", "horses", "fishing_ui", "cozy_sfx"}
+    actual = {entry.get("kind") for entry in data.get("archives", [])}
+    if actual != expected:
+        errors.append(f"Supplement manifest kinds differ: {sorted(actual)}")
+    for entry in data.get("archives", []):
+        digest = entry.get("sha256", "")
+        if len(digest) != 64 or any(ch not in "0123456789abcdef" for ch in digest):
+            errors.append(f"Invalid SHA-256 for {entry.get('file')}")
+
+
+def check_patch(errors: list[str]) -> None:
+    path = ROOT / "assets/generated/npcs/dynamite_bill/rotations/east.png"
+    if not path.is_file():
+        return
+    data = path.read_bytes()
+    if data[:8] != b"\x89PNG\r\n\x1a\n" or data[12:16] != b"IHDR":
+        errors.append("Dynamite Bill east patch is not a valid PNG header")
+        return
+    width, height = struct.unpack(">II", data[16:24])
+    if (width, height) != (92, 92):
+        errors.append(f"Dynamite Bill east patch is {width}x{height}, expected 92x92")
+
+
+def main() -> int:
+    errors: list[str] = []
+    check_required(errors)
+    check_files(errors)
+    check_manifest(errors)
+    check_patch(errors)
+    if errors:
+        print("Repository validation failed:", file=sys.stderr)
+        for error in errors:
+            print(f"- {error}", file=sys.stderr)
+        return 1
+    print("Repository validation passed.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

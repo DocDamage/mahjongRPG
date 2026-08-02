@@ -1,0 +1,79 @@
+# Asset Status
+
+## Main archive
+
+The reconstructed source archive passed CRC validation:
+
+- 5,791 archive entries tested
+- 4,607 extracted files inventoried
+- No missing split volumes
+- No CRC failures
+- Approximately 838 MiB reconstructed archive size
+
+The master archive remains outside Git.
+
+## World coverage
+
+The collection supports the seven planned regions:
+
+| Region | Primary source material |
+|---|---|
+| Wayward Farm | Ranch and cozy farm assets |
+| Bridlewood Ranch | Ranch kit and Western props |
+| Dustward | Wild West packs 1 and 2 |
+| Saint's Landing | 19th Century European City |
+| Ironhook Docks | 19th Century European Dock |
+| Gull's Rest | Coastal Fishing Village Port |
+| Red Testament / King's Reach | Desert and selected Western structures |
+
+A shared lighting, signage, path, shoreline, and color-grading pass will unify the source packs.
+
+## Mahjong
+
+The collection contains 2,220 SVG assets covering:
+
+- Blue, Dark, Green, Orange, Pink, and Purple
+- Horizontal and vertical forms
+- The traditional core 34 identities
+- Transparent raw face layers
+- Physical tile-body variants
+- Additional optional themed pieces
+
+The raw faces support generated atlases, Brand marks, colorblind patterns, tutorial ghosts, locked states, highlights, and supernatural variants.
+
+## Crops and animals
+
+Animated crop material covers twenty launch candidates, including vegetables, grain, fruit, bamboo, and tallgrass. Most provide approximately six to eight growth states.
+
+Animated animal material includes birds, bunnies, cats, cows, foxes, mice, pigs, eggs, and fireflies. Additional static livestock will require derived animation before being presented as active animals.
+
+## Supplemental visual assets
+
+The verified supplemental archives add:
+
+- Doc's four-direction 64×64 hero animations
+- Idle, walk, gun draw, armed still, and shooting states
+- Editable Aseprite source
+- Five 128×128-cell horse colorways
+- Fishing rod states, directional prompts, fish, gear, store icons, and catch presentation
+- Generated Dynamite Bill east rotation
+
+Running initially accelerates the existing walk cycle. Farming, table, carrying, sleeping, and helper animations remain authored production work based on the supplied style.
+
+## Supplemental audio
+
+`Cozy SFX Volume 1` provides:
+
+- Six ambience recordings
+- Grass, gravel, stone, and wood footsteps
+- Fabric, leaves, water, and wood interactions
+- Bee and bird one-shots
+- Pickup, click, hover, notification, and level-up UI sounds
+
+During import, long ambience is converted to OGG, the anomalous stone footstep is trimmed, and demo media plus bonus music are excluded from the runtime-oriented output.
+
+Dedicated revolver, horse, livestock, door, bonfire, and specialized fishing-line sounds remain polish tasks, not foundation blockers.
+
+## License
+
+The user-supplied universal license allows commercial and non-commercial use, modification, remixing, redistribution, optional attribution, and a CC0 public-domain dedication with a broad fallback license. It is stored under `legal/`.
