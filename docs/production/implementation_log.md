@@ -37,6 +37,7 @@
 | Fishing gear data | Added a validated default rod, bait, lure, hook, and line catalog, then applied its deterministic reel, bite-window, and line-tension modifiers to Riverbend fishing. |
 | Placement route safety | Added guarded-route breadth-first validation to construction placement, preventing a non-walkable build from sealing the farm's traversable route while allowing walkable paths. |
 | Controller focus regression | Added a viewport-attached controls-screen test that verifies initial binding focus and focus retention when the controller tab becomes active. |
+| Weather catalog | Moved deterministic clear/rain selection into validated weather data while defining cloudy, thunderstorm, dust wind, and supernatural fog for later activation. |
 
 ## Current local verification baseline
 

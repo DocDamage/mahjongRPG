@@ -9,6 +9,7 @@ const HorseTravelState = preload("res://src/horses/horse_travel_state.gd")
 const InventoryService = preload("res://src/inventory/inventory_service.gd")
 const QuestService = preload("res://src/quests/quest_service.gd")
 const SessionSnapshotMigrator = preload("res://src/save/session_snapshot_migrator.gd")
+const WeatherCatalog = preload("res://src/weather/weather_catalog.gd")
 
 signal session_started(seed: int)
 signal time_advanced(day: int, minute_of_day: int)
@@ -205,9 +206,7 @@ func _stream_seed(stream_name: StringName) -> int:
 
 
 func _weather_for_day(next_day: int) -> StringName:
-	var rng := RandomNumberGenerator.new()
-	rng.seed = _stream_seed(&"weather") + next_day
-	return &"rain" if rng.randi_range(0, 99) < 35 else &"clear"
+	return WeatherCatalog.roll_slice_weather(_stream_seed(&"weather"), next_day)
 
 
 func _ensure_farm():

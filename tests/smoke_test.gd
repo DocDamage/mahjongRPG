@@ -5,6 +5,7 @@ const REQUIRED_INPUTS := [&"move_up", &"move_down", &"move_left", &"move_right",
 const DATA_TABLES := {
 	&"crops": "res://data/crops/vertical_slice_crops.json",
 	&"construction": "res://data/farm/vertical_slice_construction.json",
+	&"weather": "res://data/weather/vertical_slice_weather.json",
 	&"audio": "res://data/audio/vertical_slice_audio.json",
 	&"fish": "res://data/fish/vertical_slice_fish.json",
 	&"fishing_gear": "res://data/fish/vertical_slice_fishing_gear.json",

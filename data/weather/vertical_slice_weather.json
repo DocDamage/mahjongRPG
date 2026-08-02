@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "weather": [
+    {"id": "clear", "available_in_slice": true, "roll_weight": 65},
+    {"id": "rain", "available_in_slice": true, "roll_weight": 35},
+    {"id": "cloudy", "available_in_slice": false, "roll_weight": 0},
+    {"id": "thunderstorm", "available_in_slice": false, "roll_weight": 0},
+    {"id": "dust_wind", "available_in_slice": false, "roll_weight": 0},
+    {"id": "supernatural_fog", "available_in_slice": false, "roll_weight": 0}
+  ]
+}
