@@ -30,6 +30,10 @@ func reset_for_hand() -> void:
 
 
 func record_discard(brand: StringName) -> void:
+	grant_charge(brand)
+
+
+func grant_charge(brand: StringName) -> void:
 	if not equipped.has(brand) or activations(brand) >= MAX_ACTIVATIONS:
 		return
 	_charges[brand] = charges(brand) + 1

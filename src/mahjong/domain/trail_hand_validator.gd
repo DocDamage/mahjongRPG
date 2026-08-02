@@ -7,18 +7,27 @@ const HAND_SIZE := 11
 
 
 static func is_winning_hand(tiles: Array) -> bool:
+	return not decompose_hand(tiles).is_empty()
+
+
+static func decompose_hand(tiles: Array) -> Array[Dictionary]:
 	if tiles.size() != HAND_SIZE:
-		return false
+		return []
 	var counts := _identity_counts(tiles)
-	for pair_key_value in counts.keys():
+	if counts.is_empty():
+		return []
+	var pair_keys: Array = counts.keys()
+	pair_keys.sort()
+	for pair_key_value in pair_keys:
 		var pair_key: String = pair_key_value
-		if counts[pair_key] < 2:
+		if int(counts[pair_key]) < 2:
 			continue
-		counts[pair_key] -= 2
-		if _can_form_groups(counts, 3):
-			return true
-		counts[pair_key] += 2
-	return false
+		counts[pair_key] = int(counts[pair_key]) - 2
+		var groups := _find_groups(counts, 3)
+		counts[pair_key] = int(counts[pair_key]) + 2
+		if not groups.is_empty():
+			return [{"pair": pair_key, "groups": groups}]
+	return []
 
 
 static func _identity_counts(tiles: Array) -> Dictionary:
@@ -44,16 +53,26 @@ static func winning_identity_keys(tiles: Array) -> Array[String]:
 
 
 static func _can_form_groups(counts: Dictionary, groups_remaining: int) -> bool:
+	return not _find_groups(counts, groups_remaining).is_empty()
+
+
+static func _find_groups(counts: Dictionary, groups_remaining: int) -> Array[Dictionary]:
 	if groups_remaining == 0:
-		return _remaining_tile_count(counts) == 0
+		var terminal: Array[Dictionary] = []
+		if _remaining_tile_count(counts) == 0:
+			terminal.append({})
+		return terminal
 	var first_key: String = _first_nonzero_key(counts)
 	if first_key.is_empty():
-		return false
+		var no_groups: Array[Dictionary] = []
+		return no_groups
 	if counts[first_key] >= 3:
 		counts[first_key] -= 3
-		if _can_form_groups(counts, groups_remaining - 1):
-			return true
+		var set_groups := _find_groups(counts, groups_remaining - 1)
 		counts[first_key] += 3
+		if not set_groups.is_empty():
+			set_groups.push_front({"kind": "set", "keys": [first_key, first_key, first_key]})
+			return set_groups
 	var identity: Dictionary = _identity_from_key(first_key)
 	if identity["numbered"]:
 		var next_one: String = "%s:%d" % [identity["suit"], identity["rank"] + 1]
@@ -62,12 +81,15 @@ static func _can_form_groups(counts: Dictionary, groups_remaining: int) -> bool:
 			counts[first_key] -= 1
 			counts[next_one] -= 1
 			counts[next_two] -= 1
-			if _can_form_groups(counts, groups_remaining - 1):
-				return true
+			var run_groups := _find_groups(counts, groups_remaining - 1)
 			counts[first_key] += 1
 			counts[next_one] += 1
 			counts[next_two] += 1
-	return false
+			if not run_groups.is_empty():
+				run_groups.push_front({"kind": "run", "keys": [first_key, next_one, next_two]})
+				return run_groups
+	var no_solution: Array[Dictionary] = []
+	return no_solution
 
 
 static func _first_nonzero_key(counts: Dictionary) -> String:
