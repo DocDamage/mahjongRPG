@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "crops": [
+    {"id": "beans", "days_to_mature": 3, "wilt_after_days": 2, "die_after_days": 4},
+    {"id": "corn", "days_to_mature": 5, "wilt_after_days": 2, "die_after_days": 4},
+    {"id": "tomato", "days_to_mature": 4, "wilt_after_days": 2, "die_after_days": 4},
+    {"id": "wheat", "days_to_mature": 3, "wilt_after_days": 2, "die_after_days": 4}
+  ]
+}
