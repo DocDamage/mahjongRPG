@@ -1,5 +1,9 @@
 extends Node
 
+const CropDefinition = preload("res://src/crops/crop_definition.gd")
+const FarmGrid = preload("res://src/farm/farm_grid.gd")
+const FarmService = preload("res://src/farm/farm_service.gd")
+
 signal session_started(seed: int)
 signal time_advanced(day: int, minute_of_day: int)
 signal pause_changed(paused: bool)
@@ -14,6 +18,7 @@ var seed: int = 0
 var day: int = 1
 var minute_of_day: int = 8 * 60
 var weather_id: StringName = &"clear"
+var farm
 var _pause_reasons: Dictionary = {}
 var _time_accumulator := 0.0
 
@@ -28,11 +33,17 @@ func _process(delta: float) -> void:
 		advance_minutes(whole_minutes)
 
 
+func _ready() -> void:
+	_ensure_farm()
+
+
 func start_new_game(new_seed: int) -> void:
 	seed = new_seed
 	day = 1
 	minute_of_day = 8 * 60
 	weather_id = &"clear"
+	farm = null
+	_ensure_farm()
 	_pause_reasons.clear()
 	_time_accumulator = 0.0
 	session_started.emit(seed)
@@ -97,6 +108,7 @@ func snapshot() -> Dictionary:
 		"day": day,
 		"minute_of_day": minute_of_day,
 		"weather_id": str(weather_id),
+		"farm": _ensure_farm().snapshot(),
 	}
 
 
@@ -111,6 +123,9 @@ func restore(snapshot_data: Dictionary) -> Error:
 	day = next_day
 	minute_of_day = next_minute
 	weather_id = StringName(snapshot_data.get("weather_id", "clear"))
+	var farm_data_value = snapshot_data.get("farm", {})
+	if not farm_data_value is Dictionary or _ensure_farm().restore(farm_data_value) != OK:
+		return ERR_INVALID_DATA
 	_pause_reasons.clear()
 	_time_accumulator = 0.0
 	time_advanced.emit(day, minute_of_day)
@@ -123,3 +138,24 @@ func _stream_seed(stream_name: StringName) -> int:
 	for byte in String(stream_name).to_utf8_buffer():
 		value = int((value * 31) + byte)
 	return value
+
+
+func _ensure_farm():
+	if farm != null:
+		return farm
+	var grid = FarmGrid.new(Rect2i(0, 0, 8, 4))
+	farm = FarmService.new(grid)
+	var file := FileAccess.open("res://data/crops/vertical_slice_crops.json", FileAccess.READ)
+	if file == null:
+		push_error("Missing vertical-slice crop data")
+		return farm
+	var parsed: Variant = JSON.parse_string(file.get_as_text())
+	if not parsed is Dictionary:
+		push_error("Invalid vertical-slice crop data")
+		return farm
+	var crops_value = parsed.get("crops", [])
+	if crops_value is Array:
+		for crop_data_value in crops_value:
+			if crop_data_value is Dictionary:
+				farm.register_definition(CropDefinition.new(crop_data_value))
+	return farm

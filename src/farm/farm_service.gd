@@ -56,3 +56,41 @@ func harvest(cell: Vector2i) -> Dictionary:
 
 func crop_at(cell: Vector2i):
 	return _crops.get(cell)
+
+
+func snapshot() -> Dictionary:
+	var crops: Array = []
+	for cell_value in _crops.keys():
+		var cell: Vector2i = cell_value
+		crops.append({"cell": [cell.x, cell.y], "crop": _crops[cell].snapshot()})
+	return {"crops": crops}
+
+
+func restore(snapshot_data: Dictionary) -> Error:
+	var entries_value = snapshot_data.get("crops", [])
+	if not entries_value is Array:
+		return ERR_INVALID_DATA
+	grid.clear(_crops.keys())
+	_crops.clear()
+	for entry_value in entries_value:
+		if not entry_value is Dictionary:
+			return ERR_INVALID_DATA
+		var entry: Dictionary = entry_value
+		var coordinates_value = entry.get("cell", [])
+		var crop_data_value = entry.get("crop", {})
+		if not coordinates_value is Array or coordinates_value.size() != 2 or not crop_data_value is Dictionary:
+			return ERR_INVALID_DATA
+		var crop_data: Dictionary = crop_data_value
+		var crop_id := StringName(crop_data.get("crop_id", ""))
+		if not _definitions.has(crop_id):
+			return ERR_DOES_NOT_EXIST
+		var cell := Vector2i(int(coordinates_value[0]), int(coordinates_value[1]))
+		if grid.place(crop_id, [cell]) != OK:
+			return ERR_INVALID_DATA
+		var crop = CropInstance.new(_definitions[crop_id], int(crop_data.get("last_processed_day", 0)))
+		crop.state = int(crop_data.get("state", CropInstance.State.PLANTED))
+		crop.age_days = int(crop_data.get("age_days", 0))
+		crop.days_without_water = int(crop_data.get("days_without_water", 0))
+		crop.last_watered_day = int(crop_data.get("last_watered_day", -1))
+		_crops[cell] = crop
+	return OK
