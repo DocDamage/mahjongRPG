@@ -8,6 +8,7 @@ const ACTIONS := {
 	&"move_left": [KEY_A, KEY_LEFT],
 	&"move_right": [KEY_D, KEY_RIGHT],
 	&"interact": [KEY_E, KEY_SPACE],
+	&"run": [KEY_SHIFT],
 	&"pause": [KEY_ESCAPE],
 }
 
@@ -53,6 +54,7 @@ func _add_controller_actions() -> void:
 	_add_axis(&"move_up", JOY_AXIS_LEFT_Y, -1.0)
 	_add_axis(&"move_down", JOY_AXIS_LEFT_Y, 1.0)
 	_add_button(&"interact", JOY_BUTTON_A)
+	_add_button(&"run", JOY_BUTTON_LEFT_STICK)
 	_add_button(&"pause", JOY_BUTTON_START)
 
 

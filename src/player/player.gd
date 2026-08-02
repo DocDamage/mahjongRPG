@@ -15,6 +15,7 @@ const WALK_TEXTURE_PATHS := {
 }
 
 @export var running := false
+@export var movement_bounds := Rect2()
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var interaction_area: Area2D = $InteractionArea
 
@@ -40,10 +41,13 @@ func _physics_process(delta: float) -> void:
 
 
 func move_in_direction(direction: Vector2, _delta: float) -> void:
+	running = Input.is_action_pressed(&"run")
 	velocity = velocity_from_direction(direction)
 	if not velocity.is_zero_approx():
 		_update_facing(velocity.normalized())
 	move_and_slide()
+	if movement_bounds.has_area():
+		global_position = global_position.clamp(movement_bounds.position, movement_bounds.end)
 	_set_animation(not velocity.is_zero_approx())
 
 

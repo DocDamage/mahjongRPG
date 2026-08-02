@@ -1,6 +1,7 @@
 extends Control
 
 const IMPORT_MARKER := "res://assets/source/supplemental/.import_complete.json"
+const WAYWARD_FARM_SCENE := "res://src/world/wayward_farm.tscn"
 
 func _ready() -> void:
     _build_foundation_status()
@@ -30,7 +31,19 @@ func _build_foundation_status() -> void:
     status.text = _status_text()
     panel.add_child(status)
 
+    var start_button := Button.new()
+    start_button.text = "Start at Wayward Farm"
+    start_button.custom_minimum_size = Vector2(240, 42)
+    start_button.pressed.connect(_start_game)
+    panel.add_child(start_button)
+    start_button.grab_focus()
+
 func _status_text() -> String:
     if FileAccess.file_exists(IMPORT_MARKER):
         return "Foundation initialized. Supplemental assets verified and imported."
     return "Foundation initialized. Run: python tools/import_supplemental_assets.py"
+
+
+func _start_game() -> void:
+    GameSession.start_new_game(0x5EED)
+    SceneRouter.change_scene(WAYWARD_FARM_SCENE)

@@ -8,12 +8,24 @@ signal weather_changed(weather_id: StringName)
 const SAVE_SCHEMA_VERSION := 1
 const MATCH_TIME_COST_MINUTES := 90
 const MINUTES_PER_DAY := 24 * 60
+const REAL_SECONDS_PER_DAY := 60.0
 
 var seed: int = 0
 var day: int = 1
 var minute_of_day: int = 8 * 60
 var weather_id: StringName = &"clear"
 var _pause_reasons: Dictionary = {}
+var _time_accumulator := 0.0
+
+
+func _process(delta: float) -> void:
+	if is_paused():
+		return
+	_time_accumulator += delta * MINUTES_PER_DAY / REAL_SECONDS_PER_DAY
+	var whole_minutes := int(_time_accumulator)
+	if whole_minutes > 0:
+		_time_accumulator -= whole_minutes
+		advance_minutes(whole_minutes)
 
 
 func start_new_game(new_seed: int) -> void:
@@ -22,6 +34,7 @@ func start_new_game(new_seed: int) -> void:
 	minute_of_day = 8 * 60
 	weather_id = &"clear"
 	_pause_reasons.clear()
+	_time_accumulator = 0.0
 	session_started.emit(seed)
 	time_advanced.emit(day, minute_of_day)
 	weather_changed.emit(weather_id)
@@ -99,6 +112,7 @@ func restore(snapshot_data: Dictionary) -> Error:
 	minute_of_day = next_minute
 	weather_id = StringName(snapshot_data.get("weather_id", "clear"))
 	_pause_reasons.clear()
+	_time_accumulator = 0.0
 	time_advanced.emit(day, minute_of_day)
 	weather_changed.emit(weather_id)
 	return OK
