@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://src/world/dustward.gd" id="1_world"]
 [ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" path="res://src/mahjong/presentation/mahjong_opponent.gd" id="4_opponent"]
 [ext_resource type="Script" path="res://src/horses/horse_actor.gd" id="5_horse"]
 [ext_resource type="Script" path="res://src/horses/hitching_post.gd" id="6_hitch"]
-[ext_resource type="Script" path="res://src/story/hall_foreman.gd" id="7_foreman"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_exit"]
 radius = 42.0
@@ -98,15 +97,38 @@ destination_scene = "res://src/world/wayward_farm.tscn"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DustwardHitch"]
 shape = SubResource("CircleShape2D_hitch")
 
-[node name="Mabel" type="Area2D" parent="."]
-position = Vector2(620, 420)
+[node name="GeneralStoreDoor" type="Area2D" parent="."]
+position = Vector2(150, 390)
 collision_layer = 2
 collision_mask = 0
-script = ExtResource("7_foreman")
-prompt_text = "Speak with Mabel at Six Brands Hall"
+script = ExtResource("3_exit")
+prompt_text = "Enter general store"
+destination_scene = "res://src/world/general_store.tscn"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Mabel"]
-shape = SubResource("CircleShape2D_opponent")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GeneralStoreDoor"]
+shape = SubResource("CircleShape2D_exit")
+
+[node name="InnDoor" type="Area2D" parent="."]
+position = Vector2(455, 390)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_exit")
+prompt_text = "Enter Dustward Inn"
+destination_scene = "res://src/world/dustward_inn.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InnDoor"]
+shape = SubResource("CircleShape2D_exit")
+
+[node name="HallDoor" type="Area2D" parent="."]
+position = Vector2(750, 390)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_exit")
+prompt_text = "Enter Six Brands Hall"
+destination_scene = "res://src/world/six_brands_hall.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HallDoor"]
+shape = SubResource("CircleShape2D_exit")
 
 [node name="HUD" type="CanvasLayer" parent="."]
 

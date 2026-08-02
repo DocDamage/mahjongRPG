@@ -9,7 +9,9 @@ func _ready() -> void:
 	$FarmRoad.feedback.connect(_show_message)
 	$Horse.feedback.connect(_show_message)
 	$DustwardHitch.feedback.connect(_show_message)
-	$Mabel.feedback.connect(_show_message)
+	$GeneralStoreDoor.feedback.connect(_show_message)
+	$InnDoor.feedback.connect(_show_message)
+	$HallDoor.feedback.connect(_show_message)
 	GameSession.weather_changed.connect(_on_weather_changed)
 	for opponent in get_tree().get_nodes_in_group(&"dustward_opponent"):
 		opponent.feedback.connect(_show_message)
