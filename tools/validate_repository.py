@@ -21,6 +21,8 @@ EXCLUDED_PREFIXES = (
     "vendor/local/",
     "artifacts/local/",
     "exports/",
+    ".godot-bin/",
+    ".template-unpack/",
 )
 REQUIRED = (
     "project.godot",

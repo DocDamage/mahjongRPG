@@ -43,7 +43,7 @@ jobs:
       - name: Install Godot 4.7.1 and Windows templates
         shell: pwsh
         run: |
-          Invoke-WebRequest -Uri https://github.com/godotengine/godot/releases/download/4.7.1-stable/Godot_v4.7.1-stable_win64.zip -OutFile godot.zip
+          Invoke-WebRequest -Uri https://github.com/godotengine/godot/releases/download/4.7.1-stable/Godot_v4.7.1-stable_win64.exe.zip -OutFile godot.zip
           Expand-Archive godot.zip -DestinationPath .godot-bin
           Invoke-WebRequest -Uri https://github.com/godotengine/godot/releases/download/4.7.1-stable/Godot_v4.7.1-stable_export_templates.tpz -OutFile templates.tpz
           Expand-Archive templates.tpz -DestinationPath .template-unpack
@@ -53,4 +53,4 @@ jobs:
           Get-ChildItem .template-unpack -Recurse -Filter windows_release_x86_64.exe | Copy-Item -Destination $target
       - name: Verify target engine and export configuration
         shell: pwsh
-        run: python tools/verify_export_environment.py --godot .\.godot-bin\Godot_v4.7.1-stable_win64_console.exe
+        run: python tools/verify_export_environment.py --godot .\.godot-bin\Godot_v4.7.1-stable_win64.exe
