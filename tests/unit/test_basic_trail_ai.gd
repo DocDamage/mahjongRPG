@@ -20,6 +20,10 @@ func run() -> Array[String]:
 		failures.append("AI selection must be deterministic for visible state")
 	if knowledge.snapshot()["discards"].size() != 1:
 		failures.append("visible knowledge must contain only observed public actions")
+	var cautious: Dictionary = ai.choose_discard_index(hand, knowledge, {"set_weight": 1.4, "run_weight": 1.2, "seen_tile_weight": 0.4})
+	var river: Dictionary = ai.choose_discard_index(hand, knowledge, {"set_weight": 0.9, "run_weight": 1.8, "seen_tile_weight": 0.2})
+	if cautious.get("index", -1) < 0 or river.get("index", -1) < 0 or knowledge.snapshot()["discards"].size() != 1:
+		failures.append("personality weights must remain deterministic and use only visible knowledge")
 	return failures
 
 

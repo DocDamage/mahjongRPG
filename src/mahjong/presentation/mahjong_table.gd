@@ -13,6 +13,7 @@ const VisibleKnowledge = preload("res://src/mahjong/ai/visible_knowledge.gd")
 var flow
 var opponent_name := "Trailhand"
 var opponent_loadout: Array[StringName] = [&"dark", &"green"]
+var opponent_ai_profile: Dictionary = {}
 var status_label: Label
 var action_box: HBoxContainer
 var tiles_box: HBoxContainer
@@ -207,7 +208,7 @@ func _take_ai_turn() -> void:
 			var knowledge := VisibleKnowledge.new()
 			for entry in flow.discard_river:
 				knowledge.observe_discard(int(entry["player"]), entry["tile"])
-			var decision: Dictionary = BasicTrailAi.new().choose_discard_index(flow.hands[1], knowledge)
+			var decision: Dictionary = BasicTrailAi.new().choose_discard_index(flow.hands[1], knowledge, opponent_ai_profile)
 			flow.discard_at(int(decision.get("index", 0)))
 			AudioService.play_catalog_event(&"mahjong_tile")
 	_refresh()

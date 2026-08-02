@@ -37,6 +37,8 @@ func _on_interacted(_actor: Node2D) -> void:
 	var table = MahjongTable.new()
 	table.opponent_name = String(_definition["display_name"])
 	table.opponent_loadout = _as_brand_loadout(_definition["brands"])
+	var profile_value: Variant = _definition.get("ai", {})
+	table.opponent_ai_profile = profile_value.duplicate(true) if profile_value is Dictionary else {}
 	table.add_to_group(&"mahjong_table_overlay")
 	get_tree().root.add_child(table)
 	feedback.emit("%s accepts your Trail Rules challenge." % table.opponent_name)
