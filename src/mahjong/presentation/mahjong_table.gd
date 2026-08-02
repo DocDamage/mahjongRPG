@@ -114,6 +114,8 @@ func _refresh() -> void:
 			_add_action("Orange: claim group", _claim_brand.bind(&"orange_group", orange_claim[0], orange_claim[1]))
 		return
 	result_label.text = "Your turn: choose one tile to discard."
+	if TrailHandValidator.is_winning_hand(flow.combined_hand(0)):
+		_add_action("Declare Trail Rules win", _declare_win)
 	if flow.brand_state(0).activations(&"orange") > 0:
 		_add_action("Orange: draw two, keep first", _activate_orange)
 	for tile_index in flow.hands[0].size():
@@ -161,6 +163,13 @@ func _claim_brand(kind: StringName, first_index: int, second_index: int) -> void
 
 func _discard_player(tile_index: int) -> void:
 	flow.discard_at(tile_index)
+	_refresh()
+
+
+func _declare_win() -> void:
+	if flow.declare_win() != OK:
+		result_label.text = "This hand is not a legal Trail Rules win."
+		return
 	_refresh()
 
 
