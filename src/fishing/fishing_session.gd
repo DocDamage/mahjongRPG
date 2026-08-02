@@ -13,6 +13,7 @@ var fish
 var tension := 0.0
 var progress := 0.0
 var target_direction := 0.0
+var gear_profile := {"label": "Basic Kit", "reel_multiplier": 1.0, "bite_wait_multiplier": 1.0, "hook_window_multiplier": 1.0, "tension_multiplier": 1.0}
 var _rng := RandomNumberGenerator.new()
 var _wait_remaining := 0.0
 var _hook_remaining := 0.0
@@ -35,7 +36,7 @@ func cast(fish_definitions: Array, hour: int, weather_id: StringName) -> Error:
 		return ERR_DOES_NOT_EXIST
 	fish = eligible[_rng.randi_range(0, eligible.size() - 1)]
 	state = State.CAST
-	_wait_remaining = _rng.randf_range(0.7, 1.5) + fish.difficulty
+	_wait_remaining = (_rng.randf_range(0.7, 1.5) + fish.difficulty) * float(gear_profile["bite_wait_multiplier"])
 	tension = 0.0
 	progress = 0.0
 	return OK
@@ -50,7 +51,7 @@ func tick(delta: float) -> void:
 		_wait_remaining -= delta
 		if _wait_remaining <= 0.0:
 			state = State.BITE
-			_hook_remaining = HOOK_WINDOW_SECONDS
+			_hook_remaining = HOOK_WINDOW_SECONDS * float(gear_profile["hook_window_multiplier"])
 	elif state == State.BITE:
 		_hook_remaining -= delta
 		if _hook_remaining <= 0.0:
@@ -69,14 +70,22 @@ func hook_set() -> Error:
 	return OK
 
 
+func configure_gear(next_profile: Dictionary) -> Error:
+	for key in ["reel_multiplier", "bite_wait_multiplier", "hook_window_multiplier", "tension_multiplier"]:
+		if float(next_profile.get(key, 0.0)) <= 0.0:
+			return ERR_INVALID_DATA
+	gear_profile = next_profile.duplicate(true)
+	return OK
+
+
 func apply_struggle_input(direction: float, reeling: bool, releasing: bool, delta: float) -> Error:
 	if state != State.STRUGGLE or delta <= 0.0:
 		return ERR_INVALID_DATA
 	var alignment := clampf(direction, -1.0, 1.0) * target_direction
 	var control := (alignment + 1.0) * 0.5
 	if reeling:
-		tension += (0.22 + fish.difficulty * 0.35) * delta
-		progress += (0.15 + control * 0.25) * delta
+		tension += (0.22 + fish.difficulty * 0.35) * delta * float(gear_profile["tension_multiplier"])
+		progress += (0.15 + control * 0.25) * delta * float(gear_profile["reel_multiplier"])
 	if releasing:
 		tension -= 0.45 * delta
 		progress -= 0.04 * delta

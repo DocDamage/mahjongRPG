@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "default_loadout": {"rod": "frontier_rod", "bait": "mealworm_bait", "lure": "river_spinner", "hook": "barbless_hook", "line": "braided_line"},
+  "rods": [{"id": "frontier_rod", "name": "Frontier Rod", "reel_multiplier": 1.08}],
+  "baits": [{"id": "mealworm_bait", "name": "Mealworm Bait", "bite_wait_multiplier": 0.94}],
+  "lures": [{"id": "river_spinner", "name": "River Spinner", "bite_wait_multiplier": 0.94}],
+  "hooks": [{"id": "barbless_hook", "name": "Barbless Hook", "hook_window_multiplier": 1.15}],
+  "lines": [{"id": "braided_line", "name": "Braided Line", "tension_multiplier": 0.86}]
+}

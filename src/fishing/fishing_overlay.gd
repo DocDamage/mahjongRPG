@@ -31,13 +31,13 @@ func refresh(session) -> void:
 	_progress.value = session.progress * 100.0
 	var pull := "RIGHT" if session.target_direction > 0.0 else "LEFT"
 	_direction_label.text = "Fish pull: %s  •  Counter with %s" % [pull, "RIGHT" if pull == "LEFT" else "LEFT"]
-	_help_label.text = "Counter: Left Stick / Keys  •  Rod: Right Stick  •  Reel: R / RT  •  Release: F / LT"
+	_help_label.text = "%s\nCounter: Left Stick / Keys  •  Rod: Right Stick  •  Reel: R / RT  •  Release: F / LT" % String(session.gear_profile.get("label", "Basic Kit"))
 
 
 func _build() -> void:
 	_panel = PanelContainer.new()
 	_panel.position = Vector2(620, 300)
-	_panel.size = Vector2(310, 190)
+	_panel.size = Vector2(310, 215)
 	add_child(_panel)
 	var content := VBoxContainer.new()
 	content.add_theme_constant_override("separation", 8)

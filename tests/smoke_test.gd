@@ -7,6 +7,7 @@ const DATA_TABLES := {
 	&"construction": "res://data/farm/vertical_slice_construction.json",
 	&"audio": "res://data/audio/vertical_slice_audio.json",
 	&"fish": "res://data/fish/vertical_slice_fish.json",
+	&"fishing_gear": "res://data/fish/vertical_slice_fishing_gear.json",
 	&"horses": "res://data/horses/vertical_slice_horses.json",
 	&"items": "res://data/items/vertical_slice_items.json",
 	&"opponents": "res://data/opponents/vertical_slice_opponents.json",

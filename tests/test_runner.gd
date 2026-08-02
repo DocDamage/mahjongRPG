@@ -19,6 +19,7 @@ const SUITES := [
 	"res://tests/unit/test_crop_catalog.gd",
 	"res://tests/unit/test_animal_care_service.gd",
 	"res://tests/unit/test_fishing_session.gd",
+	"res://tests/unit/test_fishing_gear_catalog.gd",
 	"res://tests/unit/test_horse_travel_state.gd",
 	"res://tests/unit/test_match_flow.gd",
 	"res://tests/unit/test_match_wager.gd",

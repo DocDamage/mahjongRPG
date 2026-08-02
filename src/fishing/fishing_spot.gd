@@ -1,6 +1,7 @@
 extends "res://src/interaction/world_interactable.gd"
 
 const FishDefinition = preload("res://src/fishing/fish_definition.gd")
+const FishingGearCatalog = preload("res://src/fishing/fishing_gear_catalog.gd")
 const FishingOverlay = preload("res://src/fishing/fishing_overlay.gd")
 const FishingSession = preload("res://src/fishing/fishing_session.gd")
 
@@ -8,6 +9,7 @@ signal feedback(message: String)
 
 var session
 var _definitions: Array = []
+var _gear_profile: Dictionary = {}
 var _actor: Node2D
 var _last_state := -1
 var _last_tension_band := -1
@@ -18,6 +20,7 @@ var _overlay
 func _ready() -> void:
 	interacted.connect(_on_interacted)
 	_load_definitions()
+	_gear_profile = FishingGearCatalog.default_profile()
 	_overlay = FishingOverlay.new()
 	add_child(_overlay)
 	queue_redraw()
@@ -73,6 +76,10 @@ func _begin(actor: Node2D) -> void:
 		return
 	var hour := GameSession.minute_of_day / 60
 	session = FishingSession.new(GameSession.seed + GameSession.day * 1000 + GameSession.minute_of_day)
+	if session.configure_gear(_gear_profile) != OK:
+		feedback.emit("Fishing gear data is invalid.")
+		session = null
+		return
 	var result: int = session.cast(_definitions, hour, GameSession.weather_id)
 	if result != OK:
 		session = null
