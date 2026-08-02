@@ -47,6 +47,8 @@ The vertical slice now generates `assets/generated/mahjong/trail_rules_faces.png
 
 Animated crop material covers twenty launch candidates, including vegetables, grain, fruit, bamboo, and tallgrass. Most provide approximately six to eight growth states.
 
+All twenty ranch crop candidates are cataloged in the runtime crop data. The vertical slice intentionally activates only beans, corn, tomato, and wheat; the remaining source-backed candidates stay data-validated but unavailable until their economy and art presentation are authored.
+
 Animated animal material includes birds, bunnies, cats, cows, foxes, mice, pigs, eggs, and fireflies. Additional static livestock will require derived animation before being presented as active animals.
 
 ## Supplemental visual assets

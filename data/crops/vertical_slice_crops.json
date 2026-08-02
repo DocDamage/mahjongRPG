@@ -1,9 +1,27 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
+  "cataloged_source_crops": ["bamboo", "beetroot", "berry", "broccoli", "carrot", "cauliflower", "celery", "corn", "eggplant", "grape", "leek", "lettuce", "onion", "pepper", "potato", "pumpkin", "radish", "tallgrass", "tomato", "wheat"],
   "crops": [
-    {"id": "beans", "days_to_mature": 3, "wilt_after_days": 2, "die_after_days": 4},
-    {"id": "corn", "days_to_mature": 5, "wilt_after_days": 2, "die_after_days": 4},
-    {"id": "tomato", "days_to_mature": 4, "wilt_after_days": 2, "die_after_days": 4},
-    {"id": "wheat", "days_to_mature": 3, "wilt_after_days": 2, "die_after_days": 4}
+    {"id": "beans", "days_to_mature": 3, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": true},
+    {"id": "corn", "days_to_mature": 5, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": true},
+    {"id": "tomato", "days_to_mature": 4, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": true},
+    {"id": "wheat", "days_to_mature": 3, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": true},
+    {"id": "bamboo", "days_to_mature": 6, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": false},
+    {"id": "beetroot", "days_to_mature": 4, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": false},
+    {"id": "berry", "days_to_mature": 5, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": false},
+    {"id": "broccoli", "days_to_mature": 5, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": false},
+    {"id": "carrot", "days_to_mature": 4, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": false},
+    {"id": "cauliflower", "days_to_mature": 5, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": false},
+    {"id": "celery", "days_to_mature": 5, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": false},
+    {"id": "eggplant", "days_to_mature": 5, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": false},
+    {"id": "grape", "days_to_mature": 6, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": false},
+    {"id": "leek", "days_to_mature": 4, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": false},
+    {"id": "lettuce", "days_to_mature": 3, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": false},
+    {"id": "onion", "days_to_mature": 4, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": false},
+    {"id": "pepper", "days_to_mature": 5, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": false},
+    {"id": "potato", "days_to_mature": 4, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": false},
+    {"id": "pumpkin", "days_to_mature": 6, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": false},
+    {"id": "radish", "days_to_mature": 3, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": false},
+    {"id": "tallgrass", "days_to_mature": 3, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": false}
   ]
 }

@@ -4,6 +4,7 @@ var id: StringName
 var days_to_mature: int
 var wilt_after_days: int
 var die_after_days: int
+var available_in_slice := true
 
 
 func _init(data: Dictionary) -> void:
@@ -11,5 +12,6 @@ func _init(data: Dictionary) -> void:
 	days_to_mature = int(data.get("days_to_mature", 0))
 	wilt_after_days = int(data.get("wilt_after_days", 0))
 	die_after_days = int(data.get("die_after_days", 0))
+	available_in_slice = bool(data.get("available_in_slice", true))
 	if id.is_empty() or days_to_mature < 1 or wilt_after_days < 1 or die_after_days <= wilt_after_days:
 		push_error("Invalid crop definition: %s" % id)

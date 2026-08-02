@@ -14,6 +14,7 @@ const SUITES := [
 	"res://tests/unit/test_brand_claims.gd",
 	"res://tests/unit/test_basic_trail_ai.gd",
 	"res://tests/unit/test_farm_service.gd",
+	"res://tests/unit/test_crop_catalog.gd",
 	"res://tests/unit/test_animal_care_service.gd",
 	"res://tests/unit/test_fishing_session.gd",
 	"res://tests/unit/test_horse_travel_state.gd",

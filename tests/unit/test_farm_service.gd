@@ -43,6 +43,10 @@ func run() -> Array[String]:
 	restored.register_definition(beans)
 	if restored.restore(snapshot) != OK or not restored.has_field(plot):
 		failures.append("placed fields should survive a farm save round-trip")
+	var catalog_only := CropDefinition.new({"id": "radish", "days_to_mature": 3, "wilt_after_days": 2, "die_after_days": 4, "available_in_slice": false})
+	restored.register_definition(catalog_only)
+	if restored.plant(plot, &"radish", 1) != ERR_UNAVAILABLE:
+		failures.append("cataloged crops should remain unavailable until the slice activates them")
 	var neglected = CropInstance.new(beans, 1)
 	neglected.advance_to_day(3)
 	if neglected.state != CropInstance.State.WILTED:

@@ -26,6 +26,8 @@ func register_definition(definition) -> Error:
 func plant(cell: Vector2i, crop_id: StringName, day: int) -> Error:
 	if not _definitions.has(crop_id):
 		return ERR_DOES_NOT_EXIST
+	if not _definitions[crop_id].available_in_slice:
+		return ERR_UNAVAILABLE
 	if not _fields.has(cell):
 		return ERR_UNAVAILABLE
 	var placement: int = grid.place(crop_id, [cell])
