@@ -3,6 +3,7 @@ extends Control
 const BasicTrailAi = preload("res://src/mahjong/ai/basic_trail_ai.gd")
 const ClaimResolver = preload("res://src/mahjong/domain/claim_resolver.gd")
 const MatchFlow = preload("res://src/mahjong/domain/match_flow.gd")
+const MatchWager = preload("res://src/mahjong/domain/match_wager.gd")
 const TrailHandValidator = preload("res://src/mahjong/domain/trail_hand_validator.gd")
 const TenderfootTutorial = preload("res://src/mahjong/presentation/tenderfoot_tutorial.gd")
 const VisibleKnowledge = preload("res://src/mahjong/ai/visible_knowledge.gd")
@@ -17,24 +18,20 @@ var result_label: Label
 var tutorial_label: Label
 var tutorial_button: Button
 var tutorial
+var wager_tier: StringName = &"friendly"
+var _match_started := false
 var _ai_turn_pending := false
-
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	GameSession.request_pause(&"mahjong")
-	flow = MatchFlow.new(GameSession.seed + GameSession.day * 100 + GameSession.minute_of_day)
-	flow.configure_loadouts([&"orange", &"blue"], opponent_loadout)
-	flow.start_match()
 	tutorial = TenderfootTutorial.new(GameSession.tutorial_step(&"tenderfoot"))
 	_build_ui()
-	_refresh()
-
+	_show_wager_selection()
 
 func _exit_tree() -> void:
 	GameSession.release_pause(&"mahjong")
-
 
 func _build_ui() -> void:
 	var background := ColorRect.new()
@@ -85,15 +82,17 @@ func _build_ui() -> void:
 	help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	panel.add_child(help)
 
-
 func _refresh() -> void:
+	if not _match_started:
+		_show_wager_selection()
+		return
 	_clear(action_box)
 	_clear(tiles_box)
-	status_label.text = "%s Hand  •  Renown: Doc %d — %s %d  •  Wall: %d\n%s has %d concealed tile(s), %d open group(s)." % [flow.hand_name().capitalize(), flow.renown[0], opponent_name, flow.renown[1], flow.wall.size(), opponent_name, flow.hands[1].size(), flow.open_groups[1].size()]
+	status_label.text = "%s Hand  •  %s wager  •  Renown: Doc %d — %s %d  •  Wall: %d\n%s has %d concealed tile(s), %d open group(s)." % [flow.hand_name().capitalize(), MatchWager.label(wager_tier), flow.renown[0], opponent_name, flow.renown[1], flow.wall.size(), opponent_name, flow.hands[1].size(), flow.open_groups[1].size()]
 	_refresh_tutorial()
 	result_label.text = ""
 	if flow.phase == MatchFlow.Phase.MATCH_COMPLETE:
-		result_label.text = "Match complete. %s" % ("Doc wins!" if flow.match_winner == 0 else "Opponent wins." if flow.match_winner == 1 else "The match ends tied.")
+		result_label.text = "Match complete. %s" % _match_outcome_text()
 		_add_action("Return to farm", _close_match)
 		return
 	if flow.phase in [MatchFlow.Phase.COMPLETE, MatchFlow.Phase.EXHAUSTED]:
@@ -133,7 +132,6 @@ func _refresh() -> void:
 		button.custom_minimum_size = Vector2(66, 86)
 		button.pressed.connect(_discard_player.bind(tile_index))
 		tiles_box.add_child(button)
-
 
 func _draw_player() -> void:
 	flow.draw()
@@ -209,8 +207,43 @@ func _advance_match() -> void:
 
 
 func _close_match() -> void:
+	if _match_started:
+		MatchWager.settle(GameSession.inventory, wager_tier, flow.match_winner)
 	GameSession.complete_mahjong_match()
 	queue_free()
+
+
+func _show_wager_selection() -> void:
+	_clear(action_box)
+	_clear(tiles_box)
+	status_label.text = "Choose the table terms with %s. You have $%.2f available." % [opponent_name, GameSession.inventory.money_cents / 100.0]
+	result_label.text = "Friendly matches have no cash stake. Serious and High Stakes losses deduct cash only after the final result."
+	tutorial_label.text = tutorial.progress_text()
+	tutorial_button.visible = false
+	for tier in MatchWager.TERMS:
+		var stake := MatchWager.stake_cents(tier)
+		var label := "%s — %s" % [MatchWager.label(tier), "no cash" if stake == 0 else "$%.2f" % (stake / 100.0)]
+		_add_action(label, _start_match.bind(StringName(tier)))
+
+
+func _start_match(next_wager_tier: StringName) -> void:
+	if not MatchWager.can_start(next_wager_tier, GameSession.inventory.money_cents):
+		result_label.text = "You need $%.2f available for that wager." % (MatchWager.stake_cents(next_wager_tier) / 100.0)
+		return
+	wager_tier = next_wager_tier
+	flow = MatchFlow.new(GameSession.seed + GameSession.day * 100 + GameSession.minute_of_day)
+	flow.configure_loadouts([&"orange", &"blue"], opponent_loadout)
+	flow.start_match()
+	_match_started = true
+	_refresh()
+
+
+func _match_outcome_text() -> String:
+	var outcome := "Doc wins!" if flow.match_winner == 0 else "Opponent wins." if flow.match_winner == 1 else "The match ends tied."
+	var stake := MatchWager.stake_cents(wager_tier)
+	if stake == 0 or flow.match_winner < 0:
+		return outcome
+	return "%s %s $%.2f settles when you return to the world." % [outcome, "You win" if flow.match_winner == 0 else "You lose", stake / 100.0]
 
 
 func _add_action(text_value: String, callback: Callable) -> void:
