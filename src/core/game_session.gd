@@ -94,6 +94,7 @@ func advance_minutes(minutes: int) -> void:
 	while minute_of_day >= MINUTES_PER_DAY:
 		minute_of_day -= MINUTES_PER_DAY
 		day += 1
+		set_weather(_weather_for_day(day))
 	time_advanced.emit(day, minute_of_day)
 
 
@@ -164,6 +165,12 @@ func _stream_seed(stream_name: StringName) -> int:
 	for byte in String(stream_name).to_utf8_buffer():
 		value = int((value * 31) + byte)
 	return value
+
+
+func _weather_for_day(next_day: int) -> StringName:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = _stream_seed(&"weather") + next_day
+	return &"rain" if rng.randi_range(0, 99) < 35 else &"clear"
 
 
 func _ensure_farm():

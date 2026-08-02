@@ -8,6 +8,7 @@ func _ready() -> void:
 	queue_redraw()
 	GameSession.time_advanced.connect(_update_status)
 	GameSession.weather_changed.connect(_update_status)
+	GameSession.weather_changed.connect(_redraw_for_weather)
 	for plot in get_tree().get_nodes_in_group(&"farm_plot"):
 		plot.feedback.connect(_show_message)
 	$Bonfire.feedback.connect(_show_message)
@@ -28,6 +29,11 @@ func _draw() -> void:
 	draw_rect(Rect2(460, 126, 400, 154), Color("5a8cc4"))
 	draw_rect(Rect2(460, 300, 400, 130), Color("d3ad6e"))
 	draw_line(Vector2(398, 292), Vector2(460, 292), Color("d8c18b"), 18.0)
+	if GameSession.weather_id == &"rain":
+		for index in 28:
+			var x := float((index * 73) % 960)
+			var y := float((index * 47) % 520)
+			draw_line(Vector2(x, y), Vector2(x - 8, y + 18), Color(0.75, 0.88, 1.0, 0.65), 1.5)
 
 
 func _update_status(_day: int, _minute_of_day: int) -> void:
@@ -38,6 +44,10 @@ func _update_status(_day: int, _minute_of_day: int) -> void:
 
 func _show_message(message: String) -> void:
 	message_label.text = message
+
+
+func _redraw_for_weather(_weather_id: StringName) -> void:
+	queue_redraw()
 
 
 func _unhandled_input(event: InputEvent) -> void:

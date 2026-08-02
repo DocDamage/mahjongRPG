@@ -18,6 +18,11 @@ func run() -> Array[String]:
 	session.complete_mahjong_match()
 	if session.minute_of_day != 575:
 		failures.append("a Mahjong match should cost 90 minutes")
+	var weather_session = GameSessionScript.new()
+	weather_session.start_new_game(42)
+	weather_session.advance_minutes(24 * 60)
+	if weather_session.weather_id not in [&"clear", &"rain"]:
+		failures.append("day changes should select a supported vertical-slice weather state")
 	var snapshot := session.snapshot()
 	var restored = GameSessionScript.new()
 	if restored.restore(snapshot) != OK or restored.snapshot() != snapshot:
@@ -34,4 +39,5 @@ func run() -> Array[String]:
 		failures.append("version-two session saves should migrate empty quest state safely")
 	session.free()
 	restored.free()
+	weather_session.free()
 	return failures
