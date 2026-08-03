@@ -3,6 +3,7 @@ extends RefCounted
 const COLORS := [&"black", &"brown", &"golden", &"gray", &"white"]
 
 var selected_color: StringName = &"brown"
+var horse_name := "Saddle"
 var mounted := false
 var discovered_posts: Dictionary = {}
 var mounted_scene := ""
@@ -13,6 +14,13 @@ func select_color(color: StringName) -> Error:
 	if not color in COLORS:
 		return ERR_INVALID_PARAMETER
 	selected_color = color
+	return OK
+
+
+func set_name(next_name: String) -> Error:
+	if next_name.strip_edges().is_empty() or next_name.length() > 24:
+		return ERR_INVALID_PARAMETER
+	horse_name = next_name.strip_edges()
 	return OK
 
 
@@ -50,6 +58,7 @@ func record_mounted_location(scene_path: String, position: Vector2) -> void:
 func snapshot() -> Dictionary:
 	return {
 		"selected_color": str(selected_color),
+		"horse_name": horse_name,
 		"mounted": mounted,
 		"discovered_posts": discovered_posts.duplicate(true),
 		"mounted_scene": mounted_scene,
@@ -59,6 +68,8 @@ func snapshot() -> Dictionary:
 
 func restore(snapshot_data: Dictionary) -> Error:
 	if select_color(StringName(snapshot_data.get("selected_color", ""))) != OK:
+		return ERR_INVALID_DATA
+	if set_name(String(snapshot_data.get("horse_name", "Saddle"))) != OK:
 		return ERR_INVALID_DATA
 	var posts_value = snapshot_data.get("discovered_posts", {})
 	if not posts_value is Dictionary:

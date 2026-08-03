@@ -61,8 +61,8 @@ func _build() -> void:
 	_shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(_shade)
 	var panel := PanelContainer.new()
-	panel.position = Vector2(250, 96)
-	panel.size = Vector2(560, 420)
+	panel.position = Vector2(70, 20)
+	panel.size = Vector2(820, 500)
 	_shade.add_child(panel)
 	var content := VBoxContainer.new()
 	content.add_theme_constant_override("separation", 10)
@@ -91,11 +91,11 @@ func _build() -> void:
 	_type_picker.item_selected.connect(_on_placement_changed)
 	content.add_child(_type_picker)
 	var grid := GridContainer.new()
-	grid.columns = 5
+	grid.columns = farm.grid.bounds.size.x
 	grid.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	content.add_child(grid)
-	for row in 3:
-		for column in 5:
+	for row in farm.grid.bounds.size.y:
+		for column in farm.grid.bounds.size.x:
 			_add_cell_button(grid, Vector2i(column, row))
 	var close_button := Button.new()
 	close_button.text = "Cancel"

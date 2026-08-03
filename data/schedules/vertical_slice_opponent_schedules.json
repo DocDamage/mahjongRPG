@@ -1,17 +1,10 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "opponents": {
-    "mayor_bell": {
-      "clear": {"hours": [8, 18], "position": [190, 270], "activity": "reviewing claims at the courthouse table"},
-      "rain": {"hours": [10, 16], "position": [255, 330], "activity": "sheltering beneath the saloon awning"}
-    },
-    "river_rose": {
-      "clear": {"hours": [6, 20], "position": [470, 260], "activity": "dealing beside the stockyard rail"},
-      "rain": {"hours": [8, 18], "position": [530, 315], "activity": "watching the rain from the covered porch"}
-    },
-    "dynamite_bill": {
-      "clear": {"hours": [12, 24], "position": [750, 270], "activity": "taking noon challenges by the Hall"},
-      "rain": {"hours": [14, 22], "position": [690, 320], "activity": "warming up by the inn's stove"}
-    }
+    "mayor_bell":{"clear":{"hours":[8,18],"position":[190,270],"activity":"reviewing claims at the courthouse table"},"rain":{"hours":[10,16],"position":[255,330],"activity":"sheltering beneath the saloon awning"}},
+    "river_rose":{"clear":{"hours":[6,20],"position":[470,260],"activity":"dealing beside the stockyard rail"},"rain":{"hours":[8,18],"position":[530,315],"activity":"watching the rain from the covered porch"}},
+    "dynamite_bill":{"clear":{"hours":[12,24],"position":[750,270],"activity":"taking noon challenges by the Hall"},"rain":{"hours":[14,22],"position":[690,320],"activity":"warming up by the inn's stove"}},
+    "ada_rook":{"clear":{"hours":[7,18],"position":[650,350],"activity":"checking the ranch auction board"},"rain":{"hours":[9,17],"position":[590,355],"activity":"sorting seed sacks under cover"}},
+    "gideon_shaw":{"clear":{"hours":[11,22],"position":[795,350],"activity":"calling evening games at the barn"},"rain":{"hours":[13,21],"position":[735,355],"activity":"mending tack by the stove"}}
   }
 }

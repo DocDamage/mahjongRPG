@@ -185,6 +185,8 @@ func _record_mastery() -> void:
 		var award: Variant = hand_result.get("award", {})
 		if award is Dictionary: GameSession.brands.record_deeds(award.get("deeds", []))
 	var result: Dictionary = GameSession.brands.record_match_win(opponent_id, ruleset)
+	if opponent_id in [&"ada_rook", &"gideon_shaw"]:
+		GameSession.regions.record_table_win(opponent_id)
 	var unlocked: Array = result.get("unlocked_brands", [])
 	var names: Array[String] = []
 	for brand in unlocked: names.append(String(brand).capitalize())

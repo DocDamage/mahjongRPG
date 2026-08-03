@@ -1,0 +1,208 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://src/world/bridlewood.gd" id="1_world"]
+[ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://src/world/scene_exit.gd" id="3_exit"]
+[ext_resource type="Script" path="res://src/world/ranch_landmark.gd" id="4_landmark"]
+[ext_resource type="Script" path="res://src/mahjong/presentation/mahjong_opponent.gd" id="5_opponent"]
+[ext_resource type="Script" path="res://src/horses/hitching_post.gd" id="6_hitch"]
+[sub_resource type="CircleShape2D" id="Circle"]
+radius = 36.0
+[sub_resource type="CircleShape2D" id="ExitCircle"]
+radius = 42.0
+
+[node name="Bridlewood" type="Node2D"]
+script = ExtResource("1_world")
+[node name="Doc" parent="." instance=ExtResource("2_player")]
+position = Vector2(130, 420)
+movement_bounds = Rect2(45, 110, 870, 350)
+footstep_event = &"footstep_grass"
+[node name="ReturnRoad" type="Area2D" parent="."]
+position = Vector2(65, 420)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_exit")
+prompt_text = "Return to Wayward Farm"
+destination_scene = "res://src/world/wayward_farm.tscn"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ReturnRoad"]
+shape = SubResource("ExitCircle")
+[node name="CropOrder" type="Area2D" parent="." groups=["ranch_landmark"]]
+position = Vector2(190, 220)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_landmark")
+prompt_text = "Fulfill Bridlewood crop order (carrot + potato)"
+action = 0
+target_id = &"bridlewood_first_harvest"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CropOrder"]
+shape = SubResource("Circle")
+[node name="BridgeRepair" type="Area2D" parent="." groups=["ranch_landmark"]]
+position = Vector2(540, 190)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_landmark")
+prompt_text = "Repair ranch bridge (beans + wheat)"
+action = 1
+target_id = &"barn"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BridgeRepair"]
+shape = SubResource("Circle")
+[node name="Shortcut" type="Area2D" parent="." groups=["ranch_landmark"]]
+position = Vector2(630, 190)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_landmark")
+prompt_text = "Open farm shortcut"
+action = 2
+target_id = &"bridlewood_wayward_hitch"
+prerequisite_id = &"barn"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Shortcut"]
+shape = SubResource("Circle")
+[node name="SilasClue" type="Area2D" parent="." groups=["ranch_landmark"]]
+position = Vector2(760, 190)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_landmark")
+prompt_text = "Inspect ranch ledger"
+action = 4
+target_id = &"silas_bridlewood_ledger"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SilasClue"]
+shape = SubResource("Circle")
+[node name="RanchHand" type="Area2D" parent="." groups=["ranch_landmark"]]
+position = Vector2(530, 355)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_landmark")
+prompt_text = "Assign ranch hand"
+action = 5
+target_id = &"bridlewood_hand"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RanchHand"]
+shape = SubResource("Circle")
+[node name="GoatShopDaisy" type="Area2D" parent="." groups=["ranch_landmark"]]
+position = Vector2(350, 355)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_landmark")
+prompt_text = "Ranch shop: adopt Daisy the goat ($1.00)"
+action = 6
+target_id = &"goat"
+animal_name = "Daisy"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GoatShopDaisy"]
+shape = SubResource("Circle")
+[node name="GoatShopClover" type="Area2D" parent="." groups=["ranch_landmark"]]
+position = Vector2(440, 355)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_landmark")
+prompt_text = "Ranch shop: adopt Clover the goat ($1.00)"
+action = 6
+target_id = &"goat"
+animal_name = "Clover"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GoatShopClover"]
+shape = SubResource("Circle")
+[node name="CowShop" type="Area2D" parent="." groups=["ranch_landmark"]]
+position = Vector2(260, 355)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_landmark")
+prompt_text = "Ranch shop: adopt a cow ($1.00)"
+action = 6
+target_id = &"cow"
+animal_name = "Bessie"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CowShop"]
+shape = SubResource("Circle")
+[node name="SheepShop" type="Area2D" parent="." groups=["ranch_landmark"]]
+position = Vector2(170, 355)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_landmark")
+prompt_text = "Ranch shop: adopt a sheep ($1.00)"
+action = 6
+target_id = &"sheep"
+animal_name = "Woolsey"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SheepShop"]
+shape = SubResource("Circle")
+[node name="PigShop" type="Area2D" parent="." groups=["ranch_landmark"]]
+position = Vector2(80, 355)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_landmark")
+prompt_text = "Ranch shop: adopt a pig ($1.00)"
+action = 6
+target_id = &"pig"
+animal_name = "Truffle"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PigShop"]
+shape = SubResource("Circle")
+[node name="BreedGoats" type="Area2D" parent="." groups=["ranch_landmark"]]
+position = Vector2(530, 420)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_landmark")
+prompt_text = "Breed mature goats"
+action = 7
+target_id = &"goat"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BreedGoats"]
+shape = SubResource("Circle")
+[node name="RepairPress" type="Area2D" parent="." groups=["ranch_landmark"]]
+position = Vector2(615, 420)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_landmark")
+prompt_text = "Repair a placed cheese press (wheat)"
+action = 1
+target_id = &"cheese_press"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RepairPress"]
+shape = SubResource("Circle")
+[node name="ProcessMilk" type="Area2D" parent="." groups=["ranch_landmark"]]
+position = Vector2(700, 420)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_landmark")
+prompt_text = "Process milk at cheese press"
+action = 3
+target_id = &"press_milk"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ProcessMilk"]
+shape = SubResource("Circle")
+[node name="AdaRook" type="Area2D" parent="." groups=["bridlewood_opponent"]]
+position = Vector2(650, 350)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("5_opponent")
+prompt_text = "Challenge Ada Rook"
+opponent_id = &"ada_rook"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AdaRook"]
+shape = SubResource("Circle")
+[node name="GideonShaw" type="Area2D" parent="." groups=["bridlewood_opponent"]]
+position = Vector2(795, 350)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("5_opponent")
+prompt_text = "Challenge Gideon Shaw"
+opponent_id = &"gideon_shaw"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GideonShaw"]
+shape = SubResource("Circle")
+[node name="BridlewoodHitch" type="Area2D" parent="."]
+position = Vector2(870, 420)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_hitch")
+prompt_text = "Use Bridlewood hitching post"
+post_id = &"bridlewood"
+destination_post_id = &"wayward_farm"
+destination_scene = "res://src/world/wayward_farm.tscn"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BridlewoodHitch"]
+shape = SubResource("Circle")
+[node name="HUD" type="CanvasLayer" parent="."]
+[node name="Status" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 20.0
+offset_right = 920.0
+offset_bottom = 65.0
+theme_override_colors/font_color = Color(0.95, 0.89, 0.74, 1)
+theme_override_font_sizes/font_size = 18
+[node name="Message" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 480.0
+offset_right = 900.0
+offset_bottom = 520.0
+theme_override_colors/font_color = Color(1, 0.92, 0.67, 1)
+theme_override_font_sizes/font_size = 18

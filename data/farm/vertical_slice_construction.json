@@ -1,11 +1,15 @@
 {
-  "schema_version": 1,
+  "schema_version": 3,
   "constructions": [
-    {"id": "path", "name": "Path", "footprint": [1, 1], "walkable": true, "color": "d9c18b"},
-    {"id": "fence", "name": "Fence", "footprint": [1, 1], "walkable": false, "color": "8a5a3b"},
-    {"id": "decoration", "name": "Decoration", "footprint": [1, 1], "walkable": false, "color": "c56f48"},
-    {"id": "machine", "name": "Machine", "footprint": [1, 1], "walkable": false, "color": "718ba5"},
-    {"id": "pen", "name": "Pen", "footprint": [2, 1], "walkable": false, "color": "c99a55"},
-    {"id": "building", "name": "Building", "footprint": [2, 2], "walkable": false, "color": "84564c"}
+    {"id":"path","name":"Path","footprint":[1,1],"walkable":true,"color":"d9c18b"},
+    {"id":"fence","name":"Fence","footprint":[1,1],"walkable":false,"color":"8a5a3b"},
+    {"id":"decoration","name":"Decoration","footprint":[1,1],"walkable":false,"color":"c56f48"},
+    {"id":"machine","name":"Machine","footprint":[1,1],"walkable":false,"color":"718ba5"},
+    {"id":"pen","name":"Pen","footprint":[2,1],"walkable":false,"color":"c99a55","animal_capacity":3},
+    {"id":"building","name":"Building","footprint":[2,2],"walkable":false,"color":"84564c"},
+    {"id":"coop","name":"Coop","footprint":[2,2],"walkable":false,"color":"c48755","animal_capacity":4,"starts_damaged":true,"repair_cost":{"crop_wood":3,"crop_wheat":2}},
+    {"id":"barn","name":"Barn","footprint":[3,2],"walkable":false,"color":"9b5e45","animal_capacity":8,"starts_damaged":true,"repair_cost":{"crop_beans":2,"crop_wheat":3}},
+    {"id":"cheese_press","name":"Cheese Press","footprint":[1,1],"walkable":false,"color":"d6c16f","starts_damaged":true,"repair_cost":{"crop_wheat":2}},
+    {"id":"loom","name":"Loom","footprint":[1,1],"walkable":false,"color":"8d709d","starts_damaged":true,"repair_cost":{"crop_wheat":2}}
   ]
 }

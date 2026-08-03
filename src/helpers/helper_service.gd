@@ -25,13 +25,23 @@ func is_assigned(helper_id: StringName) -> bool:
 	return assignments.has(helper_id)
 
 
-func activate(helper_id: StringName, farm, day: int) -> Dictionary:
+func activate(helper_id: StringName, farm, day: int, animals = null, processing = null) -> Dictionary:
 	if not is_assigned(helper_id) or not definitions.has(helper_id) or farm == null:
 		return {"error": ERR_UNAVAILABLE}
 	if int(last_used_day.get(helper_id, 0)) == day:
 		return {"error": ERR_BUSY}
 	var definition: Dictionary = definitions[helper_id]
-	if StringName(definition.get("action", "")) != &"water_all":
+	var action_id := StringName(definition.get("action", ""))
+	if action_id == &"feed_animals":
+		if animals == null:
+			return {"error": ERR_UNAVAILABLE}
+		var fed := 0
+		for animal_id_value in animals.animals:
+			if animals.feed(StringName(animal_id_value), day) == OK:
+				fed += 1
+		last_used_day[helper_id] = day
+		return {"fed": fed, "message": String(definition.get("success_text", "Helper action complete."))}
+	if action_id != &"water_all":
 		return {"error": ERR_UNAVAILABLE}
 	var watered := 0
 	for cell in farm.field_cells():

@@ -18,7 +18,7 @@ func run() -> Array[String]:
 	session.complete_mahjong_match()
 	if session.minute_of_day != 575:
 		failures.append("a Mahjong match should cost 90 minutes")
-	if session.farm.place_field(Vector2i(4, 1)) != ERR_UNAVAILABLE or session.farm.place_field(Vector2i(4, 2)) != ERR_ALREADY_EXISTS:
+	if session.farm.place_field(Vector2i(7, 1)) != ERR_UNAVAILABLE or session.farm.place_field(Vector2i(7, 2)) != ERR_ALREADY_EXISTS or session.farm.construction_at(Vector2i(4, 1)).get("id", "") != "barn":
 		failures.append("Wayward Farm should protect its route and permanent-object cells from placement")
 	session.record_player_state("res://src/world/wayward_farm.tscn", Vector2(123, 234))
 	session.set_tutorial_step(&"tenderfoot", 4)
@@ -68,8 +68,8 @@ func run() -> Array[String]:
 	var version_six := snapshot.duplicate(true)
 	version_six["schema_version"] = 6
 	version_six["farm"].erase("constructions")
-	if restored.restore(version_six) != OK or not restored.farm.construction_anchors().is_empty():
-		failures.append("version-six saves should migrate an empty construction layer safely")
+	if restored.restore(version_six) != OK or restored.farm.construction_at(Vector2i(4, 1)).get("id", "") != "barn":
+		failures.append("version-six saves should gain the safe damaged Bridlewood barn migration")
 	session.free()
 	restored.free()
 	weather_session.free()

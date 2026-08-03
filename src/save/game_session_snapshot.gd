@@ -16,6 +16,7 @@ static func capture(session) -> Dictionary:
 		"brands": session._ensure_brands().snapshot(),
 		"helpers": session._ensure_helpers().snapshot(),
 		"evidence": session._ensure_evidence().snapshot(),
+		"regions": session._ensure_regions().snapshot(),
 		"player": {"scene": session.player_scene, "position": [session.player_position.x, session.player_position.y]},
 		"tutorial_steps": session.tutorial_steps.duplicate(true),
 	}
@@ -55,6 +56,7 @@ static func _restore_services(session, data: Dictionary) -> bool:
 		["brands", session._ensure_brands()],
 		["helpers", session._ensure_helpers()],
 		["evidence", session._ensure_evidence()],
+		["regions", session._ensure_regions()],
 	]
 	for service_entry in services:
 		var service_data: Variant = data.get(String(service_entry[0]), {})

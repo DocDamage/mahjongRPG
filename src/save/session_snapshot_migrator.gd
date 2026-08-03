@@ -42,4 +42,41 @@ static func migrate(snapshot_data: Dictionary, current_version: int) -> Dictiona
 		brand_data["unlocked_rulesets"] = {"trail": true}
 		brand_data["discovered_deeds"] = {}
 		migrated["brands"] = brand_data
+	if schema_version <= 9:
+		migrated["regions"] = {"unlocked_regions": {}, "fulfilled_orders": {}, "table_wins": {}, "repaired_structures": {}, "shortcuts": {}}
+		var phase_five_farm: Dictionary = migrated.get("farm", {})
+		var phase_five_constructions: Array = phase_five_farm.get("constructions", [])
+		var has_barn := false
+		for construction_value in phase_five_constructions:
+			if construction_value is Dictionary and String(construction_value.get("id", "")) == "barn":
+				has_barn = true
+		if not has_barn:
+			phase_five_constructions.append({"id": "barn", "anchor": [4, 1], "repaired": false})
+		phase_five_farm["constructions"] = phase_five_constructions
+		migrated["farm"] = phase_five_farm
+		var phase_five_horse: Dictionary = migrated.get("horse", {})
+		phase_five_horse["horse_name"] = "Saddle"
+		migrated["horse"] = phase_five_horse
+	if schema_version <= 10:
+		var animals_data: Dictionary = migrated.get("animals", {})
+		var old_animals: Dictionary = animals_data.get("animals", {})
+		var upgraded_animals := {}
+		for animal_id_value in old_animals:
+			var animal_id := String(animal_id_value)
+			var old_state: Dictionary = old_animals[animal_id_value] if old_animals[animal_id_value] is Dictionary else {}
+			upgraded_animals[animal_id] = {
+				"species_id": animal_id,
+				"name": animal_id.capitalize(),
+				"variant": "classic",
+				"birth_day": 1,
+				"last_care_day": int(old_state.get("last_care_day", 0)),
+				"last_progress_day": int(old_state.get("last_progress_day", 1)),
+				"happiness": int(old_state.get("happiness", 55)),
+				"quality": 0,
+				"products_ready": int(old_state.get("products_ready", 0)),
+				"parents": [],
+				"retired": false,
+			}
+		animals_data["animals"] = upgraded_animals
+		migrated["animals"] = animals_data
 	return migrated

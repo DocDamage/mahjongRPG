@@ -6,7 +6,7 @@ Doc inherits Wayward Farm outside Mercy's Wake, a Gulf Coast frontier town where
 
 ## Playable-slice status
 
-This checkout contains the Phase 1–4 playable foundation. From the title shell, a player can start or load, configure accessibility preferences (including Tenderfoot, Trailhand, and Gunslinger Mahjong assistance), complete First Lantern, use Mabel's daily crop-watering action, earn all six Brands through the three existing-world mastery rematches, select and upgrade a two-Brand loadout, reopen the Hall's Frontier Rules table, and play either Trail or Frontier Mahjong. Saves migrate from the P1–P3 schema to persist Brands, upgrades, Hall stage, unlocked rulesets, and discovered Deeds. It is not a claim that the full planned game is complete.
+This checkout contains the Phase 1–6 playable foundation. From the title shell, a player can complete First Lantern, cross the unlocked Bridlewood trail, fulfill the ranch crop order, challenge Ada Rook or Gideon Shaw, repair the damaged barn, record the next Silas clue, and open the farm shortcut. The farm now supports all 20 supplied ranch crops plus the original Wayward beans, watering-derived standard/silver/gold harvest quality, a route-safe expandable grid, repairable barn/coop/machines, ranch processing, persistent horse identity, and a named animal roster with variants, capacity, lineage, aging, retirement, and products. Saves migrate through schema 11 from pre-P5/P6 saves; old saves begin with Bridlewood locked and receive a safe damaged barn plus migrated animal state. It is not a claim that the full planned game is complete.
 
 ## Technical target
 
@@ -56,6 +56,7 @@ Use the target Godot 4.7.1 executable—not an arbitrary `godot` on `PATH`. The 
 - [Test-to-module coverage inventory](docs/qa/test_to_module_coverage.md)
 - [Manual device/display/accessibility matrix](docs/qa/manual_device_display_matrix.md)
 - [Phase 3–4 completion audit](docs/production/PHASE_3_4_COMPLETION_AUDIT_2026-08-02.md)
+- [Phase 5–6 completion audit](docs/production/PHASE_5_6_COMPLETION_AUDIT_2026-08-02.md)
 - [Windows setup and recovery](docs/release/setup_and_recovery.md)
 
 ## Licensing

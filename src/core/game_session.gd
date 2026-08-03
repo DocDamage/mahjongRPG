@@ -11,9 +11,12 @@ const QuestService = preload("res://src/quests/quest_service.gd")
 const BrandLoadoutState = preload("res://src/mahjong/application/brand_loadout_state.gd")
 const HelperService = preload("res://src/helpers/helper_service.gd")
 const EvidenceService = preload("res://src/story/evidence_service.gd")
+const ProcessingService = preload("res://src/farm/processing_service.gd")
+const RegionProgressService = preload("res://src/regions/region_progress_service.gd")
 const GameSessionSnapshot = preload("res://src/save/game_session_snapshot.gd")
 const SessionSnapshotMigrator = preload("res://src/save/session_snapshot_migrator.gd")
 const WeatherCatalog = preload("res://src/weather/weather_catalog.gd")
+const SessionCatalogLoader = preload("res://src/core/session_catalog_loader.gd")
 
 signal session_started(seed: int)
 signal time_advanced(day: int, minute_of_day: int)
@@ -21,7 +24,7 @@ signal pause_changed(paused: bool)
 signal weather_changed(weather_id: StringName)
 signal session_restored()
 
-const SAVE_SCHEMA_VERSION := 9
+const SAVE_SCHEMA_VERSION := 11
 const MATCH_TIME_COST_MINUTES := 90
 const MINUTES_PER_DAY := 24 * 60
 const REAL_SECONDS_PER_DAY := 60.0
@@ -38,6 +41,8 @@ var animals
 var brands
 var helpers
 var evidence
+var processing
+var regions
 var player_scene := ""
 var player_position := Vector2.ZERO
 var tutorial_steps: Dictionary = {}
@@ -60,9 +65,8 @@ func _ready() -> void:
 	_ensure_brands()
 	_ensure_helpers()
 	_ensure_evidence()
-	_ensure_brands()
-	_ensure_helpers()
-	_ensure_evidence()
+	_ensure_processing()
+	_ensure_regions()
 func start_new_game(new_seed: int) -> void:
 	seed = new_seed
 	day = 1
@@ -76,6 +80,8 @@ func start_new_game(new_seed: int) -> void:
 	brands = null
 	helpers = null
 	evidence = null
+	processing = null
+	regions = null
 	player_scene = ""
 	player_position = Vector2.ZERO
 	tutorial_steps.clear()
@@ -84,6 +90,8 @@ func start_new_game(new_seed: int) -> void:
 	_ensure_brands()
 	_ensure_helpers()
 	_ensure_evidence()
+	_ensure_processing()
+	_ensure_regions()
 	_ensure_farm()
 	_pause_reasons.clear()
 	_time_accumulator = 0.0
@@ -126,12 +134,10 @@ func set_weather(next_weather_id: StringName) -> void:
 	weather_id = next_weather_id
 	weather_changed.emit(weather_id)
 
-
 func make_rng(stream_name: StringName) -> RandomNumberGenerator:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = _stream_seed(stream_name)
 	return rng
-
 
 func record_player_state(scene_path: String, position: Vector2) -> void:
 	if not scene_path.begins_with("res://"):
@@ -139,20 +145,16 @@ func record_player_state(scene_path: String, position: Vector2) -> void:
 	player_scene = scene_path
 	player_position = position
 
-
 func tutorial_step(tutorial_id: StringName) -> int:
 	return maxi(0, int(tutorial_steps.get(tutorial_id, 0)))
-
 
 func set_tutorial_step(tutorial_id: StringName, next_step: int) -> void:
 	if tutorial_id.is_empty() or next_step < 0:
 		return
 	tutorial_steps[tutorial_id] = next_step
 
-
 func snapshot() -> Dictionary:
 	return GameSessionSnapshot.capture(self)
-
 
 func restore(snapshot_data: Dictionary) -> Error:
 	var migrated := SessionSnapshotMigrator.migrate(snapshot_data, SAVE_SCHEMA_VERSION)
@@ -168,26 +170,20 @@ func restore(snapshot_data: Dictionary) -> Error:
 	if is_inside_tree() and not player_scene.is_empty():
 		call_deferred("_restore_player_scene")
 	return OK
-
-
 func _stream_seed(stream_name: StringName) -> int:
 	var value := seed
 	for byte in String(stream_name).to_utf8_buffer():
 		value = int((value * 31) + byte)
 	return value
-
-
 func _weather_for_day(next_day: int) -> StringName:
 	return WeatherCatalog.roll_slice_weather(_stream_seed(&"weather"), next_day)
-
-
 func _ensure_farm():
 	if farm != null:
 		return farm
-	var grid = FarmGrid.new(Rect2i(0, 0, 5, 3))
-	grid.set_required_path([Vector2i(4, 1)])
-	grid.set_route_guards([[Vector2i(0, 2), Vector2i(4, 0)]])
-	grid.set_blocked(Vector2i(4, 2))
+	var grid = FarmGrid.new(Rect2i(0, 0, 8, 4))
+	grid.set_required_path([Vector2i(7, 1)])
+	grid.set_route_guards([[Vector2i(0, 3), Vector2i(7, 0)], [Vector2i(0, 0), Vector2i(7, 3)]])
+	grid.set_blocked(Vector2i(7, 2))
 	farm = FarmService.new(grid)
 	for field_cell in [Vector2i(0, 0), Vector2i(1, 0), Vector2i(0, 1), Vector2i(1, 1)]:
 		farm.place_field(field_cell)
@@ -206,21 +202,18 @@ func _ensure_farm():
 				farm.register_definition(CropDefinition.new(crop_data_value))
 	if ConstructionCatalog.register_definitions(farm) != OK:
 		push_error("Invalid vertical-slice construction data")
+	if farm.place_construction(&"barn", Vector2i(4, 1)) != OK:
+		push_error("Unable to stage the damaged Bridlewood barn")
+	_ensure_animals().sync_capacity_from_farm(farm)
 	return farm
-
-
 func _ensure_horse():
 	if horse == null:
 		horse = HorseTravelState.new()
 	return horse
-
-
 func _ensure_inventory():
 	if inventory == null:
 		inventory = InventoryService.new()
 	return inventory
-
-
 func _ensure_quests():
 	if quests != null:
 		return quests
@@ -237,8 +230,6 @@ func _ensure_quests():
 				if quest_value is Dictionary:
 					quests.register_definition(quest_value)
 	return quests
-
-
 func _ensure_animals():
 	if animals != null:
 		return animals
@@ -255,40 +246,33 @@ func _ensure_animals():
 				if animal_value is Dictionary:
 					animals.register_definition(animal_value)
 	return animals
-
-
 func _ensure_brands():
 	if brands == null:
 		brands = BrandLoadoutState.new()
 	return brands
-
-
 func _ensure_helpers():
 	if helpers == null:
 		helpers = HelperService.new()
-		_load_service_catalog("res://data/helpers/vertical_slice_helpers.json", "helpers", helpers)
+		_load_catalog("res://data/helpers/vertical_slice_helpers.json", "helpers", helpers)
 	return helpers
-
-
 func _ensure_evidence():
 	if evidence == null:
 		evidence = EvidenceService.new()
-		_load_service_catalog("res://data/story/vertical_slice_evidence.json", "evidence", evidence)
+		_load_catalog("res://data/story/vertical_slice_evidence.json", "evidence", evidence)
 	return evidence
-
-
-func _load_service_catalog(path: String, collection_key: String, service) -> void:
-	var file := FileAccess.open(path, FileAccess.READ)
-	var parsed: Variant = JSON.parse_string(file.get_as_text()) if file != null else {}
-	var entries: Variant = parsed.get(collection_key, []) if parsed is Dictionary else []
-	if not entries is Array:
+func _ensure_processing():
+	if processing == null:
+		processing = ProcessingService.new()
+		_load_catalog("res://data/farm/vertical_slice_processing.json", "recipes", processing)
+	return processing
+func _ensure_regions():
+	if regions == null:
+		regions = RegionProgressService.new()
+		_load_catalog("res://data/regions/bridlewood/region.json", "regions", regions)
+	return regions
+func _load_catalog(path: String, collection_key: String, service) -> void:
+	if SessionCatalogLoader.load_into(path, collection_key, service) != OK:
 		push_error("Invalid service catalog: %s" % path)
-		return
-	for entry in entries:
-		if entry is Dictionary and service.register_definition(entry) != OK:
-			push_error("Invalid service definition in: %s" % path)
-
-
 func _restore_player_scene() -> void:
 	if player_scene.is_empty() or not ResourceLoader.exists(player_scene):
 		return

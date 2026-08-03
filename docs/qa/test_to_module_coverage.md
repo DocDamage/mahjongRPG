@@ -1,6 +1,6 @@
 # Test-to-module coverage inventory
 
-The native Godot runner is the authoritative automated suite registry: `tests/test_runner.gd`. This inventory maps every runtime responsibility added through P4 to a focused test or smoke gate; it is a traceability map, not a numeric line-coverage claim.
+The native Godot runner is the authoritative automated suite registry: `tests/test_runner.gd`. This inventory maps every runtime responsibility added through P6 to a focused test or smoke gate; it is a traceability map, not a numeric line-coverage claim.
 
 | Module / player contract | Automated evidence |
 | --- | --- |
@@ -13,6 +13,9 @@ The native Godot runner is the authoritative automated suite registry: `tests/te
 | P4 Frontier rules, 136-tile wall, 14-tile hands, quads, Dark/Purple, Deeds, replay hash/explanations | `tests/unit/test_frontier_rules.gd`, `test_six_brand_powers.gd`, `test_match_replay_explainer.gd` |
 | Advanced AI visible-information boundary and explanation | `tests/unit/test_frontier_ai.gd` |
 | P3/P4 schema migration | `tests/unit/test_phase_three_four_migration.gd` |
+| P5 Bridlewood region, crop order, stable region migration, fifth opponent tier | `tests/unit/test_phase_five_six.gd`, `tests/smoke_test.gd` |
+| P6 all-crop activation, dense route safety, named animal lineage/capacity/aging/retirement, repairable processing | `tests/unit/test_phase_five_six.gd`, `test_crop_catalog.gd`, `test_farm_service.gd`, `test_animal_care_service.gd` |
+| Horse identity and mounted-location continuity | `tests/unit/test_horse_travel_state.gd`, `test_phase_one_services.gd` |
 | Input remapping, controller focus, display preferences | `tests/unit/test_input_service.gd`, `test_input_settings.gd`, `test_display_preferences.gd` |
 | Project resources and scene references | `tests/unit/test_project_resources.gd`, `tests/smoke_test.gd` |
 | Connected First Lantern progression/save continuation | `tests/integration/test_vertical_slice_progression.gd` |

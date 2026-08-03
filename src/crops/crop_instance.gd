@@ -10,6 +10,7 @@ var age_days := 0
 var days_without_water := 0
 var last_processed_day := 0
 var last_watered_day := -1
+var watered_days := 0
 
 
 func _init(next_definition, planted_day: int) -> void:
@@ -23,6 +24,8 @@ func water(day: int) -> Error:
 	if day < last_processed_day or state in [State.DEAD, State.HARVESTED]:
 		return ERR_INVALID_DATA
 	last_watered_day = day
+	if day > last_processed_day - 1:
+		watered_days += 1
 	days_without_water = 0
 	if state == State.WILTED:
 		state = State.GROWING
@@ -41,7 +44,15 @@ func harvest() -> Dictionary:
 	if state != State.READY:
 		return {"error": ERR_INVALID_DATA}
 	state = State.HARVESTED
-	return {"crop_id": str(definition.id), "quantity": 1}
+	return {"crop_id": str(definition.id), "quantity": 1, "quality": quality_label()}
+
+
+func quality_label() -> StringName:
+	if watered_days >= definition.days_to_mature + 2:
+		return &"gold"
+	if watered_days >= definition.days_to_mature:
+		return &"silver"
+	return &"standard"
 
 
 func snapshot() -> Dictionary:
@@ -52,6 +63,7 @@ func snapshot() -> Dictionary:
 		"days_without_water": days_without_water,
 		"last_processed_day": last_processed_day,
 		"last_watered_day": last_watered_day,
+		"watered_days": watered_days,
 	}
 
 

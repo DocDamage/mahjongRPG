@@ -12,6 +12,9 @@ docs/
 legal/
 src/
   bootstrap/
+  regions/         region progression and data-backed regional objectives
+  farm/            crop, construction, placement, and processing services
+  animals/         named animal lifecycle and lineage services
 tools/
 vendor/
   local/           untracked source archives supplied by the project owner

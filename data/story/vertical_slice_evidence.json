@@ -6,5 +6,10 @@
       "title_key": "evidence.silas_first_lantern_note.title",
       "text_key": "evidence.silas_first_lantern_note.text"
     }
+    ,{
+      "id": "silas_bridlewood_ledger",
+      "title_key": "evidence.silas_bridlewood_ledger.title",
+      "text_key": "evidence.silas_bridlewood_ledger.text"
+    }
   ]
 }

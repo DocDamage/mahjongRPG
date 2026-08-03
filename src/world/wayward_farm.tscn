@@ -192,6 +192,20 @@ required_hall_milestone = &"first_lantern"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RiverbendPath"]
 shape = SubResource("CircleShape2D_river_exit")
 
+[node name="BridlewoodTrail" type="Area2D" parent="."]
+position = Vector2(880, 185)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("9_exit")
+prompt_text = "Follow the Bridlewood trail"
+destination_scene = "res://src/world/bridlewood.tscn"
+required_hall_milestone = &"first_lantern"
+required_region = &"bridlewood"
+unlock_region_on_access = &"bridlewood"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BridlewoodTrail"]
+shape = SubResource("CircleShape2D_exit")
+
 [node name="HUD" type="CanvasLayer" parent="."]
 
 [node name="Status" type="Label" parent="HUD"]

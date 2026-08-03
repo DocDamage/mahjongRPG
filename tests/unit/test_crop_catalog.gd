@@ -23,6 +23,6 @@ func run() -> Array[String]:
 	for crop_value in entries.values():
 		if bool(crop_value.get("available_in_slice", false)):
 			active.append(StringName(crop_value.get("id", "")))
-	if active.size() != 4 or not &"beans" in active or not &"corn" in active or not &"tomato" in active or not &"wheat" in active:
-		failures.append("the four balanced slice crops should remain the only active crop definitions")
+	if active.size() != entries.size() or active.size() != 21 or not &"beans" in active or not &"pumpkin" in active:
+		failures.append("P6 should activate the original Wayward crop plus every twenty cataloged ranch crop")
 	return failures

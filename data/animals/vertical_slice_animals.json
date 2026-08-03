@@ -1,6 +1,10 @@
 {
-  "schema_version": 1,
+  "schema_version": 3,
   "animals": [
-    {"id": "juniper_hens", "display_name": "Juniper's hens", "product_id": "animal_egg", "product_quantity": 2}
+    {"id":"juniper_hens","display_name":"Juniper's hens","starter_name":"Juniper's hens","product_id":"animal_egg","product_quantity":2,"building_id":"coop","default_capacity":4,"mature_days":1,"retirement_days":40,"variants":["classic","speckled","white"]},
+    {"id":"goat","display_name":"Goat","product_id":"animal_goat_milk","product_quantity":1,"building_id":"barn","default_capacity":4,"mature_days":3,"retirement_days":60,"variants":["brown","white","mottled"]},
+    {"id":"cow","display_name":"Cow","product_id":"animal_milk","product_quantity":2,"building_id":"barn","default_capacity":4,"mature_days":5,"retirement_days":80,"variants":["black","brown","spotted"]},
+    {"id":"sheep","display_name":"Sheep","product_id":"animal_wool","product_quantity":1,"building_id":"barn","default_capacity":4,"mature_days":4,"retirement_days":75,"variants":["cream","gray","black"]},
+    {"id":"pig","display_name":"Pig","product_id":"animal_truffle","product_quantity":1,"building_id":"pen","default_capacity":3,"mature_days":4,"retirement_days":70,"variants":["pink","black","spotted"]}
   ]
 }
