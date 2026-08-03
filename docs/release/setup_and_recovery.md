@@ -30,7 +30,7 @@ The historical supplemental ZIPs and master split archive can be placed under `v
 
 Godot maps `user://saves` to `%APPDATA%\Godot\app_userdata\Six Brands at High Noon\saves` on Windows. Every slot is JSON with a SHA-256 checksum. A later successful save moves the former primary to the same filename with `.backup` appended.
 
-If a slot will not load, close the game, copy both files elsewhere, and replace `manual_N.json` with `manual_N.json.backup` after removing the `.backup` suffix. The game automatically attempts this backup when the primary is corrupt. `pre_finale.json` is reserved for a future finale checkpoint and should not be used as an ordinary manual slot.
+If a slot will not load, close the game, copy both files elsewhere, and replace `manual_N.json` with `manual_N.json.backup` after removing the `.backup` suffix. The game automatically attempts this backup when the primary is corrupt. `pre_finale.json` is reserved and is captured automatically immediately before Texas King's championship; do not use it as an ordinary manual slot. Loading it returns to the safe pre-table state, so the championship can be started again without losing prior world progress.
 
 ## Clean-profile launch
 

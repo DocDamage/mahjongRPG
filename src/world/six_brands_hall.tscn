@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://src/world/interior.gd" id="1_interior"]
 [ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
@@ -8,6 +8,9 @@
 [ext_resource type="Script" path="res://src/world/public_life_landmark.gd" id="6_public"]
 [ext_resource type="Script" path="res://src/world/act_three_landmark.gd" id="7_act_three"]
 [ext_resource type="Script" path="res://src/world/public_tournament_table.gd" id="8_tournament"]
+[ext_resource type="Script" path="res://src/world/final_championship_table.gd" id="9_final"]
+[ext_resource type="Script" path="res://src/world/advanced_table.gd" id="10_advanced"]
+[ext_resource type="Script" path="res://src/world/postgame_landmark.gd" id="11_postgame"]
 [sub_resource type="CircleShape2D" id="ExitShape"]
 radius = 42.0
 [sub_resource type="CircleShape2D" id="MabelShape"]
@@ -154,6 +157,30 @@ prompt_text = "Schedule final championship"
 action = 1
 target_id = &"final_championship"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ChampionshipSchedule"]
+shape = SubResource("MabelShape")
+[node name="TexasKingTable" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(800, 155)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("9_final")
+prompt_text = "Play Texas King championship"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TexasKingTable"]
+shape = SubResource("MabelShape")
+[node name="AdvancedTable" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(85, 235)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("10_advanced")
+prompt_text = "Play Hall Legends tournament"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AdvancedTable"]
+shape = SubResource("MabelShape")
+[node name="CompletionLedger" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(85, 310)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("11_postgame")
+prompt_text = "Review postgame ending and collections"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CompletionLedger"]
 shape = SubResource("MabelShape")
 [node name="EvidenceLedger" type="Area2D" parent="." groups=["interior_interactable"]]
 position = Vector2(710, 390)

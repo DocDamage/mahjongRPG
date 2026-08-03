@@ -20,6 +20,8 @@ src/
   economy/         orders, stocked shops, crafting, and consumable effects
   fishing/         catalog, live fishing flow, gear progression, records, and contests
   desert/          saved weather-route, supernatural-record, and clue progression
+  finale/          Texas King checkpoint/standoff state and transparent ending evaluator
+  postgame/        ending provenance and non-destructive collection completion state
   farm/            crop, construction, placement, and processing services
   animals/         named animal lifecycle and lineage services
 tools/

@@ -38,7 +38,7 @@ The original **Six Brands Hall** stands in Saint's Landing. Texas King owns it a
 
 Players can freely place optional decorations while major restoration milestones use authored states.
 
-P13 turns the Hall into public life: six stable property outcomes contribute to the public ledger; Market Day can be scheduled and rescheduled; the Town Tournament only completes after a real public Frontier Rules win; and the reopening reaches the fifth, legendary stage. The final championship may be scheduled after the reopening but remains a warning-only gate until Phase 15.
+P13 turns the Hall into public life: six stable property outcomes contribute to the public ledger; Market Day can be scheduled and rescheduled; the Town Tournament only completes after a real public Frontier Rules win; and the reopening reaches the fifth, legendary stage. P15 captures a dedicated pre-finale backup before the scheduled championship, and P16 returns the restored Hall to public advanced-table play after credits.
 
 ## Opening
 
@@ -93,15 +93,15 @@ Final names mix historically grounded names with Western nicknames. Comedic name
 
 The restored hall hosts the championship. Doc learns and counters every altered rule Texas King uses; the game never resolves the finale through hidden random cheating.
 
-After losing the match, Texas King draws his weapon. Dialogue choices determine available evidence and support, followed by a short timing interaction. Doc directly shoots and physically kills him. The scene includes some pixel blood but no gore. Failure restarts immediately before the standoff, not before the Mahjong match.
+After losing the match, Texas King draws his weapon. The standoff lets Doc either present the truthful counter-Deed or end the King's reign; yielding fails safely and restarts at the standoff, never before the Mahjong match. The final table remains legal and counterable through visible evidence rather than hidden random cheating.
 
 Texas King's death reveals that he was Doc's father.
 
 ## Endings
 
-1. **A Town Reclaimed** — property disputes and major character stories are resolved
-2. **Keeper of the Six Brands** — the hall, records, and supernatural history are completed
-3. **The Good Earth** — farm, ranch, fishing, and community life define Doc's future
-4. **A Hollow Victory** — Texas King dies, but insufficient preparation leaves the town divided
+1. **The Open Hall** — protect Mercy's Wake and answer with the truthful counter-Deed
+2. **Mercy at Sunrise** — protect Mercy's Wake and end the King's reign
+3. **Keeper of Truth** — preserve the Hall records and answer with the truthful counter-Deed
+4. **The Last Witness** — preserve the Hall records and end the King's reign
 
-P14 ends safely at a clear readiness warning after King's Reach is charted, a non-contradictory investigation consequence is selected, community support is present, and the final championship is scheduled. The final tournament itself remains unavailable until Phase 15. The postgame continues after every main ending with Texas King dead, Silas returned, unfinished stories available, advanced Mahjong unlocked, and King's Reach open for exploration.
+P14 ends safely at a clear readiness warning after King's Reach is charted, a non-contradictory investigation consequence is selected, community support is present, and the final championship is scheduled. P15 resolves that table and the local-retry standoff, then rolls credits. P16 keeps every ending's provenance in one postgame state: Silas has returned, the Hall Legends tournament is repeatable, King's Reach remains open, and farm, animals, fishing, collections, and prior world progress stay available.

@@ -4,7 +4,7 @@
 
 - Active local branch: `agent/project-foundation`
 - Integration target defined by the plan: `develop`
-- Local P1–P14 code is complete; physical checkpoints and target-engine release evidence remain pending.
+- Local P1–P16 code is complete; physical checkpoints and target-engine release evidence remain pending.
 - This log records verified local milestones; it does not claim that the full execution plan is complete.
 
 ## Verified milestones
@@ -51,6 +51,7 @@
 | P10 Red Testament mystery | Added the Red Testament route, Ash Varela, deterministic remaining weather and ambience, Windward Pass, bonfire, expedition-property ruins, supernatural record, complete expert schedules, and counterable final-rule clue while keeping King's Reach locked. Schema 15 migrates prior saves with empty desert state. |
 | P11–P12 community completion | Added a data-driven ten-arc community service with three saved stages per opponent, stable relationship-choice IDs, active/completed/mixed restore validation, ten visitable homes, procedural portrait cards, conditional post-resolution schedules, eight gated secrets, locale-keyed dialogue, farm/fishing/economy/Mahjong helper consumers, and the `community_allies_ready` finale-support state. Schema 17 forward-migrates all earlier saves and preserves P11 state. |
 | P13–P14 public life and Act III | Added six contribution-backed property outcomes, persisted public rank/event/Hall state, reschedulable Market Day, a match-win-only public Frontier tournament, Hall stages 4–5, and final-championship scheduling. Act III adds the inheritance-to-bargain chain, one saved consequence, rule explanations, proof Silas is alive, King's Reach exploration, and an explicit non-final warning. Schema 19 forward-migrates all earlier saves; the native runner reports 44 suites. |
+| P15–P16 finale and stable postgame | Added a data-backed Texas King opponent and final-rule explanation, pre-final checkpoint confirmation, retryable scheduled championship, local-retry dialogue standoff, transparent four-ending evaluator, father/Silas reveal, credits, and schema-20 finale persistence. Credits enter schema-21 canonical postgame with ending provenance, repeatable Hall Legends tournament, collection ledger, audio feedback, and preserved King's Reach/farm/animals/fishing state. The native runner reports 45 suites. |
 | Target-engine CI evidence | GitHub Actions run `30770900107` passed Linux resource import, validator, all 33 suites, smoke, and editor initialization plus Windows Godot-template/export preflight. |
 
 ## Current local verification baseline
@@ -64,4 +65,4 @@ python tools/validate_repository.py
 <Godot 4.7.1 engine> --headless --path . --editor --quit
 ```
 
-The most recent local implementation run used Godot 4.6.2 and reports 44 suites plus smoke/editor success. Godot 4.7.1 with matching Windows templates remains the required target for release/export evidence. The Windows debug export and isolated-AppData headless launch are verified on the P2 baseline; user-observed clean-profile, manual device/display/accessibility, and P5–P14 physical player-path passes remain external evidence gates. See [setup_and_recovery.md](../release/setup_and_recovery.md).
+The most recent local implementation run used the required Godot 4.7.1 executable and reports 45 suites plus smoke/editor success. The Windows debug export and isolated-AppData headless launch are verified on the P2 baseline; user-observed clean-profile, manual device/display/accessibility, and P5–P16 physical player-path passes remain external evidence gates. See [setup_and_recovery.md](../release/setup_and_recovery.md).

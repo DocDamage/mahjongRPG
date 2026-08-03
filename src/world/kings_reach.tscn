@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://src/world/interior.gd" id="1_interior"]
 [ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
 [ext_resource type="Script" path="res://src/world/scene_exit.gd" id="3_exit"]
 [ext_resource type="Script" path="res://src/world/act_three_landmark.gd" id="4_act_three"]
+[ext_resource type="Script" path="res://src/world/finale_landmark.gd" id="5_finale"]
 [sub_resource type="CircleShape2D" id="ExitShape"]
 radius = 42.0
 [sub_resource type="CircleShape2D" id="ActionShape"]
@@ -84,6 +85,60 @@ script = ExtResource("4_act_three")
 prompt_text = "Read final-championship readiness warning"
 action = 6
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FinalWarning"]
+shape = SubResource("ActionShape")
+[node name="YieldToClaim" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(220, 305)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("5_finale")
+prompt_text = "Yield to the King's claim (retryable)"
+action = 0
+[node name="CollisionShape2D" type="CollisionShape2D" parent="YieldToClaim"]
+shape = SubResource("ActionShape")
+[node name="SpeakTruth" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(360, 305)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("5_finale")
+prompt_text = "Answer with the truthful counter-Deed"
+action = 1
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpeakTruth"]
+shape = SubResource("ActionShape")
+[node name="EndReign" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(640, 305)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("5_finale")
+prompt_text = "End the King's reign"
+action = 2
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EndReign"]
+shape = SubResource("ActionShape")
+[node name="RetryStandoff" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(780, 305)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("5_finale")
+prompt_text = "Retry failed standoff"
+action = 3
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RetryStandoff"]
+shape = SubResource("ActionShape")
+[node name="Credits" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(360, 385)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("5_finale")
+prompt_text = "View ending and credits"
+action = 4
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Credits"]
+shape = SubResource("ActionShape")
+[node name="EndingSummary" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(640, 385)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("5_finale")
+prompt_text = "Review earned ending"
+action = 5
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EndingSummary"]
 shape = SubResource("ActionShape")
 [node name="HUD" type="CanvasLayer" parent="."]
 [node name="Status" type="Label" parent="HUD"]

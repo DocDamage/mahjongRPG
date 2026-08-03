@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "finales": [
+    {
+      "id": "texas_king",
+      "opponent": {"id":"texas_king","display_name":"Texas King","brands":["dark","purple"],"ai":{"set_weight":2.1,"run_weight":1.5,"seen_tile_weight":1.0}},
+      "counter_rule": "The King must honor the exposed counter-Deed and a truthful declared category.",
+      "endings": [
+        {"id":"open_hall"},
+        {"id":"mercy_at_sunrise"},
+        {"id":"keeper_of_truth"},
+        {"id":"keeper_mercy"}
+      ],
+      "credits": ["Six Brands at High Noon", "Design and development", "Community of Mercy's Wake", "Thank you for playing"]
+    }
+  ]
+}

@@ -100,4 +100,8 @@ static func migrate(snapshot_data: Dictionary, current_version: int) -> Dictiona
 		migrated["public_life"] = {"rank_points": 0, "rank_id": "tenderfoot", "event_states": {}, "contributions": {}, "hall_milestones": {}}
 	if schema_version <= 18:
 		migrated["story"] = {"chain_validated": false, "bargain_discovered": false, "choices": {}, "explained_rules": {}, "silas_alive_proven": false, "kings_reach_sites": {}, "final_warning_accepted": false}
+	if schema_version <= 19:
+		migrated["finale"] = {"phase": "unstarted", "pre_finale_checkpoint_required": false, "pre_finale_checkpoint_captured": false, "championship_losses": 0, "opponent_defeated": false, "standoff_failures": 0, "ending_id": "", "standoff_response": "", "credits_seen": false}
+	if schema_version <= 20:
+		migrated["postgame"] = {"active": false, "ending_provenance": ""}
 	return migrated

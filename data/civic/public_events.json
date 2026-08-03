@@ -4,6 +4,7 @@
     {"id":"market_day","display_name":"Mercy's Wake Market Day","repeatable":true,"rank_points":5,"required_hall_stage":3,"minimum_contributions":1,"required_properties":["bridlewood_water_right"]},
     {"id":"town_tournament","display_name":"Town Tournament","repeatable":true,"requires_match":true,"rank_points":15,"hall_stage":4,"required_hall_stage":3,"minimum_contributions":3,"required_properties":["saints_market_charter","gulls_rest_mooring"],"required_events":["market_day"]},
     {"id":"hall_reopening","display_name":"Legendary Hall Reopening","repeatable":false,"rank_points":20,"hall_stage":5,"required_hall_stage":4,"minimum_contributions":5,"required_properties":["ironhook_customs_warehouse","red_testament_expedition"],"required_events":["town_tournament"],"requires_community_allies":true},
-    {"id":"final_championship","display_name":"Final Championship","repeatable":false,"rank_points":0,"required_hall_stage":5,"minimum_contributions":5,"required_events":["hall_reopening"],"requires_community_allies":true}
+    {"id":"final_championship","display_name":"Final Championship","repeatable":false,"rank_points":0,"required_hall_stage":5,"minimum_contributions":5,"required_events":["hall_reopening"],"requires_community_allies":true},
+    {"id":"postgame_tournament","display_name":"Hall Legends Tournament","repeatable":true,"requires_match":true,"rank_points":10,"required_hall_stage":5,"minimum_contributions":5,"required_events":["final_championship"],"requires_community_allies":true}
   ]
 }

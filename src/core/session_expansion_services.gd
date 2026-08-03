@@ -10,18 +10,20 @@ const DesertProgressService = preload("res://src/desert/desert_progress_service.
 const CommunityArcService = preload("res://src/community/community_arc_service.gd")
 const PublicLifeService = preload("res://src/public_life/public_life_service.gd")
 const ActThreeService = preload("res://src/story/act_three_service.gd")
+const FinaleService = preload("res://src/finale/finale_service.gd")
+const PostgameService = preload("res://src/postgame/postgame_service.gd")
 
 
 func reset(session) -> void:
 	session.relationships = null; session.properties = null; session.trade = null
 	session.crafting = null; session.effects = null; session.angler = null; session.desert = null; session.community = null
-	session.public_life = null; session.story = null
+	session.public_life = null; session.story = null; session.finale = null; session.postgame = null
 
 
 func ensure_all(session) -> void:
 	ensure_angler(session); ensure_desert(session); ensure_relationships(session); ensure_properties(session)
 	ensure_trade(session); ensure_crafting(session); ensure_effects(session); ensure_community(session)
-	ensure_public_life(session); ensure_story(session)
+	ensure_public_life(session); ensure_story(session); ensure_finale(session); ensure_postgame(session)
 
 
 func ensure_relationships(session):
@@ -92,3 +94,16 @@ func ensure_story(session):
 		session.story = ActThreeService.new()
 		session._load_catalog("res://data/story/act_three.json", "story", session.story)
 	return session.story
+
+
+func ensure_finale(session):
+	if session.finale == null:
+		session.finale = FinaleService.new()
+		session._load_catalog("res://data/finale/texas_king_finale.json", "finales", session.finale)
+	return session.finale
+
+
+func ensure_postgame(session):
+	if session.postgame == null:
+		session.postgame = PostgameService.new()
+	return session.postgame

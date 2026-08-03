@@ -22,7 +22,7 @@ signal time_advanced(day: int, minute_of_day: int)
 signal pause_changed(paused: bool)
 signal weather_changed(weather_id: StringName)
 signal session_restored()
-const SAVE_SCHEMA_VERSION := 19
+const SAVE_SCHEMA_VERSION := 21
 const MATCH_TIME_COST_MINUTES := 90
 const MINUTES_PER_DAY := 24 * 60
 const REAL_SECONDS_PER_DAY := 60.0
@@ -41,7 +41,7 @@ var evidence
 var processing
 var regions
 var relationships; var properties; var trade; var crafting; var effects
-var angler; var desert; var community; var public_life; var story
+var angler; var desert; var community; var public_life; var story; var finale; var postgame
 var expansion_services = SessionExpansionServices.new()
 var player_scene := ""
 var player_position := Vector2.ZERO

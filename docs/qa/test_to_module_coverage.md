@@ -1,6 +1,6 @@
 # Test-to-module coverage inventory
 
-The native Godot runner is the authoritative automated suite registry: `tests/test_runner.gd`. This inventory maps every runtime responsibility added through P14 to a focused test or smoke gate; it is a traceability map, not a numeric line-coverage claim.
+The native Godot runner is the authoritative automated suite registry: `tests/test_runner.gd`. This inventory maps every runtime responsibility added through P16 to a focused test or smoke gate; it is a traceability map, not a numeric line-coverage claim.
 
 | Module / player contract | Automated evidence |
 | --- | --- |
@@ -22,6 +22,8 @@ The native Godot runner is the authoritative automated suite registry: `tests/te
 | P11/P12 ten multi-stage relationship arcs, choices, active/completed/mixed migration, helpers/passives, ten homes, procedural portrait cards, eight gated secrets, post-resolution schedules, and finale-support state | `tests/unit/test_phase_eleven_twelve.gd`, `test_project_resources.gd`, `tests/smoke_test.gd` |
 | P13 public property contributions, rank, reschedulable Market Day, real-match-gated Town Tournament, Hall stages 4–5, reopening, final-championship scheduling, and schema-18 continuity | `tests/unit/test_phase_thirteen_fourteen.gd`, `test_project_resources.gd`, `tests/smoke_test.gd` |
 | P14 inheritance-to-bargain clue chain, one saved consequence, altered-rule explanations, Silas proof, King's Reach exploration, explicit readiness warning, and schema-19 continuity | `tests/unit/test_phase_thirteen_fourteen.gd`, `test_project_resources.gd`, `tests/smoke_test.gd` |
+| P15 Texas King gate/checkpoint, legal final result, local standoff retry, father/Silas reveal, all four transparent endings, credits, and schema-20 continuity | `tests/unit/test_phase_fifteen_sixteen.gd`, `test_project_resources.gd`, `tests/smoke_test.gd` |
+| P16 all-ending postgame transitions/provenance, repeatable Hall Legends tournament, collections ledger, King's Reach/farm/animal/fishing continuity, audio feedback, and schema-21 continuity | `tests/unit/test_phase_fifteen_sixteen.gd`, `test_project_resources.gd`, `tests/smoke_test.gd` |
 | Horse identity and mounted-location continuity | `tests/unit/test_horse_travel_state.gd`, `test_phase_one_services.gd` |
 | Input remapping, controller focus, display preferences | `tests/unit/test_input_service.gd`, `test_input_settings.gd`, `test_display_preferences.gd` |
 | Project resources and scene references | `tests/unit/test_project_resources.gd`, `tests/smoke_test.gd` |

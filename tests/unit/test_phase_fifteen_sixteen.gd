@@ -36,7 +36,16 @@ func _test_finale_checkpoint_standoff_endings_and_credits(failures: Array[String
 	var restore_result: Error = restored.restore(round_trip)
 	if restore_result != OK or not restored.finale.credits_seen or StringName(restored.finale.ending_id) != &"open_hall":
 		failures.append("P15 finale checkpoints, ending result, and credits state must round-trip (restore %s; phase %s; ending %s)" % [restore_result, restored.finale.phase, restored.finale.ending_id])
-	for outcome in [{"consequence": &"protect_town", "response": &"spare_king", "expected": &"mercy_at_sunrise"}, {"consequence": &"preserve_records", "response": &"speak_truth", "expected": &"keeper_of_truth"}, {"consequence": &"preserve_records", "response": &"spare_king", "expected": &"keeper_mercy"}]:
+	var corrupt_finale: Dictionary = round_trip.duplicate(true)
+	corrupt_finale["finale"]["phase"] = "unstarted"
+	corrupt_finale["finale"]["opponent_defeated"] = false
+	corrupt_finale["finale"]["credits_seen"] = false
+	corrupt_finale["finale"]["ending_id"] = ""
+	corrupt_finale["finale"]["standoff_response"] = ""
+	var corrupt_restored = GameSessionScript.new()
+	if corrupt_restored.restore(corrupt_finale) == OK:
+		failures.append("P15 corrupt saves must reject a completed championship that is downgraded to an earlier finale phase")
+	for outcome in [{"consequence": &"protect_town", "response": &"end_reign", "expected": &"mercy_at_sunrise"}, {"consequence": &"preserve_records", "response": &"speak_truth", "expected": &"keeper_of_truth"}, {"consequence": &"preserve_records", "response": &"end_reign", "expected": &"keeper_mercy"}]:
 		var variant = _finale_ready_session(outcome["consequence"], failures)
 		if variant != null:
 			variant.finale.begin_championship(variant.story, variant.public_life)
@@ -45,8 +54,10 @@ func _test_finale_checkpoint_standoff_endings_and_credits(failures: Array[String
 			variant.finale.resolve_standoff(outcome["response"], variant.story)
 			if variant.finale.ending_id != outcome["expected"]:
 				failures.append("P15 must expose all four deterministic ending categories")
+			if variant.finale.acknowledge_credits() != OK or variant.postgame.enter(variant.finale, variant.public_life) != OK or variant.postgame.ending_provenance != outcome["expected"]:
+				failures.append("P16 must preserve a valid postgame transition and ending provenance for every ending")
 			variant.free()
-	session.free(); restored.free()
+	session.free(); restored.free(); corrupt_restored.free()
 
 
 func _test_postgame_continuity_collections_and_migrations(failures: Array[String]) -> void:
@@ -78,7 +89,8 @@ func _test_postgame_continuity_collections_and_migrations(failures: Array[String
 	var postgame_restore: Error = restored.restore(round_trip)
 	if postgame_restore != OK or not restored.postgame.is_active() or restored.postgame.ending_provenance != &"open_hall" or not restored.angler.records.has(&"tarpon"):
 		failures.append("P16 canonical postgame and collections must round-trip through a long-running save (restore %s; postgame %s; ending %s)" % [postgame_restore, restored.postgame.is_active(), restored.postgame.ending_provenance])
-	var pre_p15: Dictionary = session.snapshot()
+	var pre_p15_session = _finale_ready_session(&"protect_town", failures)
+	var pre_p15: Dictionary = pre_p15_session.snapshot() if pre_p15_session != null else {}
 	pre_p15["schema_version"] = 19
 	pre_p15.erase("finale"); pre_p15.erase("postgame")
 	var migrated = GameSessionScript.new()
@@ -93,6 +105,8 @@ func _test_postgame_continuity_collections_and_migrations(failures: Array[String
 	if p16_migration != OK or not migrated_p16.finale.credits_seen or migrated_p16.postgame.is_active():
 		failures.append("pre-P16 saves must preserve finale state while gaining an inactive postgame record (restore %s; credits %s)" % [p16_migration, migrated_p16.finale.credits_seen])
 	session.free(); restored.free(); migrated.free(); migrated_p16.free()
+	if pre_p15_session != null:
+		pre_p15_session.free()
 
 
 func _finish_finale(session, response: StringName, failures: Array[String]) -> void:

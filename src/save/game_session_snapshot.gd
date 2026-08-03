@@ -27,6 +27,8 @@ static func capture(session) -> Dictionary:
 		"community": session.expansion_services.ensure_community(session).snapshot(),
 		"public_life": session.expansion_services.ensure_public_life(session).snapshot(),
 		"story": session.expansion_services.ensure_story(session).snapshot(),
+		"finale": session.expansion_services.ensure_finale(session).snapshot(),
+		"postgame": session.expansion_services.ensure_postgame(session).snapshot(),
 		"player": {"scene": session.player_scene, "position": [session.player_position.x, session.player_position.y]},
 		"tutorial_steps": session.tutorial_steps.duplicate(true),
 	}
@@ -77,6 +79,8 @@ static func _restore_services(session, data: Dictionary) -> bool:
 		["community", session.expansion_services.ensure_community(session)],
 		["public_life", session.expansion_services.ensure_public_life(session)],
 		["story", session.expansion_services.ensure_story(session)],
+		["finale", session.expansion_services.ensure_finale(session)],
+		["postgame", session.expansion_services.ensure_postgame(session)],
 	]
 	for service_entry in services:
 		var service_data: Variant = data.get(String(service_entry[0]), {})
@@ -91,6 +95,12 @@ static func _valid_cross_service_state(session) -> bool:
 		return false
 	if session.public_life.has_completed(&"hall_reopening") and session.brands.hall_stage < 5:
 		return false
-	if session.story.final_warning_accepted and (not session.public_life.is_scheduled(&"final_championship") or not session.community.finale_support.has(&"community_allies_ready")):
+	if session.story.final_warning_accepted and ((not session.public_life.is_scheduled(&"final_championship") and not session.public_life.has_completed(&"final_championship")) or not session.community.finale_support.has(&"community_allies_ready")):
+		return false
+	if session.finale.opponent_defeated and not session.public_life.has_completed(&"final_championship"):
+		return false
+	if session.public_life.has_completed(&"final_championship") and not session.finale.opponent_defeated:
+		return false
+	if session.postgame.is_active() and (not session.finale.credits_seen or session.postgame.ending_provenance != session.finale.ending_id):
 		return false
 	return true
