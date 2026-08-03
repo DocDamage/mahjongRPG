@@ -79,4 +79,11 @@ static func migrate(snapshot_data: Dictionary, current_version: int) -> Dictiona
 			}
 		animals_data["animals"] = upgraded_animals
 		migrated["animals"] = animals_data
+	if schema_version <= 11:
+		migrated["relationships"] = {"values": {}, "choices": {}}
+		migrated["properties"] = {"outcomes": {}, "open_routes": {}}
+	if schema_version <= 12:
+		migrated["trade"] = {"table_tokens": 0, "active_orders": {}, "completed_orders": {}, "shop_stock": {}}
+		migrated["crafting"] = {"crafted": {}}
+		migrated["effects"] = {"active_effects": {}, "last_used_day": {}}
 	return migrated

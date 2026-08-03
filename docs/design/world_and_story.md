@@ -18,6 +18,10 @@ Poker never became part of local culture. Mahjong is the only formal table game 
 
 Dustward and Saint's Landing are distinct neighborhoods connected by a restricted gate or bridge. The restriction begins as a property dispute controlled by Texas King.
 
+## Current civic and dock slice
+
+P7–P8 make the first part of that regional promise playable. Bridlewood leads to Saint's Landing, where Doc can establish a saved relationship with Registrar Elise and settle the Landing Depot case either through a documented petition or a legal Mahjong win. The result opens Ironhook, restores Hall practice stage 3, and preserves the selected case outcome. Ironhook's cargo ledger is the next authored Silas clue; its Smokehouse Supply Run consumes goods from prior regions, awards a table token, settles the customs-warehouse claim, and gives that token a direct Mahjong use at Mariner Ves's table.
+
 ## The hall
 
 The original **Six Brands Hall** stands in Saint's Landing. Texas King owns it and operates it as a private club. Doc gradually wins access to sections of the same building and restores it through five visible stages:

@@ -1,0 +1,142 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://src/world/ironhook.gd" id="1_world"]
+[ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://src/world/scene_exit.gd" id="3_exit"]
+[ext_resource type="Script" path="res://src/world/trade_landmark.gd" id="4_trade"]
+[ext_resource type="Script" path="res://src/mahjong/presentation/mahjong_opponent.gd" id="5_opponent"]
+[sub_resource type="CircleShape2D" id="Circle"]
+radius = 36.0
+[sub_resource type="CircleShape2D" id="ExitCircle"]
+radius = 42.0
+
+[node name="Ironhook" type="Node2D"]
+script = ExtResource("1_world")
+[node name="Doc" parent="." instance=ExtResource("2_player")]
+position = Vector2(130, 420)
+movement_bounds = Rect2(45, 110, 870, 350)
+footstep_event = &"footstep_wood"
+[node name="SaintsRoad" type="Area2D" parent="." groups=["ironhook_exit"]]
+position = Vector2(65, 420)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_exit")
+prompt_text = "Return to Saint's Landing"
+destination_scene = "res://src/world/saints_landing.tscn"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SaintsRoad"]
+shape = SubResource("ExitCircle")
+[node name="Warehouse" type="Area2D" parent="." groups=["ironhook_exit"]]
+position = Vector2(205, 225)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_exit")
+prompt_text = "Enter customs warehouse"
+destination_scene = "res://src/world/ironhook_warehouse.tscn"
+required_property = &"ironhook_customs_warehouse"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Warehouse"]
+shape = SubResource("Circle")
+[node name="Office" type="Area2D" parent="." groups=["ironhook_exit"]]
+position = Vector2(605, 195)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_exit")
+prompt_text = "Enter dock office"
+destination_scene = "res://src/world/ironhook_office.tscn"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Office"]
+shape = SubResource("Circle")
+[node name="PostSmokehouseOrder" type="Area2D" parent="." groups=["trade_landmark"]]
+position = Vector2(375, 195)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_trade")
+prompt_text = "Post Smokehouse Supply Run"
+action = 0
+target_id = &"ironhook_smokehouse_run"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PostSmokehouseOrder"]
+shape = SubResource("Circle")
+[node name="DeliverSmokehouseOrder" type="Area2D" parent="." groups=["trade_landmark"]]
+position = Vector2(375, 300)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_trade")
+prompt_text = "Deliver Smokehouse Supply Run"
+action = 1
+target_id = &"ironhook_smokehouse_run"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeliverSmokehouseOrder"]
+shape = SubResource("Circle")
+[node name="Provisioner" type="Area2D" parent="." groups=["trade_landmark"]]
+position = Vector2(535, 310)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_trade")
+prompt_text = "Provisioner: buy catfish"
+action = 2
+target_id = &"fish_catfish"
+shop_id = &"ironhook_provisioner"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Provisioner"]
+shape = SubResource("Circle")
+[node name="SmokeFish" type="Area2D" parent="." groups=["trade_landmark"]]
+position = Vector2(650, 310)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_trade")
+prompt_text = "Smoke catfish recipe"
+action = 3
+target_id = &"smoke_catfish"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SmokeFish"]
+shape = SubResource("Circle")
+[node name="UseTonic" type="Area2D" parent="." groups=["trade_landmark"]]
+position = Vector2(770, 205)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_trade")
+prompt_text = "Use Steady-Hand Tonic"
+action = 4
+target_id = &"dock_tonic"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UseTonic"]
+shape = SubResource("Circle")
+[node name="WarehouseClaim" type="Area2D" parent="." groups=["trade_landmark"]]
+position = Vector2(770, 305)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_trade")
+prompt_text = "Inspect customs warehouse claim"
+action = 5
+target_id = &"ironhook_customs_warehouse"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WarehouseClaim"]
+shape = SubResource("Circle")
+[node name="CargoLedger" type="Area2D" parent="." groups=["trade_landmark"]]
+position = Vector2(500, 200)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_trade")
+prompt_text = "Inspect cargo ledger"
+action = 6
+target_id = &"silas_cargo_ledger"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CargoLedger"]
+shape = SubResource("Circle")
+[node name="MarinerVes" type="Area2D" parent="." groups=["ironhook_opponent"]]
+position = Vector2(730, 330)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("5_opponent")
+prompt_text = "Challenge Mariner Ves (table token)"
+opponent_id = &"mariner_ves"
+requires_table_token = true
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MarinerVes"]
+shape = SubResource("Circle")
+[node name="HUD" type="CanvasLayer" parent="."]
+[node name="Status" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 20.0
+offset_right = 930.0
+offset_bottom = 65.0
+theme_override_colors/font_color = Color(0.95, 0.89, 0.74, 1)
+theme_override_font_sizes/font_size = 18
+[node name="Message" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 480.0
+offset_right = 900.0
+offset_bottom = 520.0
+theme_override_colors/font_color = Color(1, 0.92, 0.67, 1)
+theme_override_font_sizes/font_size = 18

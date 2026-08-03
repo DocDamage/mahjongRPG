@@ -13,6 +13,7 @@ const HelperService = preload("res://src/helpers/helper_service.gd")
 const EvidenceService = preload("res://src/story/evidence_service.gd")
 const ProcessingService = preload("res://src/farm/processing_service.gd")
 const RegionProgressService = preload("res://src/regions/region_progress_service.gd")
+const SessionExpansionServices = preload("res://src/core/session_expansion_services.gd")
 const GameSessionSnapshot = preload("res://src/save/game_session_snapshot.gd")
 const SessionSnapshotMigrator = preload("res://src/save/session_snapshot_migrator.gd")
 const WeatherCatalog = preload("res://src/weather/weather_catalog.gd")
@@ -24,7 +25,7 @@ signal pause_changed(paused: bool)
 signal weather_changed(weather_id: StringName)
 signal session_restored()
 
-const SAVE_SCHEMA_VERSION := 11
+const SAVE_SCHEMA_VERSION := 13
 const MATCH_TIME_COST_MINUTES := 90
 const MINUTES_PER_DAY := 24 * 60
 const REAL_SECONDS_PER_DAY := 60.0
@@ -43,6 +44,8 @@ var helpers
 var evidence
 var processing
 var regions
+var relationships; var properties; var trade; var crafting; var effects
+var expansion_services = SessionExpansionServices.new()
 var player_scene := ""
 var player_position := Vector2.ZERO
 var tutorial_steps: Dictionary = {}
@@ -67,6 +70,11 @@ func _ready() -> void:
 	_ensure_evidence()
 	_ensure_processing()
 	_ensure_regions()
+	expansion_services.ensure_relationships(self)
+	expansion_services.ensure_properties(self)
+	expansion_services.ensure_trade(self)
+	expansion_services.ensure_crafting(self)
+	expansion_services.ensure_effects(self)
 func start_new_game(new_seed: int) -> void:
 	seed = new_seed
 	day = 1
@@ -82,6 +90,7 @@ func start_new_game(new_seed: int) -> void:
 	evidence = null
 	processing = null
 	regions = null
+	expansion_services.reset(self)
 	player_scene = ""
 	player_position = Vector2.ZERO
 	tutorial_steps.clear()
@@ -92,6 +101,11 @@ func start_new_game(new_seed: int) -> void:
 	_ensure_evidence()
 	_ensure_processing()
 	_ensure_regions()
+	expansion_services.ensure_relationships(self)
+	expansion_services.ensure_properties(self)
+	expansion_services.ensure_trade(self)
+	expansion_services.ensure_crafting(self)
+	expansion_services.ensure_effects(self)
 	_ensure_farm()
 	_pause_reasons.clear()
 	_time_accumulator = 0.0
@@ -269,9 +283,11 @@ func _ensure_regions():
 	if regions == null:
 		regions = RegionProgressService.new()
 		_load_catalog("res://data/regions/bridlewood/region.json", "regions", regions)
+		_load_catalog("res://data/regions/saints_landing/region.json", "regions", regions)
+		_load_catalog("res://data/regions/ironhook/region.json", "regions", regions)
 	return regions
-func _load_catalog(path: String, collection_key: String, service) -> void:
-	if SessionCatalogLoader.load_into(path, collection_key, service) != OK:
+func _load_catalog(path: String, collection_key: String, service, method := "register_definition") -> void:
+	if SessionCatalogLoader.load_into(path, collection_key, service, method) != OK:
 		push_error("Invalid service catalog: %s" % path)
 func _restore_player_scene() -> void:
 	if player_scene.is_empty() or not ResourceLoader.exists(player_scene):

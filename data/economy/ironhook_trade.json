@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "orders": [
+    {"id":"ironhook_smokehouse_run","display_name":"Smokehouse Supply Run","requirements":[{"item_id":"crop_wheat","count":1},{"item_id":"animal_milk","count":1},{"item_id":"fish_catfish","count":1}],"rewards":{"money_cents":500,"table_tokens":1,"items":[{"item_id":"dock_tonic","count":1}]}},
+    {"id":"ironhook_pantry_run","display_name":"Pantry Preservation Run","requirements":[{"item_id":"crop_tomato","count":2},{"item_id":"crop_potato","count":1}],"rewards":{"money_cents":250,"table_tokens":0,"items":[{"item_id":"dock_feed","count":1}]}}
+  ],
+  "shops": [
+    {"id":"saints_civic_supply","stock":[{"item_id":"crop_wheat","count":3,"price_cents":80}]},
+    {"id":"ironhook_provisioner","stock":[{"item_id":"fish_catfish","count":3,"price_cents":160},{"item_id":"crop_wheat","count":4,"price_cents":80}]},
+    {"id":"ironhook_apothecary","stock":[{"item_id":"crop_tomato","count":4,"price_cents":100},{"item_id":"crop_potato","count":4,"price_cents":90}]}
+  ]
+}

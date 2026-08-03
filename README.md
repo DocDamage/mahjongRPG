@@ -6,7 +6,7 @@ Doc inherits Wayward Farm outside Mercy's Wake, a Gulf Coast frontier town where
 
 ## Playable-slice status
 
-This checkout contains the Phase 1–6 playable foundation. From the title shell, a player can complete First Lantern, cross the unlocked Bridlewood trail, fulfill the ranch crop order, challenge Ada Rook or Gideon Shaw, repair the damaged barn, record the next Silas clue, and open the farm shortcut. The farm now supports all 20 supplied ranch crops plus the original Wayward beans, watering-derived standard/silver/gold harvest quality, a route-safe expandable grid, repairable barn/coop/machines, ranch processing, persistent horse identity, and a named animal roster with variants, capacity, lineage, aging, retirement, and products. Saves migrate through schema 11 from pre-P5/P6 saves; old saves begin with Bridlewood locked and receive a safe damaged barn plus migrated animal state. It is not a claim that the full planned game is complete.
+This checkout contains the Phase 1–8 playable foundation. In addition to the ranch loop, a player can travel from Bridlewood to Saint's Landing, build a recorded relationship with Registrar Elise, settle the Landing Depot dispute through a cheese-backed petition or a Mahjong match, restore Hall practice stage 3, and open Ironhook Docks. At Ironhook, posted orders consume goods atomically, reward money and table tokens, settle the customs-warehouse property arc, unlock its interior, and admit the player to Mariner Ves's token table. The docks expose stocked shops plus cooking, preserves, flour, dairy, smoked fish, feed, and tonic recipes; prepared food grants one clearly bounded next-match Brand charge. Saves migrate through schema 13 from all pre-P7/P8 saves. It is not a claim that the full planned game is complete.
 
 ## Technical target
 
@@ -57,6 +57,7 @@ Use the target Godot 4.7.1 executable—not an arbitrary `godot` on `PATH`. The 
 - [Manual device/display/accessibility matrix](docs/qa/manual_device_display_matrix.md)
 - [Phase 3–4 completion audit](docs/production/PHASE_3_4_COMPLETION_AUDIT_2026-08-02.md)
 - [Phase 5–6 completion audit](docs/production/PHASE_5_6_COMPLETION_AUDIT_2026-08-02.md)
+- [Phase 7–8 completion audit](docs/production/PHASE_7_8_COMPLETION_AUDIT_2026-08-02.md)
 - [Windows setup and recovery](docs/release/setup_and_recovery.md)
 
 ## Licensing

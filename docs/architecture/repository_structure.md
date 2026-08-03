@@ -13,6 +13,9 @@ legal/
 src/
   bootstrap/
   regions/         region progression and data-backed regional objectives
+  relationships/   bounded relationship values and persistent dialogue choices
+  property/        authored property-case outcomes and route access
+  economy/         orders, stocked shops, crafting, and consumable effects
   farm/            crop, construction, placement, and processing services
   animals/         named animal lifecycle and lineage services
 tools/

@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "properties": [
+    {"id":"saints_landing_depot","display_name":"Landing Depot Dispute","resolution_methods":["match","quest"],"requirements":[{"item_id":"artisan_cheese","count":1}],"opens_route":"saints_to_ironhook","hall_stage":3},
+    {"id":"ironhook_customs_warehouse","display_name":"Customs Warehouse Claim","resolution_methods":["order"],"opens_route":"ironhook_warehouse_access"}
+  ]
+}

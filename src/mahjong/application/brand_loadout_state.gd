@@ -77,6 +77,13 @@ func complete_hall_cleanup() -> Dictionary:
 	return result
 
 
+func unlock_hall_stage(stage: int) -> Error:
+	if stage < 1 or stage > 3 or stage <= hall_stage:
+		return ERR_UNAVAILABLE
+	hall_stage = stage
+	return OK
+
+
 func can_play_frontier() -> bool:
 	return unlocked_rulesets.has(&"frontier")
 
@@ -139,7 +146,7 @@ func restore(data: Dictionary) -> Error:
 	upgrades = upgrades_value.duplicate(true)
 	match_wins = wins_value.duplicate(true)
 	upgrade_points = maxi(0, int(data.get("upgrade_points", 0)))
-	hall_stage = clampi(int(data.get("hall_stage", 1)), 1, 2)
+	hall_stage = clampi(int(data.get("hall_stage", 1)), 1, 3)
 	unlocked_rulesets = rulesets_value.duplicate(true)
 	discovered_deeds = deeds_value.duplicate(true)
 	unlocked_rulesets[&"trail"] = true

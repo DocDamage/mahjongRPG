@@ -28,6 +28,7 @@ var wager_tier: StringName = &"friendly"
 var _match_started := false
 var _ai_turn_pending := false
 var _mastery_message := ""
+var _effect_message := ""
 
 
 func _ready() -> void:
@@ -60,7 +61,7 @@ func _refresh() -> void:
 	_refresh_tutorial()
 	result_label.text = ""
 	if flow.phase == MatchFlow.Phase.MATCH_COMPLETE:
-		_record_mastery(); result_label.text = "Match complete. %s %s\nReplay: %s" % [_match_outcome_text(), _mastery_message, MatchReplayExplainer.summary(flow.replay.snapshot())]; _add_action("Return to town", _close_match); return
+		_record_mastery(); result_label.text = "Match complete. %s %s %s\nReplay: %s" % [_match_outcome_text(), _effect_message, _mastery_message, MatchReplayExplainer.summary(flow.replay.snapshot())]; _add_action("Return to town", _close_match); return
 	if flow.phase in [MatchFlow.Phase.COMPLETE, MatchFlow.Phase.EXHAUSTED]:
 		var last: Dictionary = flow.hand_results.back(); result_label.text = "%s: %s. Renown: %d. %s" % [flow.hand_name().capitalize(), "wall exhausted" if int(last["winner"]) < 0 else ("Doc won" if int(last["winner"]) == 0 else "Opponent won"), int(last["award"]["total"]), _deed_text(last)]
 		_add_action("Continue match", _advance_match); return
@@ -153,7 +154,12 @@ func _show_wager_selection() -> void:
 
 func _start_match(next_wager_tier: StringName) -> void:
 	if not MatchWager.can_start(next_wager_tier, GameSession.inventory.money_cents): return
-	wager_tier = next_wager_tier; flow = MatchFlow.new(GameSession.seed + GameSession.day * 100 + GameSession.minute_of_day); flow.configure_ruleset(ruleset); flow.configure_loadouts(GameSession.brands.last_selected, opponent_loadout); flow.configure_upgrades(GameSession.brands.upgrades, opponent_upgrades); flow.start_match(); _match_started = true; _refresh()
+	wager_tier = next_wager_tier; flow = MatchFlow.new(GameSession.seed + GameSession.day * 100 + GameSession.minute_of_day); flow.configure_ruleset(ruleset); flow.configure_loadouts(GameSession.brands.last_selected, opponent_loadout); flow.configure_upgrades(GameSession.brands.upgrades, opponent_upgrades); flow.start_match()
+	var bonus: int = int(GameSession.effects.consume_for_match(&"mahjong_charge"))
+	if bonus > 0:
+		flow.brand_state(0).grant_charge(flow.brand_state(0).equipped[0])
+		_effect_message = "Your prepared food gives %d opening Brand charge." % bonus
+	_match_started = true; _refresh()
 
 
 func _show_loadout_selection() -> void:
@@ -185,12 +191,17 @@ func _record_mastery() -> void:
 		var award: Variant = hand_result.get("award", {})
 		if award is Dictionary: GameSession.brands.record_deeds(award.get("deeds", []))
 	var result: Dictionary = GameSession.brands.record_match_win(opponent_id, ruleset)
-	if opponent_id in [&"ada_rook", &"gideon_shaw"]:
+	if opponent_id in [&"ada_rook", &"gideon_shaw", &"registrar_elise", &"constable_mara", &"mariner_ves"]:
 		GameSession.regions.record_table_win(opponent_id)
+	var property_note := ""
+	if opponent_id == &"registrar_elise":
+		if GameSession.properties.resolve(&"saints_landing_depot", &"match") == OK:
+			GameSession.brands.unlock_hall_stage(3)
+			property_note = " The Landing Depot dispute is settled; Ironhook and Hall practice are open."
 	var unlocked: Array = result.get("unlocked_brands", [])
 	var names: Array[String] = []
 	for brand in unlocked: names.append(String(brand).capitalize())
-	_mastery_message = ("Unlocked %s Brand. " % " and ".join(names) if not names.is_empty() else "") + ("Hall cleanup complete: the Frontier table is open." if bool(result.get("hall_reopened", false)) else "")
+	_mastery_message = ("Unlocked %s Brand. " % " and ".join(names) if not names.is_empty() else "") + ("Hall cleanup complete: the Frontier table is open." if bool(result.get("hall_reopened", false)) else "") + property_note
 
 
 func _refresh_tutorial() -> void:

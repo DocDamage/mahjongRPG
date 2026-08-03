@@ -1,6 +1,6 @@
 # Test-to-module coverage inventory
 
-The native Godot runner is the authoritative automated suite registry: `tests/test_runner.gd`. This inventory maps every runtime responsibility added through P6 to a focused test or smoke gate; it is a traceability map, not a numeric line-coverage claim.
+The native Godot runner is the authoritative automated suite registry: `tests/test_runner.gd`. This inventory maps every runtime responsibility added through P8 to a focused test or smoke gate; it is a traceability map, not a numeric line-coverage claim.
 
 | Module / player contract | Automated evidence |
 | --- | --- |
@@ -15,6 +15,8 @@ The native Godot runner is the authoritative automated suite registry: `tests/te
 | P3/P4 schema migration | `tests/unit/test_phase_three_four_migration.gd` |
 | P5 Bridlewood region, crop order, stable region migration, fifth opponent tier | `tests/unit/test_phase_five_six.gd`, `tests/smoke_test.gd` |
 | P6 all-crop activation, dense route safety, named animal lineage/capacity/aging/retirement, repairable processing | `tests/unit/test_phase_five_six.gd`, `test_crop_catalog.gd`, `test_farm_service.gd`, `test_animal_care_service.gd` |
+| P7 civic relationships, dialogue choices, property outcomes, route unlock, Hall stage 3, and pre-P7 migration | `tests/unit/test_phase_seven_eight.gd`, `tests/smoke_test.gd` |
+| P8 posted orders, duplicate-delivery rejection, full-inventory safety, table tokens, recipes, bounded food effects, dock property arc, and schema-13 round trip | `tests/unit/test_phase_seven_eight.gd`, `tests/smoke_test.gd` |
 | Horse identity and mounted-location continuity | `tests/unit/test_horse_travel_state.gd`, `test_phase_one_services.gd` |
 | Input remapping, controller focus, display preferences | `tests/unit/test_input_service.gd`, `test_input_settings.gd`, `test_display_preferences.gd` |
 | Project resources and scene references | `tests/unit/test_project_resources.gd`, `tests/smoke_test.gd` |

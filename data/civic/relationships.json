@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "relationships": [
+    {"id":"registrar_elise","display_name":"Registrar Elise","lines":{"cool":"Elise asks for records, not rumors.","neutral":"Elise has the depot file open on her desk.","warm":"Elise trusts your account of the old property line."}},
+    {"id":"foreman_cato","display_name":"Foreman Cato","lines":{"cool":"Cato keeps the dock ledger close.","neutral":"Cato says a fair cargo run proves a fair claimant.","warm":"Cato has set aside a berth for your next shipment."}}
+  ]
+}

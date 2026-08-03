@@ -13,6 +13,7 @@ func _ready() -> void:
 		opponent.feedback.connect(_show_message)
 	$ReturnRoad.feedback.connect(_show_message)
 	$BridlewoodHitch.feedback.connect(_show_message)
+	$SaintsRoad.feedback.connect(_show_message)
 	SaveService.save_status.connect(_show_message)
 	_create_ranch_helper_action()
 	_update_status()

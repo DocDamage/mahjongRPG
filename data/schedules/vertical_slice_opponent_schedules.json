@@ -1,10 +1,13 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "opponents": {
     "mayor_bell":{"clear":{"hours":[8,18],"position":[190,270],"activity":"reviewing claims at the courthouse table"},"rain":{"hours":[10,16],"position":[255,330],"activity":"sheltering beneath the saloon awning"}},
     "river_rose":{"clear":{"hours":[6,20],"position":[470,260],"activity":"dealing beside the stockyard rail"},"rain":{"hours":[8,18],"position":[530,315],"activity":"watching the rain from the covered porch"}},
     "dynamite_bill":{"clear":{"hours":[12,24],"position":[750,270],"activity":"taking noon challenges by the Hall"},"rain":{"hours":[14,22],"position":[690,320],"activity":"warming up by the inn's stove"}},
     "ada_rook":{"clear":{"hours":[7,18],"position":[650,350],"activity":"checking the ranch auction board"},"rain":{"hours":[9,17],"position":[590,355],"activity":"sorting seed sacks under cover"}},
-    "gideon_shaw":{"clear":{"hours":[11,22],"position":[795,350],"activity":"calling evening games at the barn"},"rain":{"hours":[13,21],"position":[735,355],"activity":"mending tack by the stove"}}
+    "gideon_shaw":{"clear":{"hours":[11,22],"position":[795,350],"activity":"calling evening games at the barn"},"rain":{"hours":[13,21],"position":[735,355],"activity":"mending tack by the stove"}},
+    "registrar_elise":{"clear":{"hours":[8,18],"position":[600,235],"activity":"reviewing property testimony in the records office"},"rain":{"hours":[9,17],"position":[560,290],"activity":"sheltering the deed book beneath the arcade"}},
+    "constable_mara":{"clear":{"hours":[12,22],"position":[770,325],"activity":"calling beginner table night at the practice stage"},"rain":{"hours":[13,21],"position":[735,325],"activity":"checking the civic noticeboard"}},
+    "mariner_ves":{"clear":{"hours":[9,21],"position":[730,330],"activity":"taking token tables beside the warehouse"},"rain":{"hours":[10,20],"position":[680,330],"activity":"counting cargo under the dock canopy"}}
   }
 }

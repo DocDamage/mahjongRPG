@@ -191,6 +191,16 @@ destination_post_id = &"wayward_farm"
 destination_scene = "res://src/world/wayward_farm.tscn"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BridlewoodHitch"]
 shape = SubResource("Circle")
+[node name="SaintsRoad" type="Area2D" parent="."]
+position = Vector2(880, 220)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_exit")
+prompt_text = "Travel to Saint's Landing"
+destination_scene = "res://src/world/saints_landing.tscn"
+unlock_region_on_access = &"saints_landing"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SaintsRoad"]
+shape = SubResource("ExitCircle")
 [node name="HUD" type="CanvasLayer" parent="."]
 [node name="Status" type="Label" parent="HUD"]
 offset_left = 28.0

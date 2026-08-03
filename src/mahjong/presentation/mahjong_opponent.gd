@@ -6,6 +6,7 @@ const OpponentSchedule = preload("res://src/npcs/opponent_schedule.gd")
 signal feedback(message: String)
 
 @export var opponent_id: StringName
+@export var requires_table_token := false
 
 var _definition: Dictionary = {}
 var _available := true
@@ -36,6 +37,9 @@ func _on_interacted(_actor: Node2D) -> void:
 	if _definition.is_empty():
 		feedback.emit("This opponent's table is not ready.")
 		return
+	if requires_table_token and GameSession.trade.spend_table_token() != OK:
+		feedback.emit("This dock table requires one Ironhook table token. Complete a posted order to earn one.")
+		return
 	var table = MahjongTable.new()
 	table.opponent_id = opponent_id
 	table.opponent_name = String(_definition["display_name"])
@@ -44,7 +48,7 @@ func _on_interacted(_actor: Node2D) -> void:
 	table.opponent_ai_profile = profile_value.duplicate(true) if profile_value is Dictionary else {}
 	table.add_to_group(&"mahjong_table_overlay")
 	get_tree().root.add_child(table)
-	feedback.emit("%s accepts your Trail Rules challenge." % table.opponent_name)
+	feedback.emit("%s accepts your Trail Rules challenge%s." % [table.opponent_name, "; one table token is placed on the rail" if requires_table_token else ""])
 
 
 func _on_schedule_changed(_day: int, _minute: int) -> void:

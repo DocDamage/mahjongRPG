@@ -75,6 +75,8 @@ Goods may be sold through the farm shipping crate, sold directly to shops, suppl
 
 Prepared food can modify world activity, fishing tension, crop quality, relationship gains, or initial Brand charge. Effects must remain clear and bounded.
 
+The current Ironhook slice implements the initial-Brand-charge variant: cooking, preserves, flour, dairy, smoked fish, feed, and tonic recipes produce clearly named inventory items. Each may be consumed once per in-game day to store one opening Brand charge for the next Mahjong match; the effect is saved, shown to the player, and spent at match start.
+
 ## Helpers
 
 After defeat and relationship progress, NPCs provide both permanent bonuses and active assistance. Help can be requested directly or assigned from the farmhouse board.

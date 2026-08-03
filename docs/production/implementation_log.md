@@ -45,6 +45,8 @@
 | P4 Frontier Rules | Added the Hall stage-2 Frontier table, Mayor Bell/Dark and cleanup/Purple progression, deterministic 136-tile Frontier walls, 14-tile validation, quad claims/replacement draws, expanded Deeds, saved ruleset/Deed IDs, assistance modes, visible-information AI explanations, and replay hash/explanation evidence. |
 | P5 Bridlewood | Added a persisted gated Bridlewood Ranch route, crop order, Ada Rook/Gideon Shaw schedules and tables, ranch actions/shops, damaged barn repair, shortcut, and the next Silas ledger clue. |
 | P6 Ranch legacy | Activated all supplied crops with quality feedback, expanded the route-safe farm, added named variant animals with capacity, lineage, breeding, aging, retirement, products, ranch-hand feeding, repairable processing machines, and persisted horse names. Schema 11 migrates all earlier saves safely. |
+| P7 Saint's Landing civic restoration | Added the connected Saint's Landing route, records and practice interiors, two scheduled civic opponents, data-backed relationships/dialogue choices, a cheese-backed petition or Mahjong property resolution, government-record clue, civic supply, and Hall stage 3. Schema 12 defaults every prior save to safe empty civic state. |
+| P8 Ironhook trade network | Added Ironhook's docks, warehouses/offices, token-gated opponent, atomic posted orders, persistent shop stock, dock property arc, cargo-ledger clue, seven recipe categories, and bounded prepared-food Brand-charge effects. Schema 13 migrates token/order/shop/recipe/effect records from every older save. |
 | Target-engine CI evidence | GitHub Actions run `30770900107` passed Linux resource import, validator, all 33 suites, smoke, and editor initialization plus Windows Godot-template/export preflight. |
 
 ## Current local verification baseline
@@ -58,4 +60,4 @@ python tools/validate_repository.py
 <Godot 4.7.1 engine> --headless --path . --editor --quit
 ```
 
-The portable validation engine is official Godot 4.7.1 with matching Windows templates. The current run reports 40 suites plus smoke/editor success. The Windows debug export and isolated-AppData headless launch are verified on the P2 baseline; user-observed clean-profile, manual device/display/accessibility, and P5/P6 physical player-path passes remain external evidence gates. See [setup_and_recovery.md](../release/setup_and_recovery.md).
+The portable validation engine is official Godot 4.7.1 with matching Windows templates. The current run reports 41 suites plus smoke/editor success. The Windows debug export and isolated-AppData headless launch are verified on the P2 baseline; user-observed clean-profile, manual device/display/accessibility, and P5–P8 physical player-path passes remain external evidence gates. See [setup_and_recovery.md](../release/setup_and_recovery.md).

@@ -1,0 +1,140 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://src/world/saints_landing.gd" id="1_world"]
+[ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://src/world/scene_exit.gd" id="3_exit"]
+[ext_resource type="Script" path="res://src/world/civic_landmark.gd" id="4_civic"]
+[ext_resource type="Script" path="res://src/mahjong/presentation/mahjong_opponent.gd" id="5_opponent"]
+[ext_resource type="Script" path="res://src/world/trade_landmark.gd" id="6_trade"]
+[sub_resource type="CircleShape2D" id="Circle"]
+radius = 36.0
+[sub_resource type="CircleShape2D" id="ExitCircle"]
+radius = 42.0
+
+[node name="SaintsLanding" type="Node2D"]
+script = ExtResource("1_world")
+[node name="Doc" parent="." instance=ExtResource("2_player")]
+position = Vector2(130, 420)
+movement_bounds = Rect2(45, 110, 870, 350)
+footstep_event = &"footstep_wood"
+[node name="BridlewoodRoad" type="Area2D" parent="." groups=["saints_exit"]]
+position = Vector2(65, 420)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_exit")
+prompt_text = "Return to Bridlewood Ranch"
+destination_scene = "res://src/world/bridlewood.tscn"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BridlewoodRoad"]
+shape = SubResource("ExitCircle")
+[node name="RecordsOffice" type="Area2D" parent="." groups=["saints_exit"]]
+position = Vector2(205, 225)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_exit")
+prompt_text = "Enter government records office"
+destination_scene = "res://src/world/saints_records_office.tscn"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RecordsOffice"]
+shape = SubResource("Circle")
+[node name="PracticeHall" type="Area2D" parent="." groups=["saints_exit"]]
+position = Vector2(665, 195)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_exit")
+prompt_text = "Enter Hall practice stage"
+destination_scene = "res://src/world/saints_practice_hall.tscn"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PracticeHall"]
+shape = SubResource("Circle")
+[node name="IronhookRoad" type="Area2D" parent="." groups=["saints_exit"]]
+position = Vector2(875, 420)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_exit")
+prompt_text = "Travel to Ironhook Docks"
+destination_scene = "res://src/world/ironhook.tscn"
+required_property = &"saints_landing_depot"
+unlock_region_on_access = &"ironhook"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="IronhookRoad"]
+shape = SubResource("ExitCircle")
+[node name="EliseDialogue" type="Area2D" parent="." groups=["civic_landmark"]]
+position = Vector2(405, 205)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_civic")
+prompt_text = "Speak with Registrar Elise"
+action = 0
+relationship_id = &"registrar_elise"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EliseDialogue"]
+shape = SubResource("Circle")
+[node name="DepotPetition" type="Area2D" parent="." groups=["civic_landmark"]]
+position = Vector2(405, 305)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_civic")
+prompt_text = "File depot-dispute petition (artisan cheese)"
+action = 1
+target_id = &"saints_landing_depot"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DepotPetition"]
+shape = SubResource("Circle")
+[node name="PracticeMarker" type="Area2D" parent="." groups=["civic_landmark"]]
+position = Vector2(635, 305)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_civic")
+prompt_text = "Inspect Hall practice restoration"
+action = 2
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PracticeMarker"]
+shape = SubResource("Circle")
+[node name="GovernmentRecord" type="Area2D" parent="." groups=["civic_landmark"]]
+position = Vector2(280, 330)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_civic")
+prompt_text = "Inspect government record"
+action = 3
+target_id = &"silas_government_record"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GovernmentRecord"]
+shape = SubResource("Circle")
+[node name="CivicSupply" type="Area2D" parent="." groups=["saints_trade"]]
+position = Vector2(275, 225)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_trade")
+prompt_text = "Civic supply: buy wheat"
+action = 2
+target_id = &"crop_wheat"
+shop_id = &"saints_civic_supply"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CivicSupply"]
+shape = SubResource("Circle")
+[node name="RegistrarElise" type="Area2D" parent="." groups=["saints_opponent"]]
+position = Vector2(600, 235)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("5_opponent")
+prompt_text = "Challenge Registrar Elise"
+opponent_id = &"registrar_elise"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RegistrarElise"]
+shape = SubResource("Circle")
+[node name="ConstableMara" type="Area2D" parent="." groups=["saints_opponent"]]
+position = Vector2(770, 325)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("5_opponent")
+prompt_text = "Challenge Constable Mara"
+opponent_id = &"constable_mara"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ConstableMara"]
+shape = SubResource("Circle")
+[node name="HUD" type="CanvasLayer" parent="."]
+[node name="Status" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 20.0
+offset_right = 930.0
+offset_bottom = 65.0
+theme_override_colors/font_color = Color(0.95, 0.89, 0.74, 1)
+theme_override_font_sizes/font_size = 18
+[node name="Message" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 480.0
+offset_right = 900.0
+offset_bottom = 520.0
+theme_override_colors/font_color = Color(1, 0.92, 0.67, 1)
+theme_override_font_sizes/font_size = 18

@@ -17,6 +17,11 @@ static func capture(session) -> Dictionary:
 		"helpers": session._ensure_helpers().snapshot(),
 		"evidence": session._ensure_evidence().snapshot(),
 		"regions": session._ensure_regions().snapshot(),
+		"relationships": session.expansion_services.ensure_relationships(session).snapshot(),
+		"properties": session.expansion_services.ensure_properties(session).snapshot(),
+		"trade": session.expansion_services.ensure_trade(session).snapshot(),
+		"crafting": session.expansion_services.ensure_crafting(session).snapshot(),
+		"effects": session.expansion_services.ensure_effects(session).snapshot(),
 		"player": {"scene": session.player_scene, "position": [session.player_position.x, session.player_position.y]},
 		"tutorial_steps": session.tutorial_steps.duplicate(true),
 	}
@@ -57,6 +62,11 @@ static func _restore_services(session, data: Dictionary) -> bool:
 		["helpers", session._ensure_helpers()],
 		["evidence", session._ensure_evidence()],
 		["regions", session._ensure_regions()],
+		["relationships", session.expansion_services.ensure_relationships(session)],
+		["properties", session.expansion_services.ensure_properties(session)],
+		["trade", session.expansion_services.ensure_trade(session)],
+		["crafting", session.expansion_services.ensure_crafting(session)],
+		["effects", session.expansion_services.ensure_effects(session)],
 	]
 	for service_entry in services:
 		var service_data: Variant = data.get(String(service_entry[0]), {})
