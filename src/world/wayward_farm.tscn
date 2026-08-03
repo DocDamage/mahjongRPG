@@ -1,0 +1,237 @@
+[gd_scene load_steps=22 format=3]
+
+[ext_resource type="Script" path="res://src/world/wayward_farm.gd" id="1_world"]
+[ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://src/farm/farm_plot.gd" id="3_plot"]
+[ext_resource type="Script" path="res://src/world/bonfire.gd" id="4_fire"]
+[ext_resource type="Script" path="res://src/fishing/fishing_spot.gd" id="5_fishing"]
+[ext_resource type="Script" path="res://src/horses/horse_actor.gd" id="6_horse"]
+[ext_resource type="Script" path="res://src/mahjong/presentation/mahjong_table_interactable.gd" id="7_mahjong"]
+[ext_resource type="Script" path="res://src/economy/shipping_crate.gd" id="8_shipping"]
+[ext_resource type="Script" path="res://src/world/scene_exit.gd" id="9_exit"]
+[ext_resource type="Script" path="res://src/horses/hitching_post.gd" id="10_hitch"]
+[ext_resource type="Script" path="res://src/animals/animal_pen.gd" id="11_animals"]
+[ext_resource type="Script" path="res://src/world/act_three_landmark.gd" id="12_act_three"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_plot"]
+radius = 26.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fire"]
+radius = 34.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fishing"]
+radius = 34.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_horse"]
+radius = 42.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mahjong"]
+radius = 48.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_shipping"]
+radius = 38.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_exit"]
+radius = 42.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hitch"]
+radius = 32.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_river_exit"]
+radius = 42.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_animals"]
+radius = 36.0
+
+[node name="WaywardFarm" type="Node2D"]
+script = ExtResource("1_world")
+
+[node name="Doc" parent="." instance=ExtResource("2_player")]
+position = Vector2(240, 300)
+movement_bounds = Rect2(60, 150, 840, 270)
+
+[node name="FarmPlotA" type="Area2D" parent="." groups=["farm_plot"]]
+position = Vector2(130, 200)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_plot")
+grid_cell = Vector2i(0, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FarmPlotA"]
+shape = SubResource("CircleShape2D_plot")
+
+[node name="FarmPlotB" type="Area2D" parent="." groups=["farm_plot"]]
+position = Vector2(230, 200)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_plot")
+grid_cell = Vector2i(1, 0)
+starter_crop = &"corn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FarmPlotB"]
+shape = SubResource("CircleShape2D_plot")
+
+[node name="FarmPlotC" type="Area2D" parent="." groups=["farm_plot"]]
+position = Vector2(130, 300)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_plot")
+grid_cell = Vector2i(0, 1)
+starter_crop = &"tomato"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FarmPlotC"]
+shape = SubResource("CircleShape2D_plot")
+
+[node name="FarmPlotD" type="Area2D" parent="." groups=["farm_plot"]]
+position = Vector2(230, 300)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_plot")
+grid_cell = Vector2i(1, 1)
+starter_crop = &"wheat"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FarmPlotD"]
+shape = SubResource("CircleShape2D_plot")
+
+[node name="Bonfire" type="Area2D" parent="."]
+position = Vector2(725, 356)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_fire")
+prompt_text = "Rest until morning"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bonfire"]
+shape = SubResource("CircleShape2D_fire")
+
+[node name="FishingSpot" type="Area2D" parent="."]
+position = Vector2(545, 210)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("5_fishing")
+prompt_text = "Fish"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FishingSpot"]
+shape = SubResource("CircleShape2D_fishing")
+
+[node name="Horse" type="Area2D" parent="."]
+position = Vector2(725, 240)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_horse")
+prompt_text = "Mount horse"
+travel_bounds = Rect2(60, 150, 840, 270)
+
+[node name="Sprite2D" type="Sprite2D" parent="Horse"]
+position = Vector2(0, -26)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Horse"]
+shape = SubResource("CircleShape2D_horse")
+
+[node name="AnimalPen" type="Area2D" parent="."]
+position = Vector2(790, 330)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("11_animals")
+prompt_text = "Care for Juniper's hens"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimalPen"]
+shape = SubResource("CircleShape2D_animals")
+
+[node name="MahjongTable" type="Area2D" parent="."]
+position = Vector2(660, 190)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("7_mahjong")
+prompt_text = "Play Trail Rules Mahjong"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MahjongTable"]
+shape = SubResource("CircleShape2D_mahjong")
+
+[node name="ShippingCrate" type="Area2D" parent="."]
+position = Vector2(380, 385)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("8_shipping")
+prompt_text = "Ship inventory"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShippingCrate"]
+shape = SubResource("CircleShape2D_shipping")
+
+[node name="InheritanceDeed" type="Area2D" parent="."]
+position = Vector2(470, 350)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("12_act_three")
+prompt_text = "Review Silas's inheritance deed"
+action = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InheritanceDeed"]
+shape = SubResource("CircleShape2D_shipping")
+
+[node name="DustwardRoad" type="Area2D" parent="."]
+position = Vector2(880, 292)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("9_exit")
+prompt_text = "Travel to Dustward"
+destination_scene = "res://src/world/dustward.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DustwardRoad"]
+shape = SubResource("CircleShape2D_exit")
+
+[node name="WaywardHitch" type="Area2D" parent="."]
+position = Vector2(790, 175)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("10_hitch")
+prompt_text = "Use Wayward hitching post"
+post_id = &"wayward_farm"
+destination_post_id = &"dustward"
+destination_scene = "res://src/world/dustward.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WaywardHitch"]
+shape = SubResource("CircleShape2D_hitch")
+
+[node name="RiverbendPath" type="Area2D" parent="."]
+position = Vector2(430, 420)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("9_exit")
+prompt_text = "Travel to Riverbend"
+destination_scene = "res://src/world/riverbend.tscn"
+required_hall_milestone = &"first_lantern"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RiverbendPath"]
+shape = SubResource("CircleShape2D_river_exit")
+
+[node name="BridlewoodTrail" type="Area2D" parent="."]
+position = Vector2(880, 185)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("9_exit")
+prompt_text = "Follow the Bridlewood trail"
+destination_scene = "res://src/world/bridlewood.tscn"
+required_hall_milestone = &"first_lantern"
+required_region = &"bridlewood"
+unlock_region_on_access = &"bridlewood"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BridlewoodTrail"]
+shape = SubResource("CircleShape2D_exit")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Status" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 20.0
+offset_right = 900.0
+offset_bottom = 70.0
+theme_override_colors/font_color = Color(0.95, 0.89, 0.74, 1)
+theme_override_font_sizes/font_size = 18
+
+[node name="Message" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 480.0
+offset_right = 900.0
+offset_bottom = 520.0
+theme_override_colors/font_color = Color(1, 0.92, 0.67, 1)
+theme_override_font_sizes/font_size = 18

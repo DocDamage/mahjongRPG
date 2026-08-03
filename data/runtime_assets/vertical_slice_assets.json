@@ -1,0 +1,26 @@
+{
+  "schema_version": 2,
+  "hero": {
+    "frame_size": [64, 64],
+    "frame_counts": {"walk": 8, "idle": 15, "draw": 6, "armed": 1, "shoot": 3},
+    "actions": ["walk", "idle", "draw", "armed", "shoot"],
+    "directions": ["up", "down", "left", "right"]
+  },
+  "horses": {
+    "frame_size": [128, 128],
+    "colors": ["black", "brown", "golden", "gray", "white"]
+  },
+  "ui_art": {
+    "menu_closed": "res://assets/generated/ui/menu_closed.png",
+    "inventory_slot": "res://assets/generated/ui/inventory_slot.png",
+    "attention_marker": "res://assets/generated/ui/attention_marker.png"
+  },
+  "portraits": {
+    "residents": ["mayor_bell", "river_rose", "dynamite_bill", "ada_rook", "gideon_shaw", "registrar_elise", "constable_mara", "mariner_ves", "captain_coral", "witness_ash"],
+    "expressions": ["steady", "warm", "determined"]
+  },
+  "atlases": {
+    "mahjong_faces": "res://assets/generated/mahjong/trail_rules_faces.png",
+    "hero_actions": ["walk", "idle", "draw", "armed", "shoot"]
+  }
+}

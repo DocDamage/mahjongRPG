@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "regions": [
+    {"id":"saints_landing","display_name":"Saint's Landing","shops":["saints_civic_supply"],"properties":["saints_landing_depot"],"hall_stage":3}
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "regions": [
+    {
+      "id": "bridlewood",
+      "display_name": "Bridlewood Ranch",
+      "unlock_after_hall_milestone": "first_lantern",
+      "crop_orders": [
+        {"id":"bridlewood_first_harvest","requirements":[{"item_id":"crop_carrot","count":1},{"item_id":"crop_potato","count":1}],"reward_cents":250}
+      ],
+      "shops": ["bridlewood_seed_counter","bridlewood_ranch_supply"],
+      "shortcut_id": "bridlewood_wayward_hitch"
+    }
+  ]
+}

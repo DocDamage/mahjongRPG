@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "brands": [
+    {"id": "orange", "name": "High Noon", "pattern": "sunburst", "unlock": "Starter Brand", "claim": "Complete any Run or Set; grant the opponent one charge.", "power": "Draw two, keep one, and return the other to the wall.", "upgrade": "Inspect three draws before choosing one."},
+    {"id": "blue", "name": "River", "pattern": "wave", "unlock": "Starter Brand", "claim": "Complete a Run from an opponent discard.", "power": "Recover one of your two latest discards.", "upgrade": "Recover one of your three latest discards."},
+    {"id": "green", "name": "Homestead", "pattern": "field", "unlock": "Win a Trail Rules rematch against River Rose.", "claim": "Complete a matching Set from an opponent discard.", "power": "Place a tile in the Corral and draw a replacement; recover it on a later draw.", "upgrade": "The Corral can hold two tiles."},
+    {"id": "pink", "name": "Hospitality", "pattern": "diamond", "unlock": "Win a Trail Rules rematch against Dynamite Bill.", "claim": "Establish the hand's Pair from an opponent discard.", "power": "Offer a tile to the neutral exchange and draw a replacement.", "upgrade": "The neutral exchange can hold two offers before a swap."},
+    {"id": "dark", "name": "Night", "pattern": "moon", "unlock": "Win a Trail Rules rematch against Mayor Bell.", "claim": "Deny an opponent discard before it can be claimed.", "power": "Mark the latest opposing discard unclaimable.", "upgrade": "The denial also grants one replacement draw."},
+    {"id": "purple", "name": "Omen", "pattern": "star", "unlock": "Complete the Hall cleanup and reopen the Frontier table.", "claim": "Reserve a marked discard until the next turn.", "power": "Inspect and reorder the next three wall tiles.", "upgrade": "Inspect and reorder the next four wall tiles."}
+  ]
+}

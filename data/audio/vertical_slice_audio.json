@@ -1,0 +1,42 @@
+{
+  "schema_version": 2,
+  "ambience": {
+    "clear": "res://assets/generated/audio/outdoor_generic_ambience.ogg",
+    "rain": "res://assets/generated/audio/rain_ambience.ogg",
+    "cloudy": "res://assets/generated/audio/outdoor_generic_ambience.ogg",
+    "thunderstorm": "res://assets/generated/audio/rain_ambience.ogg",
+    "dust_wind": "res://assets/generated/audio/outdoor_generic_ambience.ogg",
+    "supernatural_fog": "res://assets/generated/audio/outdoor_generic_ambience.ogg"
+  },
+  "music": {
+    "title": "res://assets/generated/audio/music_theme.wav",
+    "exploration": "res://assets/generated/audio/music_theme.wav",
+    "mahjong": "res://assets/generated/audio/music_theme.wav",
+    "finale": "res://assets/generated/audio/music_theme.wav",
+    "credits": "res://assets/generated/audio/music_theme.wav"
+  },
+  "events": {
+    "footstep_grass": {"path": "res://assets/generated/audio/footstep_grass.wav", "bus": "SFX"},
+    "footstep_gravel": {"path": "res://assets/generated/audio/footstep_gravel.wav", "bus": "SFX"},
+    "footstep_wood": {"path": "res://assets/generated/audio/footstep_wood.wav", "bus": "SFX"},
+    "mahjong_tile": {"path": "res://assets/generated/audio/mahjong_tile_wood.wav", "bus": "Mahjong"},
+    "fishing_bite": {"path": "res://assets/generated/audio/mahjong_tile_wood.wav", "bus": "SFX"},
+    "fishing_tension": {"path": "res://assets/generated/audio/footstep_wood.wav", "bus": "SFX"},
+    "finale_challenge": {"path": "res://assets/generated/audio/mahjong_tile_wood.wav", "bus": "Mahjong"},
+    "finale_victory": {"path": "res://assets/generated/audio/footstep_wood.wav", "bus": "SFX"},
+    "postgame_open": {"path": "res://assets/generated/audio/mahjong_tile_wood.wav", "bus": "UI"},
+    "ui_confirm": {"path": "res://assets/generated/audio/ui_confirm.wav", "bus": "UI"},
+    "ui_focus": {"path": "res://assets/generated/audio/ui_focus.wav", "bus": "UI"},
+    "journal_updated": {"path": "res://assets/generated/audio/journal_updated.wav", "bus": "UI"},
+    "item_pickup": {"path": "res://assets/generated/audio/item_pickup.wav", "bus": "UI"},
+    "crop_watered": {"path": "res://assets/generated/audio/crop_water.wav", "bus": "SFX"},
+    "crop_harvested": {"path": "res://assets/generated/audio/crop_harvest.wav", "bus": "SFX"},
+    "door_opened": {"path": "res://assets/generated/audio/door_open.wav", "bus": "SFX"},
+    "animal_cared": {"path": "res://assets/generated/audio/animal_care.wav", "bus": "SFX"},
+    "fishing_caught": {"path": "res://assets/generated/audio/fishing_catch.wav", "bus": "SFX"},
+    "mahjong_win": {"path": "res://assets/generated/audio/mahjong_win.wav", "bus": "Mahjong"},
+    "quest_completed": {"path": "res://assets/generated/audio/journal_updated.wav", "bus": "UI"},
+    "region_unlocked": {"path": "res://assets/generated/audio/journal_updated.wav", "bus": "UI"},
+    "credits_open": {"path": "res://assets/generated/audio/ui_confirm.wav", "bus": "UI"}
+  }
+}

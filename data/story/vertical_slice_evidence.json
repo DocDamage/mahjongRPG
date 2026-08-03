@@ -1,0 +1,39 @@
+{
+  "schema_version": 3,
+  "evidence": [
+    {
+      "id": "silas_first_lantern_note",
+      "title_key": "evidence.silas_first_lantern_note.title",
+      "text_key": "evidence.silas_first_lantern_note.text"
+    }
+    ,{
+      "id": "silas_bridlewood_ledger",
+      "title_key": "evidence.silas_bridlewood_ledger.title",
+      "text_key": "evidence.silas_bridlewood_ledger.text"
+    },
+    {
+      "id": "silas_government_record",
+      "title_key": "evidence.silas_government_record.title",
+      "text_key": "evidence.silas_government_record.text"
+    },
+    {
+      "id": "silas_cargo_ledger",
+      "title_key": "evidence.silas_cargo_ledger.title",
+      "text_key": "evidence.silas_cargo_ledger.text"
+    },
+    {
+      "id": "silas_gulls_rest_letter",
+      "title_key": "evidence.silas_gulls_rest_letter.title",
+      "text_key": "evidence.silas_gulls_rest_letter.text"
+    },
+    {
+      "id": "texas_king_counter_deed",
+      "title_key": "evidence.texas_king_counter_deed.title",
+      "text_key": "evidence.texas_king_counter_deed.text"
+    },
+    {"id":"inheritance_deed","title_key":"evidence.inheritance_deed.title","text_key":"evidence.inheritance_deed.text"},
+    {"id":"investigation_chain_validated","title_key":"evidence.investigation_chain_validated.title","text_key":"evidence.investigation_chain_validated.text"},
+    {"id":"silas_bargain_record","title_key":"evidence.silas_bargain_record.title","text_key":"evidence.silas_bargain_record.text"},
+    {"id":"silas_alive_signal","title_key":"evidence.silas_alive_signal.title","text_key":"evidence.silas_alive_signal.text"}
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "source_root": "vendor/local/master",
+  "import_root": "assets/source/master",
+  "required_files": [
+    "MahjongRPG.z01",
+    "MahjongRPG.z02",
+    "MahjongRPG.z03",
+    "MahjongRPG.z04",
+    "MahjongRPG.z05",
+    "MahjongRPG.z06",
+    "MahjongRPG.z07",
+    "MahjongRPG.z08",
+    "MahjongRPG.zip"
+  ],
+  "archives": []
+}

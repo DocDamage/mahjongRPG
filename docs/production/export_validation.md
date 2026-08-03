@@ -1,0 +1,21 @@
+# Windows development export validation
+
+## Preset
+
+`export_presets.cfg` defines the `Windows Desktop` debug preset. It exports all runtime resources while excluding local source packs, vendor archives, validation artifacts, documentation, and tests.
+
+## Current environment result
+
+On 2026-08-02, the project was validated with the official portable Godot `4.7.1.stable.official.a13da4feb` executable at `C:\Users\Doc\AppData\Local\GodotPortable\4.7.1\Godot_v4.7.1-stable_win64_console.exe`. Its matching official Windows templates are installed in `%APPDATA%\Godot\export_templates\4.7.1.stable`.
+
+`python tools/verify_export_environment.py --godot <portable-engine>` passed. Repository validation, all 31 native test suites, the runtime smoke test, and headless editor initialization also passed on that engine.
+
+The following command completed successfully and wrote an ignored Windows development build:
+
+```powershell
+<portable-engine> --headless --path . --export-debug "Windows Desktop" "exports/SixBrandsAtHighNoon.exe"
+```
+
+The P18 release-candidate export was rebuilt on 2026-08-03 as `1.0.0-rc.1` (numeric Godot project version `1.0.0`). Its PCK is 6,364,564 bytes after excluding all raw/expanded asset directories; only `assets/generated/` runtime assets are packaged. The executable launched successfully with `--headless --quit-after 8` under a fresh temporary `APPDATA` profile. This automated launch is not a substitute for the plan's user-observed clean-Windows-profile, controller, and display-mode passes.
+
+The preset excludes every expanded/raw source-asset folder and loose source images under `assets/`, while retaining only `assets/generated/` runtime assets; it also excludes `vendor/local/*`, `artifacts/local/*`, documentation, tests, contributor tools, and the contributor-only content-report wrapper. Production quest/dialogue validators remain packaged because gameplay uses them; Q4 reporting and pre-commit entry points do not. No source archive has been added to the repository.

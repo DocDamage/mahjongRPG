@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "atlas_path": "res://assets/generated/mahjong/trail_rules_faces.png",
+  "cell_size": [48, 64],
+  "columns": 1,
+  "rows": 34,
+  "brands": ["blue", "dark", "green", "orange", "pink", "purple"],
+  "brand_patterns": {
+    "blue": {"symbol": "●", "label": "circle"},
+    "dark": {"symbol": "▦", "label": "grid"},
+    "green": {"symbol": "▲", "label": "triangle"},
+    "orange": {"symbol": "╱", "label": "diagonal"},
+    "pink": {"symbol": "✕", "label": "cross"},
+    "purple": {"symbol": "≋", "label": "waves"}
+  }
+}

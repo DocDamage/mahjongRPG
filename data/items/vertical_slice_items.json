@@ -1,0 +1,11 @@
+{
+  "schema_version": 4,
+  "items": [
+    {"id":"crop_beans","sell_value_cents":70},{"id":"crop_corn","sell_value_cents":120},{"id":"crop_tomato","sell_value_cents":100},{"id":"crop_wheat","sell_value_cents":80},
+    {"id":"crop_carrot","sell_value_cents":85},{"id":"crop_potato","sell_value_cents":90},{"id":"crop_radish","sell_value_cents":75},{"id":"crop_beetroot","sell_value_cents":95},{"id":"crop_lettuce","sell_value_cents":70},{"id":"crop_pumpkin","sell_value_cents":180},{"id":"crop_wood","sell_value_cents":40},
+    {"id":"animal_egg","sell_value_cents":60},{"id":"animal_milk","sell_value_cents":130},{"id":"animal_goat_milk","sell_value_cents":140},{"id":"animal_wool","sell_value_cents":150},{"id":"animal_truffle","sell_value_cents":220},
+    {"id":"artisan_cheese","sell_value_cents":300},{"id":"artisan_goat_cheese","sell_value_cents":330},{"id":"artisan_cloth","sell_value_cents":350},
+    {"id":"fish_anchovy","sell_value_cents":45},{"id":"fish_bluegill","sell_value_cents":85},{"id":"fish_catfish","sell_value_cents":160},{"id":"fish_river_bass","sell_value_cents":140},{"id":"fish_sunfish","sell_value_cents":55},{"id":"fish_trout","sell_value_cents":240},
+    {"id":"meal_dock_stew","sell_value_cents":220},{"id":"preserved_tomatoes","sell_value_cents":180},{"id":"milled_flour","sell_value_cents":150},{"id":"churned_butter","sell_value_cents":260},{"id":"smoked_catfish","sell_value_cents":360},{"id":"dock_feed","sell_value_cents":120},{"id":"dock_tonic","sell_value_cents":300}
+  ]
+}

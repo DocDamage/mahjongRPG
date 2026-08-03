@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "audit_date": "2026-08-02",
+  "archive_entries_tested": 5791,
+  "extracted_files_inventoried": 4607,
+  "crc_failures": 0,
+  "missing_split_volumes": 0,
+  "reconstructed_bytes": 878093510,
+  "mahjong_svg_files": 2220,
+  "mahjong_brands": ["blue", "dark", "green", "orange", "pink", "purple"],
+  "recommended_internal_resolution": [960, 540],
+  "world_tile_grid": [48, 48],
+  "status": "foundation-ready"
+}

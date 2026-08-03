@@ -1,0 +1,15 @@
+{
+  "schema_version": 3,
+  "opponents": [
+    {"id":"mayor_bell","display_name":"Mayor Bell","brands":["dark","green"],"ai":{"set_weight":1.4,"run_weight":1.2,"seen_tile_weight":0.4}},
+    {"id":"river_rose","display_name":"River Rose","brands":["blue","pink"],"ai":{"set_weight":0.9,"run_weight":1.8,"seen_tile_weight":0.2}},
+    {"id":"dynamite_bill","display_name":"Dynamite Bill","brands":["orange","purple"],"ai":{"set_weight":1.7,"run_weight":0.7,"seen_tile_weight":0.6}},
+    {"id":"ada_rook","display_name":"Ada Rook","brands":["green","blue"],"ai":{"set_weight":1.3,"run_weight":1.1,"seen_tile_weight":0.5}},
+    {"id":"gideon_shaw","display_name":"Gideon Shaw","brands":["orange","dark"],"ai":{"set_weight":1.8,"run_weight":0.8,"seen_tile_weight":0.6}},
+    {"id":"registrar_elise","display_name":"Registrar Elise","brands":["blue","purple"],"ai":{"set_weight":1.1,"run_weight":1.5,"seen_tile_weight":0.5}},
+    {"id":"constable_mara","display_name":"Constable Mara","brands":["dark","orange"],"ai":{"set_weight":1.7,"run_weight":0.9,"seen_tile_weight":0.7}},
+    {"id":"mariner_ves","display_name":"Mariner Ves","brands":["green","pink"],"ai":{"set_weight":1.2,"run_weight":1.4,"seen_tile_weight":0.6}},
+    {"id":"captain_coral","display_name":"Captain Coral Fenn","brands":["blue","green"],"ai":{"set_weight":1.3,"run_weight":1.7,"seen_tile_weight":0.7}},
+    {"id":"witness_ash","display_name":"Ash Varela","brands":["dark","purple"],"ai":{"set_weight":2.0,"run_weight":1.2,"seen_tile_weight":0.9}}
+  ]
+}

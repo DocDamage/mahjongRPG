@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "recipes": [
+    {"id":"cook_stew","display_name":"Dock Stew","ingredients":[{"item_id":"crop_potato","count":1},{"item_id":"crop_carrot","count":1}],"output_id":"meal_dock_stew","output_count":1,"effect":{"id":"mahjong_charge","value":1,"max_uses_per_day":1}},
+    {"id":"preserve_tomatoes","display_name":"Preserved Tomatoes","ingredients":[{"item_id":"crop_tomato","count":2}],"output_id":"preserved_tomatoes","output_count":1,"effect":{"id":"mahjong_charge","value":1,"max_uses_per_day":1}},
+    {"id":"mill_flour","display_name":"Milled Flour","ingredients":[{"item_id":"crop_wheat","count":2}],"output_id":"milled_flour","output_count":1,"effect":{"id":"mahjong_charge","value":1,"max_uses_per_day":1}},
+    {"id":"make_butter","display_name":"Churned Butter","ingredients":[{"item_id":"animal_milk","count":2}],"output_id":"churned_butter","output_count":1,"effect":{"id":"mahjong_charge","value":1,"max_uses_per_day":1}},
+    {"id":"smoke_catfish","display_name":"Smoked Catfish","ingredients":[{"item_id":"fish_catfish","count":1}],"output_id":"smoked_catfish","output_count":1,"effect":{"id":"mahjong_charge","value":1,"max_uses_per_day":1}},
+    {"id":"mix_feed","display_name":"Ranch Feed","ingredients":[{"item_id":"crop_corn","count":1},{"item_id":"crop_wheat","count":1}],"output_id":"dock_feed","output_count":1,"effect":{"id":"mahjong_charge","value":1,"max_uses_per_day":1}},
+    {"id":"brew_tonic","display_name":"Steady-Hand Tonic","ingredients":[{"item_id":"crop_beetroot","count":1},{"item_id":"crop_radish","count":1}],"output_id":"dock_tonic","output_count":1,"effect":{"id":"mahjong_charge","value":1,"max_uses_per_day":1}},
+    {"id":"cook_gulf_grouper","display_name":"Gull's Rest Grouper Roast","ingredients":[{"item_id":"fish_gulf_grouper","count":1},{"item_id":"crop_tomato","count":1}],"output_id":"grouper_roast","output_count":1,"effect":{"id":"mahjong_charge","value":1,"max_uses_per_day":1}}
+  ]
+}

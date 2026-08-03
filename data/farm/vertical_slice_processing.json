@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "recipes": [
+    {"id":"press_milk","machine_id":"cheese_press","input_id":"animal_milk","input_count":2,"output_id":"artisan_cheese","output_count":1},
+    {"id":"press_goat_milk","machine_id":"cheese_press","input_id":"animal_goat_milk","input_count":2,"output_id":"artisan_goat_cheese","output_count":1},
+    {"id":"weave_wool","machine_id":"loom","input_id":"animal_wool","input_count":2,"output_id":"artisan_cloth","output_count":1}
+  ]
+}

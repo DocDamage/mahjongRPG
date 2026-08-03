@@ -1,0 +1,208 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://src/world/interior.gd" id="1_interior"]
+[ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://src/world/scene_exit.gd" id="3_exit"]
+[ext_resource type="Script" path="res://src/story/hall_foreman.gd" id="4_mabel"]
+[ext_resource type="Script" path="res://src/mahjong/presentation/hall_frontier_table.gd" id="5_frontier"]
+[ext_resource type="Script" path="res://src/world/public_life_landmark.gd" id="6_public"]
+[ext_resource type="Script" path="res://src/world/act_three_landmark.gd" id="7_act_three"]
+[ext_resource type="Script" path="res://src/world/public_tournament_table.gd" id="8_tournament"]
+[ext_resource type="Script" path="res://src/world/final_championship_table.gd" id="9_final"]
+[ext_resource type="Script" path="res://src/world/advanced_table.gd" id="10_advanced"]
+[ext_resource type="Script" path="res://src/world/postgame_landmark.gd" id="11_postgame"]
+[sub_resource type="CircleShape2D" id="ExitShape"]
+radius = 42.0
+[sub_resource type="CircleShape2D" id="MabelShape"]
+radius = 36.0
+[node name="SixBrandsHall" type="Node2D"]
+script = ExtResource("1_interior")
+location_name = "SIX BRANDS HALL"
+floor_color = Color(0.22, 0.25, 0.36, 1)
+[node name="Doc" parent="." instance=ExtResource("2_player")]
+position = Vector2(480, 380)
+movement_bounds = Rect2(65, 115, 830, 300)
+footstep_event = &"footstep_wood"
+[node name="Exit" type="Area2D" parent="."]
+position = Vector2(480, 405)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_exit")
+prompt_text = "Leave Six Brands Hall"
+destination_scene = "res://src/world/dustward.tscn"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
+shape = SubResource("ExitShape")
+[node name="Mabel" type="Area2D" parent="."]
+position = Vector2(480, 235)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_mabel")
+prompt_text = "Speak with Mabel"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mabel"]
+shape = SubResource("MabelShape")
+[node name="FrontierTable" type="Area2D" parent="."]
+position = Vector2(285, 235)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("5_frontier")
+prompt_text = "Inspect Hall cleanup"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FrontierTable"]
+shape = SubResource("MabelShape")
+[node name="PublicLedger" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(675, 155)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_public")
+prompt_text = "Inspect public-life ledger"
+action = 4
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PublicLedger"]
+shape = SubResource("MabelShape")
+[node name="WaterRight" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(160, 155)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_public")
+prompt_text = "Settle Bridlewood Water Right (one wheat)"
+action = 0
+target_id = &"bridlewood_water_right"
+resolution_method = &"quest"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WaterRight"]
+shape = SubResource("MabelShape")
+[node name="Mooring" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(160, 310)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_public")
+prompt_text = "Settle Gull's Rest Mooring (one tarpon)"
+action = 0
+target_id = &"gulls_rest_mooring"
+resolution_method = &"quest"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mooring"]
+shape = SubResource("MabelShape")
+[node name="MarketCharter" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(680, 310)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_public")
+prompt_text = "File Market Charter (one flour)"
+action = 0
+target_id = &"saints_market_charter"
+resolution_method = &"quest"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MarketCharter"]
+shape = SubResource("MabelShape")
+[node name="MarketSchedule" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(285, 320)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_public")
+prompt_text = "Schedule Market Day"
+action = 1
+target_id = &"market_day"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MarketSchedule"]
+shape = SubResource("MabelShape")
+[node name="MarketAttend" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(385, 320)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_public")
+prompt_text = "Attend Market Day"
+action = 2
+target_id = &"market_day"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MarketAttend"]
+shape = SubResource("MabelShape")
+[node name="TournamentSchedule" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(485, 320)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_public")
+prompt_text = "Schedule Town Tournament"
+action = 1
+target_id = &"town_tournament"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TournamentSchedule"]
+shape = SubResource("MabelShape")
+[node name="TournamentAttend" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(585, 320)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("8_tournament")
+prompt_text = "Play Town Tournament"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TournamentAttend"]
+shape = SubResource("MabelShape")
+[node name="ReopeningSchedule" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(285, 235)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_public")
+prompt_text = "Schedule Hall Reopening"
+action = 1
+target_id = &"hall_reopening"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ReopeningSchedule"]
+shape = SubResource("MabelShape")
+[node name="ReopeningAttend" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(385, 235)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_public")
+prompt_text = "Attend Hall Reopening"
+action = 2
+target_id = &"hall_reopening"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ReopeningAttend"]
+shape = SubResource("MabelShape")
+[node name="ChampionshipSchedule" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(710, 235)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_public")
+prompt_text = "Schedule final championship"
+action = 1
+target_id = &"final_championship"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ChampionshipSchedule"]
+shape = SubResource("MabelShape")
+[node name="TexasKingTable" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(800, 155)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("9_final")
+prompt_text = "Play Texas King championship"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TexasKingTable"]
+shape = SubResource("MabelShape")
+[node name="AdvancedTable" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(85, 235)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("10_advanced")
+prompt_text = "Play Hall Legends tournament"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AdvancedTable"]
+shape = SubResource("MabelShape")
+[node name="CompletionLedger" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(85, 310)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("11_postgame")
+prompt_text = "Review postgame ending and collections"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CompletionLedger"]
+shape = SubResource("MabelShape")
+[node name="EvidenceLedger" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(710, 390)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("7_act_three")
+prompt_text = "Review Act III evidence ledger"
+action = 0
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EvidenceLedger"]
+shape = SubResource("MabelShape")
+[node name="HUD" type="CanvasLayer" parent="."]
+[node name="Status" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 20.0
+offset_right = 910.0
+offset_bottom = 60.0
+theme_override_colors/font_color = Color(0.95, 0.89, 0.74, 1)
+theme_override_font_sizes/font_size = 18
+[node name="Message" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 480.0
+offset_right = 900.0
+offset_bottom = 520.0
+theme_override_colors/font_color = Color(1, 0.92, 0.67, 1)
+theme_override_font_sizes/font_size = 18

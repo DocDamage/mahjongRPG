@@ -1,0 +1,59 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/world/interior.gd" id="1_interior"]
+[ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://src/world/scene_exit.gd" id="3_exit"]
+[ext_resource type="Script" path="res://src/economy/store_clerk.gd" id="4_clerk"]
+
+[sub_resource type="CircleShape2D" id="ExitShape"]
+radius = 42.0
+
+[sub_resource type="CircleShape2D" id="ClerkShape"]
+radius = 34.0
+
+[node name="GeneralStore" type="Node2D"]
+script = ExtResource("1_interior")
+location_name = "DUSTWARD GENERAL STORE"
+floor_color = Color(0.42, 0.3, 0.2, 1)
+
+[node name="Doc" parent="." instance=ExtResource("2_player")]
+position = Vector2(480, 380)
+movement_bounds = Rect2(65, 115, 830, 300)
+footstep_event = &"footstep_wood"
+
+[node name="Exit" type="Area2D" parent="."]
+position = Vector2(480, 405)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_exit")
+prompt_text = "Leave general store"
+destination_scene = "res://src/world/dustward.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
+shape = SubResource("ExitShape")
+
+[node name="StoreClerk" type="Area2D" parent="."]
+position = Vector2(500, 220)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_clerk")
+prompt_text = "Sell crops and fish"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoreClerk"]
+shape = SubResource("ClerkShape")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+[node name="Status" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 20.0
+offset_right = 910.0
+offset_bottom = 60.0
+theme_override_colors/font_color = Color(0.95, 0.89, 0.74, 1)
+theme_override_font_sizes/font_size = 18
+[node name="Message" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 480.0
+offset_right = 900.0
+offset_bottom = 520.0
+theme_override_colors/font_color = Color(1, 0.92, 0.67, 1)
+theme_override_font_sizes/font_size = 18

@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "regions": [
+    {"id":"ironhook","display_name":"Ironhook Docks","shops":["ironhook_provisioner","ironhook_apothecary"],"properties":["ironhook_customs_warehouse"]}
+  ]
+}

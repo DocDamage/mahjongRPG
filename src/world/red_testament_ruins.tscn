@@ -1,0 +1,102 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://src/world/interior.gd" id="1_interior"]
+[ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://src/world/scene_exit.gd" id="3_exit"]
+[ext_resource type="Script" path="res://src/world/desert_landmark.gd" id="4_landmark"]
+[ext_resource type="Script" path="res://src/world/act_three_landmark.gd" id="5_act_three"]
+[sub_resource type="CircleShape2D" id="ExitShape"]
+radius = 42.0
+[sub_resource type="CircleShape2D" id="ActionShape"]
+radius = 36.0
+
+[node name="RedTestamentRuins" type="Node2D"]
+script = ExtResource("1_interior")
+location_name = "RED TESTAMENT RUINS"
+floor_color = Color(0.33, 0.17, 0.14, 1)
+[node name="Doc" parent="." instance=ExtResource("2_player")]
+position = Vector2(480, 380)
+movement_bounds = Rect2(65, 115, 830, 300)
+footstep_event = &"footstep_gravel"
+[node name="Exit" type="Area2D" parent="."]
+position = Vector2(480, 405)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_exit")
+prompt_text = "Leave the ruins"
+destination_scene = "res://src/world/red_testament.tscn"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
+shape = SubResource("ExitShape")
+[node name="BuriedSeal" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(480, 225)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_landmark")
+prompt_text = "Inspect the buried Red Testament seal"
+action = 4
+target_id = &"red_testament_buried_seal"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuriedSeal"]
+shape = SubResource("ActionShape")
+[node name="BargainArchive" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(250, 205)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("5_act_three")
+prompt_text = "Read the hidden bargain archive"
+action = 1
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BargainArchive"]
+shape = SubResource("ActionShape")
+[node name="BindingRule" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(370, 205)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("5_act_three")
+prompt_text = "Explain the binding-stake rule"
+action = 3
+target_id = &"binding_stake"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BindingRule"]
+shape = SubResource("ActionShape")
+[node name="CategoryRule" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(590, 205)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("5_act_three")
+prompt_text = "Explain the category-declaration rule"
+action = 3
+target_id = &"category_declaration"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CategoryRule"]
+shape = SubResource("ActionShape")
+[node name="BloodlineRule" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(710, 205)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("5_act_three")
+prompt_text = "Explain the bloodline-claim rule"
+action = 3
+target_id = &"bloodline_claim"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BloodlineRule"]
+shape = SubResource("ActionShape")
+[node name="SilasSignal" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(480, 300)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("5_act_three")
+prompt_text = "Verify Silas's signal"
+action = 4
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SilasSignal"]
+shape = SubResource("ActionShape")
+[node name="HUD" type="CanvasLayer" parent="."]
+[node name="Status" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 20.0
+offset_right = 910.0
+offset_bottom = 60.0
+theme_override_colors/font_color = Color(0.95, 0.89, 0.74, 1)
+theme_override_font_sizes/font_size = 18
+[node name="Message" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 480.0
+offset_right = 900.0
+offset_bottom = 520.0
+theme_override_colors/font_color = Color(1, 0.92, 0.67, 1)
+theme_override_font_sizes/font_size = 18

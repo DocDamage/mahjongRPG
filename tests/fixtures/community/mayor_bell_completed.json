@@ -1,0 +1,1 @@
+{"expected_sequence_id":"","community":{"active":{},"completed":{"mayor_bell":true},"progress":{},"discovered_secrets":{},"finale_support":{}},"relationships":{"values":{"mayor_bell":3},"choices":{"mayor_bell_meet":true,"mayor_bell_favor":true,"mayor_bell_resolve":true}},"helpers":{"assignments":{"mayor_bell":true},"last_used_day":{}}}
