@@ -1,6 +1,11 @@
 {
   "schema_version": 3,
   "default_locale": "en",
+  "release_required_keys": [
+    "ui.title.new_game", "ui.title.load_autosave", "ui.title.accessibility", "ui.pause.save_load",
+    "journal.evidence", "journal.brands", "journal.fish_records", "journal.community_arcs", "journal.property_cases", "journal.desert_records",
+    "finale.credits.continue", "accessibility.timing_assist", "accessibility.high_contrast", "accessibility.haptics"
+  ],
   "locales": {
     "en": {
       "lines": {
@@ -26,7 +31,15 @@
         "evidence.inheritance_deed.title": "Silas's Inheritance Deed", "evidence.inheritance_deed.text": "Silas left Wayward Farm to Doc with a margin note: keep the Hall's true rules in the open.",
         "evidence.investigation_chain_validated.title": "Converged Investigation", "evidence.investigation_chain_validated.text": "The regional records agree: Silas followed the Hall's lawful rules to expose the bargain.",
         "evidence.silas_bargain_record.title": "Silas's Bargain Record", "evidence.silas_bargain_record.text": "King's bargain binds stakes to a truthful table, a bloodline, and the original Six Brands rules.",
-        "evidence.silas_alive_signal.title": "Silas's Signal", "evidence.silas_alive_signal.text": "A living signal answers from King's Reach. Silas survived the bargain's prison."
+        "evidence.silas_alive_signal.title": "Silas's Signal", "evidence.silas_alive_signal.text": "A living signal answers from King's Reach. Silas survived the bargain's prison.",
+        "evidence.silas_bridlewood_ledger.title": "Silas's Bridlewood Ledger", "evidence.silas_bridlewood_ledger.text": "A ranch ledger shows Silas followed the barn accounts to a hidden Hall debt.",
+        "evidence.silas_government_record.title": "Silas's Government Record", "evidence.silas_government_record.text": "The corrected public record proves the Hall bargain was hidden in plain sight.",
+        "evidence.silas_cargo_ledger.title": "Silas's Cargo Ledger", "evidence.silas_cargo_ledger.text": "A dock manifest marks the route used to move the original counter-Deed.",
+        "evidence.silas_gulls_rest_letter.title": "Silas's Gull's Rest Letter", "evidence.silas_gulls_rest_letter.text": "Silas asked Coral to keep the tide chart where King could not alter it.",
+        "evidence.texas_king_counter_deed.title": "Texas King's Counter-Deed", "evidence.texas_king_counter_deed.text": "The exposed deed requires a truthful category and lets the Hall answer King's rule.",
+        "ui.title.new_game": "New game", "ui.title.load_autosave": "Load autosave", "ui.title.accessibility": "Accessibility and settings", "ui.pause.save_load": "Pause — Save and load",
+        "journal.evidence": "Evidence", "journal.brands": "Brands", "journal.fish_records": "Fish records", "journal.community_arcs": "Community arcs", "journal.property_cases": "Property cases", "journal.desert_records": "Desert records",
+        "finale.credits.continue": "Continue to postgame", "accessibility.timing_assist": "Timing assist", "accessibility.high_contrast": "High contrast", "accessibility.haptics": "Controller vibration"
       }
     }
   }

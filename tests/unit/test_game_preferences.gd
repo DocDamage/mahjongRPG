@@ -19,6 +19,7 @@ func run() -> Array[String]:
 	if restored.load_preferences() != OK or is_equal_approx(restored.ui_scale, initial_ui_scale) or restored.interaction_mode != preferences.interaction_mode or restored.reduced_motion != preferences.reduced_motion or restored.subtitles != preferences.subtitles or restored.controller_glyph_set != preferences.controller_glyph_set:
 		failures.append("accessibility preferences must persist text/UI, dialogue, interaction, motion, subtitles, and glyph settings")
 	DirAccess.remove_absolute(GamePreferences.CONFIG_PATH)
-	preferences.queue_free()
+	Engine.get_main_loop().root.remove_child(preferences)
+	preferences.free()
 	restored.free()
 	return failures

@@ -1,5 +1,5 @@
 extends Node
-
+const ControllerGlyphs = preload("res://src/input/controller_glyphs.gd")
 signal active_device_changed(using_controller: bool)
 signal binding_changed(action: StringName)
 
@@ -209,8 +209,15 @@ func prompt_binding_text(action: StringName, prefer_controller: bool) -> String:
 	return String(action).capitalize()
 
 
+func controller_glyph_text(action: StringName, glyph_set: StringName = &"auto") -> String:
+	if not ACTIONS.has(action):
+		return ""
+	var preferences = get_node_or_null("/root/GamePreferences") if glyph_set == &"auto" and is_inside_tree() else null
+	return ControllerGlyphs.action_label(InputMap.action_get_events(action), glyph_set, preferences)
+
+
 func pulse_active_controller(weak_magnitude: float, strong_magnitude: float, duration_seconds: float) -> bool:
-	if active_controller_device < 0 or DisplayServer.get_name() == "headless":
+	if active_controller_device < 0 or DisplayServer.get_name() == "headless" or not _haptics_are_enabled():
 		return false
 	Input.start_joy_vibration(active_controller_device, clampf(weak_magnitude, 0.0, 1.0), clampf(strong_magnitude, 0.0, 1.0), maxf(0.0, duration_seconds))
 	return true
@@ -264,6 +271,11 @@ func _has_joypad_event(action: StringName, axis: JoyAxis, value: float) -> bool:
 		if event is InputEventJoypadMotion and event.axis == axis and is_equal_approx(event.axis_value, value):
 			return true
 	return false
+
+
+func _haptics_are_enabled() -> bool:
+	var preferences = get_node_or_null("/root/GamePreferences")
+	return preferences == null or bool(preferences.haptics_enabled)
 
 
 func _axis_binding_label(axis: JoyAxis, value: float) -> String:

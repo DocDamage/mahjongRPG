@@ -6,7 +6,7 @@ Doc inherits Wayward Farm outside Mercy's Wake, a Gulf Coast frontier town where
 
 ## Playable-slice status
 
-This checkout contains the Phase 1–16 playable foundation. After the Act III warning, the Hall captures a dedicated `pre_finale` backup before seating Texas King in a legal, counterable Frontier Rules championship. A lost match can be retried; a failed standoff retries locally without replaying Mahjong. The transparent choice/category evaluator yields one of four saved endings, followed by credits and a non-destructive postgame. The reopened public Hall offers repeatable advanced tournaments and an ending-and-collection ledger while King's Reach, farm/animals, fishing, and existing world progress remain available. Saves migrate through schema 21 from every earlier schema.
+This checkout contains the Phase 1–17 playable game and Phase 18 release-candidate tooling. After the Act III warning, the Hall captures a dedicated `pre_finale` backup before seating Texas King in a legal, counterable Frontier Rules championship. A lost match can be retried; a failed standoff retries locally without replaying Mahjong. The transparent choice/category evaluator yields one of four saved endings, followed by credits and a non-destructive postgame. The reopened public Hall offers repeatable advanced tournaments and a complete evidence/collection ledger while King's Reach, farm/animals, fishing, and existing world progress remain available. Saves migrate through schema 21 from every earlier schema; settings schema 2 forwards legacy preferences safely.
 
 ## Technical target
 
@@ -63,6 +63,8 @@ Use the target Godot 4.7.1 executable—not an arbitrary `godot` on `PATH`. The 
 - [Phase 13–14 completion audit](docs/production/PHASE_13_14_COMPLETION_AUDIT_2026-08-02.md)
 - [Phase 15–16 completion audit](docs/production/PHASE_15_16_COMPLETION_AUDIT_2026-08-02.md)
 - [Windows setup and recovery](docs/release/setup_and_recovery.md)
+- [Release notes](docs/release/RELEASE_NOTES.md)
+- [Release-candidate evidence](docs/release/release_candidate_evidence.md)
 
 ## Licensing
 

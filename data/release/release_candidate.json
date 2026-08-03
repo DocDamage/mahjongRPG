@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "version": "1.0.0-rc.1",
+  "engine_project_version": "1.0.0",
+  "channel": "windows_release_candidate",
+  "engine_version": "4.7.1",
+  "save_schema": {"minimum_supported": 1, "current": 21},
+  "settings_schema": {"minimum_supported": 1, "current": 2},
+  "package": {
+    "executable": "SixBrandsAtHighNoon.exe",
+    "data": "SixBrandsAtHighNoon.pck",
+    "documents": ["THIRD_PARTY_ASSET_LICENSE_CC0.txt", "PROPRIETARY_SOURCE_NOTICE.md", "RELEASE_NOTES.md", "SETUP_AND_RECOVERY.md"]
+  },
+  "rollback": {
+    "last_accepted_phase": "P16",
+    "compatible_save_schema_range": "1-21",
+    "restore_source": "the prior accepted package plus its save backup"
+  }
+}

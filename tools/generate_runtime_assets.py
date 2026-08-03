@@ -22,6 +22,24 @@ HERO_ACTIONS = {
 }
 DIRECTIONS = ("up", "down", "left", "right")
 HORSE_COLORS = ("black", "brown", "golden", "gray", "white")
+UI_ASSETS = {
+    "menu_closed.png": ("fishing UI", "fishingAssetPack", "MENU + UI", "menuClosedSprite.png"),
+    "inventory_slot.png": ("fishing UI", "fishingAssetPack", "MENU + UI", "inventorySlotSprite.png"),
+    "attention_marker.png": ("fishing UI", "fishingAssetPack", "MENU + UI", "exclamationSprite.png"),
+}
+AUDIO_ASSETS = {
+    "ui_confirm.wav": ("Cozy SFX Volume 1", "UI", "MENU_CLICK_1.wav"),
+    "ui_focus.wav": ("Cozy SFX Volume 1", "UI", "MENU_HOVER_1.wav"),
+    "journal_updated.wav": ("Cozy SFX Volume 1", "UI", "NOTIFICATION_1.wav"),
+    "item_pickup.wav": ("Cozy SFX Volume 1", "UI", "ITEM_PICKUP_1.wav"),
+    "crop_water.wav": ("Cozy SFX Volume 1", "INTERACTIONS", "WATER_1.wav"),
+    "crop_harvest.wav": ("Cozy SFX Volume 1", "INTERACTIONS", "LEAFS_1.wav"),
+    "door_open.wav": ("Cozy SFX Volume 1", "INTERACTIONS", "WOOD_1.wav"),
+    "animal_care.wav": ("Cozy SFX Volume 1", "INTERACTIONS", "FABRIC_1.wav"),
+    "fishing_catch.wav": ("Cozy SFX Volume 1", "INTERACTIONS", "WATER_2.wav"),
+    "mahjong_win.wav": ("Cozy SFX Volume 1", "UI", "PLAYER_LEVELUP.wav"),
+    "music_theme.wav": ("Cozy SFX Volume 1", "BONUS TRACK", "BONUS_TRACK.wav"),
+}
 
 
 def copy(source: Path, target: Path, check: bool) -> None:
@@ -59,6 +77,10 @@ def generate(check: bool) -> None:
                 raise ValueError(f"Unexpected hero sheet dimensions: {target}")
     for color in HORSE_COLORS:
         copy(HORSE_SOURCE / f"horse-{color}.png", RUNTIME / "horses" / f"horse_{color}.png", check)
+    for target_name, source_parts in UI_ASSETS.items():
+        copy(ROOT / "assets" / Path(*source_parts), RUNTIME / "ui" / target_name, check)
+    for target_name, source_parts in AUDIO_ASSETS.items():
+        copy(ROOT / "assets" / Path(*source_parts), RUNTIME / "audio" / target_name, check)
 
 
 def main() -> int:

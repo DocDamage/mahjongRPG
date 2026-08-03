@@ -78,6 +78,13 @@ func configure_gear(next_profile: Dictionary) -> Error:
 	return OK
 
 
+func apply_timing_assist(window_multiplier: float) -> Error:
+	if window_multiplier < 1.0 or window_multiplier > 2.0:
+		return ERR_INVALID_PARAMETER
+	gear_profile["hook_window_multiplier"] = float(gear_profile["hook_window_multiplier"]) * window_multiplier
+	return OK
+
+
 func apply_struggle_input(direction: float, reeling: bool, releasing: bool, delta: float) -> Error:
 	if state != State.STRUGGLE or delta <= 0.0:
 		return ERR_INVALID_DATA

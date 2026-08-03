@@ -1,5 +1,7 @@
 extends "res://src/interaction/world_interactable.gd"
 
+const JournalSummary = preload("res://src/journal/journal_summary.gd")
+
 signal feedback(message: String)
 
 
@@ -20,9 +22,5 @@ func _on_interacted(_actor: Node2D) -> void:
 		return
 	var ending: Dictionary = GameSession.finale.ending_summary()
 	var collections: Dictionary = GameSession.postgame.collection_summary(GameSession)
-	var groups: Dictionary = collections.get("groups", {})
-	var progress: Array[String] = []
-	for label_value in groups:
-		var group: Dictionary = groups[label_value]
-		progress.append("%s %d/%d" % [String(label_value).replace("_", " "), int(group["found"]), int(group["total"])])
-	feedback.emit("Postgame • %s • %s • Collections: %s. Farm, animals, fishing, King's Reach, and unfinished arcs remain available." % [String(ending.get("title", "earned ending")), String(ending.get("category", "")), " • ".join(progress)])
+	var progress := JournalSummary.concise_lines(GameSession)
+	feedback.emit("Postgame • %s • %s • Journal: %s. Farm, animals, fishing, King's Reach, and unfinished arcs remain available." % [String(ending.get("title", "earned ending")), String(ending.get("category", "")), " • ".join(progress)])

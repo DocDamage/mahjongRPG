@@ -18,6 +18,17 @@ static func text(line_id: StringName, values: Dictionary = {}, locale := "") -> 
 	return result
 
 
+static func has_text(line_id: StringName, locale := "") -> bool:
+	return not text(line_id, {}, locale).is_empty()
+
+
+static func release_required_keys() -> Array[StringName]:
+	var keys: Array[StringName] = []
+	for key_value in _table().get("release_required_keys", []):
+		keys.append(StringName(key_value))
+	return keys
+
+
 static func _table() -> Dictionary:
 	var scene_tree := Engine.get_main_loop() as SceneTree
 	var registry = scene_tree.root.get_node_or_null("ContentRegistry") if scene_tree != null else null

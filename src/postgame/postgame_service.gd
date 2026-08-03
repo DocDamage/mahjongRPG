@@ -1,6 +1,6 @@
 extends RefCounted
 
-const FishCatalog = preload("res://src/fishing/fish_catalog.gd")
+const JournalSummary = preload("res://src/journal/journal_summary.gd")
 
 signal postgame_entered(ending_id: StringName)
 
@@ -22,22 +22,9 @@ func is_active() -> bool:
 
 
 func collection_summary(session) -> Dictionary:
-	var community_total := 0
-	if session.community != null:
-		for definition_value in session.community.definitions.values():
-			if not StringName(definition_value.get("secret_id", "")).is_empty():
-				community_total += 1
-	var groups := {
-		"fish_records": {"found": session.angler.records.size(), "total": FishCatalog.definitions().size()},
-		"community_secrets": {"found": session.community.discovered_secrets.size(), "total": community_total},
-		"desert_records": {"found": session.desert.supernatural_records.size() + session.desert.region_secrets.size(), "total": 2},
-	}
-	var found := 0
-	var total := 0
-	for group_value in groups.values():
-		found += int(group_value["found"])
-		total += int(group_value["total"])
-	return {"ending_provenance": ending_provenance, "groups": groups, "total_found": found, "total_available": total, "complete": total > 0 and found >= total}
+	var journal := JournalSummary.summary(session)
+	journal["ending_provenance"] = ending_provenance
+	return journal
 
 
 func snapshot() -> Dictionary:

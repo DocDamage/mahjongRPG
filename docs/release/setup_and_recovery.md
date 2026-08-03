@@ -34,13 +34,27 @@ If a slot will not load, close the game, copy both files elsewhere, and replace 
 
 ## Clean-profile launch
 
-Use the included helper to create an isolated Windows profile for the manual P2 checkpoint:
+Use the included helper to create an isolated Windows profile for the manual P18 release checkpoint:
 
 ```powershell
 .\tools\launch_clean_profile.ps1 -Executable .\exports\SixBrandsAtHighNoon.exe
 ```
 
-Complete the corresponding clean-profile row in the manual matrix after the player-visible launch, configuration, P1 playthrough, relaunch, and load have been observed.
+Complete the corresponding clean-profile and release-install/resume rows in the manual matrix after the player-visible launch, configuration, representative loop, finale/postgame transition, relaunch, and load have been observed.
+
+## Release-candidate package
+
+Create a release candidate only after the full validation block above passes:
+
+```powershell
+& $SixBrandsGodot --headless --path . --export-release 'Windows Desktop' 'exports/SixBrandsAtHighNoon.exe'
+python tools/verify_release_candidate.py
+python tools/package_windows_release.py
+```
+
+The packager refuses to overwrite an existing folder and creates `exports/release/SixBrandsAtHighNoon-<version>/` with the executable, PCK, CC0 asset-license notice, release notes, recovery guide, and SHA-256 manifest. Verify the package again with `python tools/verify_release_candidate.py --package-dir <folder>`. The package directory is intentionally ignored by Git.
+
+The release-candidate contract and honest automated/manual evidence ledger are in [release_candidate_evidence.md](release_candidate_evidence.md). Do not publish until its human hardware/install rows are signed off.
 
 ## Troubleshooting
 

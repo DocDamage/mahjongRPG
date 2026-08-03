@@ -33,6 +33,11 @@ REQUIRED = (
     "docs/architecture/file_size_policy.md",
     "assets/generated/npcs/dynamite_bill/rotations/east.png",
     "tools/import_master_assets.py",
+    "data/release/release_candidate.json",
+    "docs/release/RELEASE_NOTES.md",
+    "docs/release/release_candidate_evidence.md",
+    "tools/verify_release_candidate.py",
+    "tools/package_windows_release.py",
 )
 MASTER_ARCHIVE_NAMES = (
     "MahjongRPG.z01",
@@ -50,6 +55,8 @@ RUNTIME_HERO_FRAME_COUNTS = {"walk": 8, "idle": 15, "draw": 6, "armed": 1, "shoo
 RUNTIME_DIRECTIONS = ("up", "down", "left", "right")
 RUNTIME_HORSE_COLORS = ("black", "brown", "golden", "gray", "white")
 MAHJONG_ATLAS_PATH = "assets/generated/mahjong/trail_rules_faces.png"
+RELEASE_UI_ART = ("menu_closed.png", "inventory_slot.png", "attention_marker.png")
+RELEASE_AUDIO = ("ui_confirm.wav", "ui_focus.wav", "journal_updated.wav", "item_pickup.wav", "crop_water.wav", "crop_harvest.wav", "door_open.wav", "animal_care.wav", "fishing_catch.wav", "mahjong_win.wav", "music_theme.wav")
 
 
 def relative(path: Path) -> str:
@@ -182,6 +189,32 @@ def check_mahjong_atlas(errors: list[str]) -> None:
         errors.append(f"Trail Rules Mahjong atlas is {width}x{height}, expected 48x2176")
 
 
+def check_release_assets(errors: list[str]) -> None:
+    for name in RELEASE_UI_ART:
+        path = ROOT / "assets" / "generated" / "ui" / name
+        if not path.is_file():
+            errors.append(f"Missing release UI art: {relative(path)}")
+    for name in RELEASE_AUDIO:
+        path = ROOT / "assets" / "generated" / "audio" / name
+        if not path.is_file():
+            errors.append(f"Missing release audio: {relative(path)}")
+
+
+def check_release_metadata(errors: list[str]) -> None:
+    path = ROOT / "data" / "release" / "release_candidate.json"
+    if not path.is_file():
+        return
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        errors.append(f"Invalid release metadata JSON: {error}")
+        return
+    if data.get("schema_version") != 1 or data.get("engine_version") != "4.7.1":
+        errors.append("Release metadata must identify schema 1 and Godot 4.7.1")
+    if data.get("save_schema", {}).get("current") != 21 or data.get("settings_schema", {}).get("current") != 2:
+        errors.append("Release metadata compatibility versions differ from the P17/P18 contract")
+
+
 def main() -> int:
     errors: list[str] = []
     warnings: list[str] = []
@@ -192,6 +225,8 @@ def main() -> int:
     check_patch(errors)
     check_runtime_catalog(errors)
     check_mahjong_atlas(errors)
+    check_release_assets(errors)
+    check_release_metadata(errors)
     if errors:
         print("Repository validation failed:", file=sys.stderr)
         for error in errors:

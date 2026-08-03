@@ -85,6 +85,11 @@ func _begin(actor: Node2D) -> void:
 		feedback.emit("Fishing gear data is invalid.")
 		session = null
 		return
+	var preferences = get_node_or_null("/root/GamePreferences")
+	if preferences != null and session.apply_timing_assist(preferences.timing_window_multiplier()) != OK:
+		feedback.emit("Fishing accessibility settings are invalid.")
+		session = null
+		return
 	var condition := rare_condition if rare_condition.is_empty() or GameSession.angler.has_condition(rare_condition) else &""
 	var result: int = session.cast(_definitions, hour, GameSession.weather_id, shore_condition, condition)
 	if result != OK:

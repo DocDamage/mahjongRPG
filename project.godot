@@ -4,6 +4,7 @@ config_version=5
 
 [application]
 config/name="Six Brands at High Noon"
+config/version="1.0.0"
 run/main_scene="res://src/bootstrap/bootstrap.tscn"
 
 [autoload]

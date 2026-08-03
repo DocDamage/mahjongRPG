@@ -11,5 +11,7 @@ Run this matrix against the Windows debug export on a clean profile before a dem
 | Borderless / fullscreen | Change display mode, relaunch, and confirm the mode persisted. | Pending manual evidence |
 | Text/UI scale | Cycle both scales, relaunch, and confirm settings persisted and controls remain reachable. | Pending manual evidence |
 | Accessibility | Verify subtitles default on, dialogue speed, hold/toggle, reduced motion, and glyph-base selection persist and have visible values. | Pending manual evidence |
+| Release accessibility | With keyboard and controller separately, complete a fishing catch using relaxed timing, disable vibration without losing text feedback, enable high contrast, and read the postgame journal without relying on color or sound. | Pending manual evidence |
 | Save recovery | Corrupt a copied primary slot, load it, and confirm `.backup` recovery plus understandable feedback. | Pending manual evidence |
 | Clean profile | Launch the debug export with a new AppData profile, complete the P1 checkpoint, relaunch, and load. | Pending manual evidence |
+| Release install/resume | Install the packaged RC on a clean Windows machine, complete a representative loop plus finale/postgame transition, quit, relaunch, and resume without loss. | Pending manual evidence |

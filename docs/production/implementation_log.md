@@ -4,7 +4,7 @@
 
 - Active local branch: `agent/project-foundation`
 - Integration target defined by the plan: `develop`
-- Local P1–P16 code is complete; physical checkpoints and target-engine release evidence remain pending.
+- Local P1–P17 code is complete and P18 release-candidate tooling is present; physical checkpoints and final target-machine release evidence remain pending.
 - This log records verified local milestones; it does not claim that the full execution plan is complete.
 
 ## Verified milestones
@@ -52,6 +52,8 @@
 | P11–P12 community completion | Added a data-driven ten-arc community service with three saved stages per opponent, stable relationship-choice IDs, active/completed/mixed restore validation, ten visitable homes, procedural portrait cards, conditional post-resolution schedules, eight gated secrets, locale-keyed dialogue, farm/fishing/economy/Mahjong helper consumers, and the `community_allies_ready` finale-support state. Schema 17 forward-migrates all earlier saves and preserves P11 state. |
 | P13–P14 public life and Act III | Added six contribution-backed property outcomes, persisted public rank/event/Hall state, reschedulable Market Day, a match-win-only public Frontier tournament, Hall stages 4–5, and final-championship scheduling. Act III adds the inheritance-to-bargain chain, one saved consequence, rule explanations, proof Silas is alive, King's Reach exploration, and an explicit non-final warning. Schema 19 forward-migrates all earlier saves; the native runner reports 44 suites. |
 | P15–P16 finale and stable postgame | Added a data-backed Texas King opponent and final-rule explanation, pre-final checkpoint confirmation, retryable scheduled championship, local-retry dialogue standoff, transparent four-ending evaluator, father/Silas reveal, credits, and schema-20 finale persistence. Credits enter schema-21 canonical postgame with ending provenance, repeatable Hall Legends tournament, collection ledger, audio feedback, and preserved King's Reach/farm/animals/fishing state. The native runner reports 45 suites. |
+| P17 presentation completion | Added a release presentation catalog for hero/horse/UI/portrait/atlas coverage, three portrait expressions for every community resident, complete postgame journal groups, concrete Xbox/PlayStation/neutral glyph labels, and a settings-schema-2 migration with direct relaxed fishing timing, high-contrast, and haptic controls. Added validated UI/farm/fishing/Mahjong/finale/credits audio keys plus music/ambience mappings and English authored-key coverage. |
+| P18 Windows release candidate | Added versioned RC metadata, schema-1–21 public-save regression coverage, a release cold-scene performance guard, release notes/evidence/rollback contract, a package validator, and a non-overwriting Windows package assembler with checksums and required support/legal documents. Clean-machine and physical device/display evidence remains a manual release gate. |
 | Target-engine CI evidence | GitHub Actions run `30770900107` passed Linux resource import, validator, all 33 suites, smoke, and editor initialization plus Windows Godot-template/export preflight. |
 
 ## Current local verification baseline

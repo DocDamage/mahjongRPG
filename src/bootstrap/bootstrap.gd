@@ -3,12 +3,14 @@ extends Control
 const IMPORT_MARKER := "res://assets/source/supplemental/.import_complete.json"
 const WAYWARD_FARM_SCENE := "res://src/world/wayward_farm.tscn"
 const AccessibilitySettings = preload("res://src/ui/accessibility_settings.gd")
+const ReleaseUiArt = preload("res://src/ui/release_ui_art.gd")
 
 var _panel: VBoxContainer
 var _status: Label
 var _accessibility
 
 func _ready() -> void:
+	AudioService.play_catalog_music(&"title")
 	_build_title_shell()
 
 func _build_title_shell() -> void:
@@ -16,6 +18,8 @@ func _build_title_shell() -> void:
 	background.color = Color("241b16")
 	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(background)
+	ReleaseUiArt.add_art(background, &"menu_closed", Vector2(38, 54), Vector2(128, 128))
+	ReleaseUiArt.add_art(background, &"attention_marker", Vector2(800, 62), Vector2(76, 76))
 
 	_panel = VBoxContainer.new()
 	_panel.alignment = BoxContainer.ALIGNMENT_CENTER

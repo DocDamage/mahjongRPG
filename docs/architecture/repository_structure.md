@@ -22,6 +22,9 @@ src/
   desert/          saved weather-route, supernatural-record, and clue progression
   finale/          Texas King checkpoint/standoff state and transparent ending evaluator
   postgame/        ending provenance and non-destructive collection completion state
+  journal/         complete postgame record summaries kept separate from completion state
+  input/           device tracking, remapping, and release glyph-family presentation
+  ui/              reusable release UI art and accessible menus
   farm/            crop, construction, placement, and processing services
   animals/         named animal lifecycle and lineage services
 tools/
@@ -38,6 +41,8 @@ Hero, horse, fishing UI, and cozy SFX source ZIPs are also kept out of Git histo
 `tools/import_supplemental_assets.py` verifies and normalizes those archives into the ignored `assets/source/supplemental/` directory. This keeps Git history clean while preserving a deterministic setup path.
 
 Game-ready assets may later move into tracked runtime atlases when import mappings stabilize. Large tracked binaries should use Git LFS only after LFS is configured and validated end to end.
+
+The release catalog promotes small, runtime-needed UI textures and event-keyed audio from the verified supplemental source tree into `assets/generated/`. `tools/generate_runtime_assets.py --check` proves each tracked release asset remains byte-identical to its approved source.
 
 ## Branch policy
 

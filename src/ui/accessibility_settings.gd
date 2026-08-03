@@ -43,6 +43,9 @@ func _build() -> void:
 	_add_row(content, "Subtitles", "Subtitles", func(): _preferences.toggle_subtitles())
 	_add_row(content, "Glyphs", "Controller glyphs", func(): _preferences.cycle_controller_glyph_set())
 	_add_row(content, "MahjongAssistance", "Mahjong assistance", func(): _preferences.cycle_mahjong_assistance())
+	_add_row(content, "TimingAssist", "Timing assist", func(): _preferences.cycle_timing_assist())
+	_add_row(content, "HighContrast", "High contrast", func(): _preferences.toggle_high_contrast())
+	_add_row(content, "Haptics", "Controller vibration", func(): _preferences.toggle_haptics())
 	var back := Button.new()
 	back.text = "Back"
 	back.pressed.connect(close)
@@ -69,6 +72,9 @@ func _refresh() -> void:
 	_set_row("Subtitles", "On" if _preferences.subtitles else "Off")
 	_set_row("Glyphs", String(_preferences.controller_glyph_set).capitalize())
 	_set_row("MahjongAssistance", String(_preferences.mahjong_assistance).capitalize())
+	_set_row("TimingAssist", String(_preferences.timing_assist).capitalize())
+	_set_row("HighContrast", "On" if _preferences.high_contrast else "Off")
+	_set_row("Haptics", "On" if _preferences.haptics_enabled else "Off")
 
 
 func _set_row(id: String, value: String) -> void:

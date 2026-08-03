@@ -1,5 +1,7 @@
 extends Control
 
+const RuntimeAssetCatalog = preload("res://src/content/runtime_asset_catalog.gd")
+
 var display_name := "Resident"
 var face_color := Color("d7a36c")
 var coat_color := Color("465a78")
@@ -14,7 +16,7 @@ func configure(definition: Dictionary, next_expression := "steady") -> void:
 	face_color = Color(String(portrait.get("face_color", palette["face_color"])))
 	coat_color = Color(String(portrait.get("coat_color", palette["coat_color"])))
 	hat_color = Color(String(portrait.get("hat_color", palette["hat_color"])))
-	expression = next_expression
+	expression = next_expression if RuntimeAssetCatalog.portrait_expression_supported(StringName(definition.get("id", "")), next_expression) else "steady"
 	custom_minimum_size = Vector2(128, 128)
 	queue_redraw()
 
@@ -26,11 +28,13 @@ func _draw() -> void:
 	draw_circle(Vector2(64, 56), 31, face_color)
 	draw_rect(Rect2(25, 19, 78, 17), hat_color)
 	draw_rect(Rect2(39, 7, 50, 20), hat_color)
-	var eye_offset := 2.0 if expression == "warm" else 0.0
+	var eye_offset := 2.0 if expression == "warm" else -1.0 if expression == "determined" else 0.0
 	draw_circle(Vector2(53, 53 + eye_offset), 3, Color("211916"))
 	draw_circle(Vector2(75, 53 + eye_offset), 3, Color("211916"))
 	if expression == "warm":
 		draw_arc(Vector2(64, 68), 13, 0.15, PI - 0.15, 10, Color("211916"), 2.0)
+	elif expression == "determined":
+		draw_line(Vector2(52, 72), Vector2(76, 66), Color("211916"), 2.0)
 	else:
 		draw_line(Vector2(52, 70), Vector2(76, 70), Color("211916"), 2.0)
 	draw_string(get_theme_default_font(), Vector2(8, 122), display_name, HORIZONTAL_ALIGNMENT_CENTER, 112, 12, Color("fff0bf"))

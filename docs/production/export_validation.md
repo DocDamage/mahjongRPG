@@ -16,6 +16,6 @@ The following command completed successfully and wrote an ignored Windows develo
 <portable-engine> --headless --path . --export-debug "Windows Desktop" "exports/SixBrandsAtHighNoon.exe"
 ```
 
-The resulting `exports/SixBrandsAtHighNoon.exe` is 102,982,144 bytes and its accompanying PCK is 33,702,504 bytes. The executable also launched successfully with `--headless --quit-after 12` while the process used an isolated temporary `APPDATA` directory. This automated launch is not a substitute for the plan's user-observed clean-Windows-profile, controller, and display-mode passes.
+The P18 release-candidate export was rebuilt on 2026-08-03 as `1.0.0-rc.1` (numeric Godot project version `1.0.0`). Its PCK is 6,364,564 bytes after excluding all raw/expanded asset directories; only `assets/generated/` runtime assets are packaged. The executable launched successfully with `--headless --quit-after 8` under a fresh temporary `APPDATA` profile. This automated launch is not a substitute for the plan's user-observed clean-Windows-profile, controller, and display-mode passes.
 
-The preset excludes `assets/source/*`, `assets/MahjongRPG/*`, `vendor/local/*`, `artifacts/local/*`, documentation, and tests. No source archive has been added to the repository.
+The preset excludes every expanded/raw source-asset folder and loose source images under `assets/`, while retaining only `assets/generated/` runtime assets; it also excludes `vendor/local/*`, `artifacts/local/*`, documentation, and tests. No source archive has been added to the repository.

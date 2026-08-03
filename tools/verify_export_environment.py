@@ -22,6 +22,11 @@ REQUIRED_PRESET_LINES = (
 REQUIRED_EXCLUSIONS = (
     "assets/source/*",
     "assets/MahjongRPG/*",
+    "assets/19th Century European City/*",
+    "assets/Cozy SFX Volume 1/*",
+    "assets/fishing UI/*",
+    "assets/Hero - Cowboy - AssetPack/*",
+    "assets/*.png",
     "vendor/local/*",
     "artifacts/local/*",
     "docs/*",

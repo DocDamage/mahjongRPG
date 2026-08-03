@@ -70,7 +70,7 @@ The runtime generator promotes the canonical expanded asset folders into tracked
 - Black, brown, golden, gray, and white horse sheets
 - A data-driven runtime catalog at `data/runtime_assets/vertical_slice_assets.json`
 
-Running initially accelerates the existing walk cycle. Farming, table, carrying, sleeping, and helper animations remain authored production work based on the supplied style.
+The release catalog validates the complete required player animation set (walk, idle, draw, armed, and shoot in every cardinal direction) and three clear portrait expressions (steady, determined, warm) for all ten authored residents. Farming, table, carrying, sleeping, and helper animations are intentionally not represented as separate player-action promises in the release path.
 
 ## Supplemental audio
 
@@ -95,7 +95,7 @@ The vertical slice promotes these verified `Cozy SFX Volume 1` outputs into trac
 
 They are mapped by `data/audio/vertical_slice_audio.json`; the ignored `assets/source/supplemental/` copies remain import inputs only.
 
-Dedicated revolver, horse, livestock, door, bonfire, and specialized fishing-line sounds remain polish tasks, not foundation blockers.
+The release catalog additionally promotes UI confirm/focus/notification/pickup, crop water/harvest, door, animal-care, fishing catch, Mahjong victory, and a licensed theme track. Every shipped audio cue has text/pattern/controller alternatives where it communicates gameplay state; dedicated specialist variants remain optional polish rather than required information channels.
 
 ## License
 

@@ -14,5 +14,5 @@ func _ready() -> void:
 		return
 	var portrait := CommunityPortrait.new()
 	portrait.position = Vector2(744, 126)
-	portrait.configure(definition, "warm" if GameSession.community.is_completed(resident_id) else "steady")
+	portrait.configure(definition, "warm" if GameSession.community.is_completed(resident_id) else "determined" if GameSession.story != null and GameSession.story.final_warning_accepted else "steady")
 	add_child(portrait)

@@ -18,6 +18,23 @@ static func horse_texture_path(color: StringName) -> String:
 	return "res://assets/generated/horses/horse_%s.png" % color
 
 
+static func ui_texture_path(art_id: StringName) -> String:
+	var art_value: Variant = _catalog().get("ui_art", {})
+	return String(art_value.get(art_id, "")) if art_value is Dictionary else ""
+
+
+static func portrait_expression_supported(resident_id: StringName, expression: StringName) -> bool:
+	var portraits_value: Variant = _catalog().get("portraits", {})
+	if not portraits_value is Dictionary:
+		return false
+	return resident_id in portraits_value.get("residents", []) and expression in portraits_value.get("expressions", [])
+
+
+static func atlas_path(atlas_id: StringName) -> String:
+	var atlases_value: Variant = _catalog().get("atlases", {})
+	return String(atlases_value.get(atlas_id, "")) if atlases_value is Dictionary else ""
+
+
 static func hero_frame_size() -> Vector2i:
 	var hero := _hero()
 	var size_value: Variant = hero.get("frame_size", [])

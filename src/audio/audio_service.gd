@@ -6,8 +6,11 @@ const AUDIO_CATALOG_PATH := "res://data/audio/vertical_slice_audio.json"
 var _events: Dictionary = {}
 var _ambience_paths: Dictionary = {}
 var _event_paths: Dictionary = {}
+var _music_paths: Dictionary = {}
 var _ambience_player: AudioStreamPlayer
+var _music_player: AudioStreamPlayer
 var _active_ambience: StringName
+var _active_music: StringName
 
 
 func _ready() -> void:
@@ -22,6 +25,11 @@ func _exit_tree() -> void:
 		_ambience_player.stream = null
 	_ambience_player = null
 	_active_ambience = &""
+	if _music_player != null:
+		_music_player.stop()
+		_music_player.stream = null
+	_music_player = null
+	_active_music = &""
 
 
 func load_runtime_catalog() -> Error:
@@ -29,9 +37,10 @@ func load_runtime_catalog() -> Error:
 	if file == null:
 		return FileAccess.get_open_error()
 	var parsed: Variant = JSON.parse_string(file.get_as_text())
-	if not parsed is Dictionary or not parsed.get("ambience", {}) is Dictionary or not parsed.get("events", {}) is Dictionary:
+	if not parsed is Dictionary or not parsed.get("ambience", {}) is Dictionary or not parsed.get("music", {}) is Dictionary or not parsed.get("events", {}) is Dictionary:
 		return ERR_FILE_UNRECOGNIZED
 	_ambience_paths = parsed["ambience"].duplicate(true)
+	_music_paths = parsed["music"].duplicate(true)
 	_event_paths = parsed["events"].duplicate(true)
 	return OK
 
@@ -43,6 +52,45 @@ func ambience_path(weather_id: StringName) -> String:
 func event_path(event_id: StringName) -> String:
 	var event_value: Variant = _event_paths.get(event_id, {})
 	return String(event_value.get("path", "")) if event_value is Dictionary else ""
+
+
+func music_path(track_id: StringName) -> String:
+	return String(_music_paths.get(track_id, ""))
+
+
+func has_catalog_event(event_id: StringName) -> bool:
+	return not event_path(event_id).is_empty()
+
+
+func play_catalog_music(track_id: StringName) -> Error:
+	var path := music_path(track_id)
+	if path.is_empty() or not ResourceLoader.exists(path):
+		return ERR_DOES_NOT_EXIST
+	# Headless validation has no audio mixer and should not retain playback resources.
+	if DisplayServer.get_name() == "headless":
+		return OK
+	if _active_music == track_id and _music_player != null:
+		return OK
+	var stream := load(path) as AudioStream
+	if stream == null:
+		return ERR_CANT_OPEN
+	if _music_player == null:
+		_music_player = AudioStreamPlayer.new()
+		_music_player.bus = &"Music"
+		_music_player.finished.connect(_restart_music)
+		add_child(_music_player)
+	_active_music = track_id
+	_music_player.stream = stream
+	_music_player.play()
+	return OK
+
+
+func stop_catalog_music() -> void:
+	if _music_player == null:
+		return
+	_music_player.stop()
+	_music_player.stream = null
+	_active_music = &""
 
 
 func play_catalog_event(event_id: StringName) -> AudioStreamPlayer:
@@ -134,3 +182,8 @@ func _sync_weather_ambience() -> void:
 func _restart_ambience() -> void:
 	if _ambience_player != null and not _active_ambience.is_empty():
 		_ambience_player.play()
+
+
+func _restart_music() -> void:
+	if _music_player != null and not _active_music.is_empty():
+		_music_player.play()

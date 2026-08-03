@@ -4,6 +4,7 @@ signal credits_completed()
 
 
 func _ready() -> void:
+	AudioService.play_catalog_music(&"credits")
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	var backdrop := ColorRect.new()

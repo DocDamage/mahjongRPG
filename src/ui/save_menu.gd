@@ -3,6 +3,7 @@ extends CanvasLayer
 const AudioSettings = preload("res://src/ui/audio_settings.gd")
 const DisplaySettings = preload("res://src/ui/display_settings.gd")
 const InputSettings = preload("res://src/ui/input_settings.gd")
+const ReleaseUiArt = preload("res://src/ui/release_ui_art.gd")
 
 const MENU_PAUSE_REASON := &"save_menu"
 
@@ -64,6 +65,7 @@ func _build_menu() -> void:
 	_shade.color = Color(0.05, 0.035, 0.02, 0.76)
 	_shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(_shade)
+	ReleaseUiArt.add_art(_shade, &"inventory_slot", Vector2(28, 28), Vector2(88, 88))
 	_panel = PanelContainer.new()
 	_panel.position = Vector2(230, 20)
 	_panel.size = Vector2(500, 500)
