@@ -6,7 +6,7 @@ Doc inherits Wayward Farm outside Mercy's Wake, a Gulf Coast frontier town where
 
 ## Playable-slice status
 
-This checkout contains the Phase 1–12 playable foundation. Every launch opponent now has a three-step, save-backed community arc, a visitable home, relationship choices, a post-resolution schedule state, and a completion helper or passive. The first five arcs unlock farm, fishing, trade, and Mahjong support; arcs six through ten complete the community roster and set the persisted `community_allies_ready` finale-support state. Eight secrets are discoverable only after their linked arc is resolved. Homes display a readable, non-color-only portrait card with a resolved-state expression. Community dialogue uses stable English localization keys. King's Reach is visibly present but honestly locked until P14. Saves migrate through schema 17 from every earlier schema; P13+ content is not claimed complete.
+This checkout contains the Phase 1–14 playable foundation. Public property contributions, a persisted Mahjong rank, Market Day, a real Frontier Rules town-tournament match, Hall reopening, and reschedulable public events restore the Hall through stages 4–5 and schedule—but do not start—the final championship. Act III now connects Silas's inheritance deed and all regional clues to the bargain reveal, saves one investigation consequence, explains every altered rule, proves Silas alive, opens King's Reach, and ends at an explicit final-championship warning. The Phase 15 final match, standoff, endings, and credits are intentionally still unavailable. Saves migrate through schema 19 from every earlier schema.
 
 ## Technical target
 
@@ -60,6 +60,7 @@ Use the target Godot 4.7.1 executable—not an arbitrary `godot` on `PATH`. The 
 - [Phase 7–8 completion audit](docs/production/PHASE_7_8_COMPLETION_AUDIT_2026-08-02.md)
 - [Phase 9–10 completion audit](docs/production/PHASE_9_10_COMPLETION_AUDIT_2026-08-02.md)
 - [Phase 11–12 completion audit](docs/production/PHASE_11_12_COMPLETION_AUDIT_2026-08-02.md)
+- [Phase 13–14 completion audit](docs/production/PHASE_13_14_COMPLETION_AUDIT_2026-08-02.md)
 - [Windows setup and recovery](docs/release/setup_and_recovery.md)
 
 ## Licensing

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "story": [
+    {
+      "id":"act_three",
+      "clue_chain":["inheritance_deed","silas_first_lantern_note","silas_bridlewood_ledger","silas_government_record","silas_cargo_ledger","silas_gulls_rest_letter","texas_king_counter_deed"],
+      "choices":[{"id":"protect_town"},{"id":"preserve_records"}],
+      "altered_rules":[
+        {"id":"binding_stake","evidence_id":"silas_first_lantern_note"},
+        {"id":"category_declaration","evidence_id":"texas_king_counter_deed"},
+        {"id":"bloodline_claim","evidence_id":"silas_bargain_record"}
+      ],
+      "kings_reach_sites":[{"id":"outer_gate"},{"id":"sealed_study"},{"id":"watchtower"}]
+    }
+  ]
+}

@@ -22,7 +22,7 @@ Dustward and Saint's Landing are distinct neighborhoods connected by a restricte
 
 P7–P8 make the first part of that regional promise playable. Bridlewood leads to Saint's Landing, where Doc can establish a saved relationship with Registrar Elise and settle the Landing Depot case either through a documented petition or a legal Mahjong win. The result opens Ironhook, restores Hall practice stage 3, and preserves the selected case outcome. Ironhook's cargo ledger is the next authored Silas clue; its Smokehouse Supply Run consumes goods from prior regions, awards a table token, settles the customs-warehouse claim, and gives that token a direct Mahjong use at Mariner Ves's table.
 
-P9 opens Gull's Rest from Ironhook. Captain Coral Fenn's saved relationship letter supplies the next Silas lead; the region has a fish market, Coral's cabin, harbor/coast/reef/spring conditions, a rare-tide journal, gear upgrades, an explicit catch contest, and an expert table. P10 opens Red Testament from Gull's Rest. Windward Pass only records as survived in dust wind or supernatural fog, the expedition right opens the ruin interior, a red-lantern record is saved, and the recovered Texas King clue explains that an exposed conflicting Deed counters a declared final category. King's Reach remains a locked approach until the Act III convergence.
+P9 opens Gull's Rest from Ironhook. Captain Coral Fenn's saved relationship letter supplies the next Silas lead; the region has a fish market, Coral's cabin, harbor/coast/reef/spring conditions, a rare-tide journal, gear upgrades, an explicit catch contest, and an expert table. P10 opens Red Testament from Gull's Rest. Windward Pass only records as survived in dust wind or supernatural fog, the expedition right opens the ruin interior, a red-lantern record is saved, and the recovered Texas King clue explains that an exposed conflicting Deed counters a declared final category. P14 completes the seventh region: after reviewing the inheritance deed, validating the regional chain, discovering the bargain, and explaining every altered rule, the player proves Silas is alive and can explore King's Reach's gate, sealed study, and watchtower.
 
 P11–P12 complete the launch-community layer. Mayor Bell, River Rose, Dynamite Bill, Ada Rook, Gideon Shaw, Registrar Elise, Constable Mara, Mariner Ves, Captain Coral Fenn, and Ash Varela each have a three-step relationship arc available from their regional Community Journal and from their home. Resolution persists the relationship choices, changes their schedule-facing activity, grants an active helper or passive, and, after all ten, records `community_allies_ready` for the finale. Eight homes contain an arc-gated secret; the remaining two are deliberately ordinary homes rather than false collectible prompts. All ten homes have a non-color-only portrait card and a warm post-resolution expression.
 
@@ -37,6 +37,8 @@ The original **Six Brands Hall** stands in Saint's Landing. Texas King owns it a
 5. Legendary restoration
 
 Players can freely place optional decorations while major restoration milestones use authored states.
+
+P13 turns the Hall into public life: six stable property outcomes contribute to the public ledger; Market Day can be scheduled and rescheduled; the Town Tournament only completes after a real public Frontier Rules win; and the reopening reaches the fifth, legendary stage. The final championship may be scheduled after the reopening but remains a warning-only gate until Phase 15.
 
 ## Opening
 
@@ -102,4 +104,4 @@ Texas King's death reveals that he was Doc's father.
 3. **The Good Earth** — farm, ranch, fishing, and community life define Doc's future
 4. **A Hollow Victory** — Texas King dies, but insufficient preparation leaves the town divided
 
-A clear warning and separate autosave occur before the final tournament. The postgame continues after every main ending with Texas King dead, Silas returned, unfinished stories available, advanced Mahjong unlocked, and King's Reach open for exploration.
+P14 ends safely at a clear readiness warning after King's Reach is charted, a non-contradictory investigation consequence is selected, community support is present, and the final championship is scheduled. The final tournament itself remains unavailable until Phase 15. The postgame continues after every main ending with Texas King dead, Silas returned, unfinished stories available, advanced Mahjong unlocked, and King's Reach open for exploration.

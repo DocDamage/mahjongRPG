@@ -30,6 +30,8 @@ var _ai_turn_pending := false
 var _mastery_message := ""
 var _effect_message := ""
 
+signal match_closed(winner: int)
+
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT); mouse_filter = Control.MOUSE_FILTER_STOP
@@ -144,6 +146,7 @@ func _advance_match() -> void: flow.advance_match(); _refresh()
 
 func _close_match() -> void:
 	if _match_started: MatchWager.settle(GameSession.inventory, wager_tier, flow.match_winner)
+	match_closed.emit(flow.match_winner if _match_started else -1)
 	GameSession.complete_mahjong_match(); SaveService.release_save_restriction(&"mahjong"); SaveService.autosave(&"mahjong_match"); queue_free()
 
 

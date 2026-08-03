@@ -1,0 +1,102 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://src/world/interior.gd" id="1_interior"]
+[ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://src/world/scene_exit.gd" id="3_exit"]
+[ext_resource type="Script" path="res://src/world/act_three_landmark.gd" id="4_act_three"]
+[sub_resource type="CircleShape2D" id="ExitShape"]
+radius = 42.0
+[sub_resource type="CircleShape2D" id="ActionShape"]
+radius = 36.0
+
+[node name="KingsReach" type="Node2D"]
+script = ExtResource("1_interior")
+location_name = "KING'S REACH • ACT III"
+floor_color = Color(0.18, 0.12, 0.20, 1)
+[node name="Doc" parent="." instance=ExtResource("2_player")]
+position = Vector2(480, 390)
+movement_bounds = Rect2(65, 115, 830, 300)
+footstep_event = &"footstep_gravel"
+[node name="Exit" type="Area2D" parent="."]
+position = Vector2(480, 415)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_exit")
+prompt_text = "Return to Red Testament"
+destination_scene = "res://src/world/red_testament.tscn"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
+shape = SubResource("ExitShape")
+[node name="TownPromise" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(220, 185)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_act_three")
+prompt_text = "Promise to protect Mercy's Wake"
+action = 2
+target_id = &"protect_town"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TownPromise"]
+shape = SubResource("ActionShape")
+[node name="RecordsPromise" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(360, 185)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_act_three")
+prompt_text = "Promise to preserve the Hall records"
+action = 2
+target_id = &"preserve_records"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RecordsPromise"]
+shape = SubResource("ActionShape")
+[node name="OuterGate" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(500, 185)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_act_three")
+prompt_text = "Chart King's Reach outer gate"
+action = 5
+target_id = &"outer_gate"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OuterGate"]
+shape = SubResource("ActionShape")
+[node name="SealedStudy" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(640, 185)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_act_three")
+prompt_text = "Search the sealed study"
+action = 5
+target_id = &"sealed_study"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SealedStudy"]
+shape = SubResource("ActionShape")
+[node name="Watchtower" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(780, 185)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_act_three")
+prompt_text = "Survey the watchtower"
+action = 5
+target_id = &"watchtower"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Watchtower"]
+shape = SubResource("ActionShape")
+[node name="FinalWarning" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(500, 305)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_act_three")
+prompt_text = "Read final-championship readiness warning"
+action = 6
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FinalWarning"]
+shape = SubResource("ActionShape")
+[node name="HUD" type="CanvasLayer" parent="."]
+[node name="Status" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 20.0
+offset_right = 910.0
+offset_bottom = 60.0
+theme_override_colors/font_color = Color(0.95, 0.89, 0.74, 1)
+theme_override_font_sizes/font_size = 18
+[node name="Message" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 480.0
+offset_right = 900.0
+offset_bottom = 520.0
+theme_override_colors/font_color = Color(1, 0.92, 0.67, 1)
+theme_override_font_sizes/font_size = 18

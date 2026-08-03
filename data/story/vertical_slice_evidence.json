@@ -30,6 +30,10 @@
       "id": "texas_king_counter_deed",
       "title_key": "evidence.texas_king_counter_deed.title",
       "text_key": "evidence.texas_king_counter_deed.text"
-    }
+    },
+    {"id":"inheritance_deed","title_key":"evidence.inheritance_deed.title","text_key":"evidence.inheritance_deed.text"},
+    {"id":"investigation_chain_validated","title_key":"evidence.investigation_chain_validated.title","text_key":"evidence.investigation_chain_validated.text"},
+    {"id":"silas_bargain_record","title_key":"evidence.silas_bargain_record.title","text_key":"evidence.silas_bargain_record.text"},
+    {"id":"silas_alive_signal","title_key":"evidence.silas_alive_signal.title","text_key":"evidence.silas_alive_signal.text"}
   ]
 }

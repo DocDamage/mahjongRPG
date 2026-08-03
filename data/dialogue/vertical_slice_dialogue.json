@@ -22,7 +22,11 @@
         "community.constable_mara.meet": "Mara asks you to walk the practice-hall beat.", "community.constable_mara.favor": "You post a clear, accessible table-night notice.", "community.constable_mara.resolve": "Mara calls fair play and stands ready for the championship.",
         "community.mariner_ves.meet": "Ves shows you the dock's public manifest.", "community.mariner_ves.favor": "You weigh a shipment without shaving its count.", "community.mariner_ves.resolve": "Ves closes the ledger and backs your honest trade.",
         "community.captain_coral.meet": "Coral teaches you to read the lantern tide.", "community.captain_coral.favor": "You mend a net before the fog settles.", "community.captain_coral.resolve": "Coral marks a lantern cove on your chart.",
-        "community.witness_ash.meet": "Ash asks you to read the weathered stones.", "community.witness_ash.favor": "You tend the bonfire through an uneasy weather shift.", "community.witness_ash.resolve": "Ash records a final witness statement for the coming confrontation."
+        "community.witness_ash.meet": "Ash asks you to read the weathered stones.", "community.witness_ash.favor": "You tend the bonfire through an uneasy weather shift.", "community.witness_ash.resolve": "Ash records a final witness statement for the coming confrontation.",
+        "evidence.inheritance_deed.title": "Silas's Inheritance Deed", "evidence.inheritance_deed.text": "Silas left Wayward Farm to Doc with a margin note: keep the Hall's true rules in the open.",
+        "evidence.investigation_chain_validated.title": "Converged Investigation", "evidence.investigation_chain_validated.text": "The regional records agree: Silas followed the Hall's lawful rules to expose the bargain.",
+        "evidence.silas_bargain_record.title": "Silas's Bargain Record", "evidence.silas_bargain_record.text": "King's bargain binds stakes to a truthful table, a bloodline, and the original Six Brands rules.",
+        "evidence.silas_alive_signal.title": "Silas's Signal", "evidence.silas_alive_signal.text": "A living signal answers from King's Reach. Silas survived the bargain's prison."
       }
     }
   }

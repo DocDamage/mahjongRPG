@@ -1,8 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "properties": [
-    {"id":"saints_landing_depot","display_name":"Landing Depot Dispute","resolution_methods":["match","quest"],"requirements":[{"item_id":"artisan_cheese","count":1}],"opens_route":"saints_to_ironhook","hall_stage":3},
-    {"id":"ironhook_customs_warehouse","display_name":"Customs Warehouse Claim","resolution_methods":["order"],"opens_route":"ironhook_warehouse_access"},
-    {"id":"red_testament_expedition","display_name":"Red Testament Expedition Right","resolution_methods":["clue"],"opens_route":"red_testament_ruins"}
+    {"id":"saints_landing_depot","display_name":"Landing Depot Dispute","resolution_methods":["match","quest"],"requirements":[{"item_id":"artisan_cheese","count":1}],"opens_route":"saints_to_ironhook","hall_stage":3,"public_contribution":1},
+    {"id":"ironhook_customs_warehouse","display_name":"Customs Warehouse Claim","resolution_methods":["order"],"opens_route":"ironhook_warehouse_access","public_contribution":1},
+    {"id":"red_testament_expedition","display_name":"Red Testament Expedition Right","resolution_methods":["clue"],"opens_route":"red_testament_ruins","public_contribution":1},
+    {"id":"bridlewood_water_right","display_name":"Bridlewood Water Right","resolution_methods":["quest"],"requirements":[{"item_id":"crop_wheat","count":1}],"opens_route":"bridlewood_irrigation","public_contribution":1},
+    {"id":"gulls_rest_mooring","display_name":"Gull's Rest Public Mooring","resolution_methods":["quest"],"requirements":[{"item_id":"fish_tarpon","count":1}],"opens_route":"gulls_public_mooring","public_contribution":1},
+    {"id":"saints_market_charter","display_name":"Mercy's Wake Market Charter","resolution_methods":["quest"],"requirements":[{"item_id":"flour","count":1}],"opens_route":"saints_market_day","public_contribution":1}
   ]
 }

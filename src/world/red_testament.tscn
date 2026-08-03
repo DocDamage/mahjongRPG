@@ -101,6 +101,8 @@ collision_layer = 2
 collision_mask = 0
 script = ExtResource("3_exit")
 prompt_text = "King's Reach approach (locked until the investigation converges)"
+destination_scene = "res://src/world/kings_reach.tscn"
+required_story_entry = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="KingsReachApproach"]
 shape = SubResource("Circle")
 [node name="AshVarela" type="Area2D" parent="." groups=["red_opponent"]]

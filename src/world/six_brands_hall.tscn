@@ -1,10 +1,13 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://src/world/interior.gd" id="1_interior"]
 [ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
 [ext_resource type="Script" path="res://src/world/scene_exit.gd" id="3_exit"]
 [ext_resource type="Script" path="res://src/story/hall_foreman.gd" id="4_mabel"]
 [ext_resource type="Script" path="res://src/mahjong/presentation/hall_frontier_table.gd" id="5_frontier"]
+[ext_resource type="Script" path="res://src/world/public_life_landmark.gd" id="6_public"]
+[ext_resource type="Script" path="res://src/world/act_three_landmark.gd" id="7_act_three"]
+[ext_resource type="Script" path="res://src/world/public_tournament_table.gd" id="8_tournament"]
 [sub_resource type="CircleShape2D" id="ExitShape"]
 radius = 42.0
 [sub_resource type="CircleShape2D" id="MabelShape"]
@@ -41,6 +44,125 @@ collision_mask = 0
 script = ExtResource("5_frontier")
 prompt_text = "Inspect Hall cleanup"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FrontierTable"]
+shape = SubResource("MabelShape")
+[node name="PublicLedger" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(675, 155)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_public")
+prompt_text = "Inspect public-life ledger"
+action = 4
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PublicLedger"]
+shape = SubResource("MabelShape")
+[node name="WaterRight" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(160, 155)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_public")
+prompt_text = "Settle Bridlewood Water Right (one wheat)"
+action = 0
+target_id = &"bridlewood_water_right"
+resolution_method = &"quest"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WaterRight"]
+shape = SubResource("MabelShape")
+[node name="Mooring" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(160, 310)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_public")
+prompt_text = "Settle Gull's Rest Mooring (one tarpon)"
+action = 0
+target_id = &"gulls_rest_mooring"
+resolution_method = &"quest"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mooring"]
+shape = SubResource("MabelShape")
+[node name="MarketCharter" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(680, 310)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_public")
+prompt_text = "File Market Charter (one flour)"
+action = 0
+target_id = &"saints_market_charter"
+resolution_method = &"quest"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MarketCharter"]
+shape = SubResource("MabelShape")
+[node name="MarketSchedule" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(285, 320)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_public")
+prompt_text = "Schedule Market Day"
+action = 1
+target_id = &"market_day"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MarketSchedule"]
+shape = SubResource("MabelShape")
+[node name="MarketAttend" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(385, 320)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_public")
+prompt_text = "Attend Market Day"
+action = 2
+target_id = &"market_day"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MarketAttend"]
+shape = SubResource("MabelShape")
+[node name="TournamentSchedule" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(485, 320)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_public")
+prompt_text = "Schedule Town Tournament"
+action = 1
+target_id = &"town_tournament"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TournamentSchedule"]
+shape = SubResource("MabelShape")
+[node name="TournamentAttend" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(585, 320)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("8_tournament")
+prompt_text = "Play Town Tournament"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TournamentAttend"]
+shape = SubResource("MabelShape")
+[node name="ReopeningSchedule" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(285, 235)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_public")
+prompt_text = "Schedule Hall Reopening"
+action = 1
+target_id = &"hall_reopening"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ReopeningSchedule"]
+shape = SubResource("MabelShape")
+[node name="ReopeningAttend" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(385, 235)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_public")
+prompt_text = "Attend Hall Reopening"
+action = 2
+target_id = &"hall_reopening"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ReopeningAttend"]
+shape = SubResource("MabelShape")
+[node name="ChampionshipSchedule" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(710, 235)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_public")
+prompt_text = "Schedule final championship"
+action = 1
+target_id = &"final_championship"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ChampionshipSchedule"]
+shape = SubResource("MabelShape")
+[node name="EvidenceLedger" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(710, 390)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("7_act_three")
+prompt_text = "Review Act III evidence ledger"
+action = 0
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EvidenceLedger"]
 shape = SubResource("MabelShape")
 [node name="HUD" type="CanvasLayer" parent="."]
 [node name="Status" type="Label" parent="HUD"]

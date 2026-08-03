@@ -28,6 +28,7 @@ func _ready() -> void:
 	$DustwardRoad.feedback.connect(_show_message)
 	$WaywardHitch.feedback.connect(_show_message)
 	$RiverbendPath.feedback.connect(_show_message)
+	$InheritanceDeed.feedback.connect(_show_message)
 	_create_placement_menu()
 	_create_helper_action()
 	_sync_field_plots()

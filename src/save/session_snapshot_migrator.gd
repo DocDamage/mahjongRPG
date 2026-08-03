@@ -96,4 +96,8 @@ static func migrate(snapshot_data: Dictionary, current_version: int) -> Dictiona
 		var community_data: Dictionary = migrated.get("community", {})
 		community_data["finale_support"] = community_data.get("finale_support", {})
 		migrated["community"] = community_data
+	if schema_version <= 17:
+		migrated["public_life"] = {"rank_points": 0, "rank_id": "tenderfoot", "event_states": {}, "contributions": {}, "hall_milestones": {}}
+	if schema_version <= 18:
+		migrated["story"] = {"chain_validated": false, "bargain_discovered": false, "choices": {}, "explained_rules": {}, "silas_alive_proven": false, "kings_reach_sites": {}, "final_warning_accepted": false}
 	return migrated

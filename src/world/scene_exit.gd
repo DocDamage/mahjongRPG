@@ -8,6 +8,7 @@ signal feedback(message: String)
 @export var unlock_region_on_access: StringName
 @export var required_property: StringName
 @export var required_fulfilled_order: StringName
+@export var required_story_entry := false
 
 var _transition_requested := false
 
@@ -39,6 +40,9 @@ func _on_interacted(_actor: Node2D) -> void:
 		return
 	if not required_fulfilled_order.is_empty() and not GameSession.regions.fulfilled_orders.has(required_fulfilled_order):
 		feedback.emit("Finish the posted local work before taking this route.")
+		return
+	if required_story_entry and (GameSession.story == null or not GameSession.story.can_enter_kings_reach()):
+		feedback.emit("King's Reach is sealed until the validated investigation proves Silas is alive and explains every altered rule.")
 		return
 	if destination_scene.is_empty():
 		feedback.emit("That route is closed for now.")

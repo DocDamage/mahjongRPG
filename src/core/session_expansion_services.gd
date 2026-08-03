@@ -8,11 +8,20 @@ const FoodEffectService = preload("res://src/economy/food_effect_service.gd")
 const FishingProgressService = preload("res://src/fishing/fishing_progress_service.gd")
 const DesertProgressService = preload("res://src/desert/desert_progress_service.gd")
 const CommunityArcService = preload("res://src/community/community_arc_service.gd")
+const PublicLifeService = preload("res://src/public_life/public_life_service.gd")
+const ActThreeService = preload("res://src/story/act_three_service.gd")
 
 
 func reset(session) -> void:
 	session.relationships = null; session.properties = null; session.trade = null
 	session.crafting = null; session.effects = null; session.angler = null; session.desert = null; session.community = null
+	session.public_life = null; session.story = null
+
+
+func ensure_all(session) -> void:
+	ensure_angler(session); ensure_desert(session); ensure_relationships(session); ensure_properties(session)
+	ensure_trade(session); ensure_crafting(session); ensure_effects(session); ensure_community(session)
+	ensure_public_life(session); ensure_story(session)
 
 
 func ensure_relationships(session):
@@ -68,3 +77,18 @@ func ensure_community(session):
 		session.community = CommunityArcService.new()
 		session._load_catalog("res://data/community/community_arcs.json", "arcs", session.community)
 	return session.community
+
+
+func ensure_public_life(session):
+	if session.public_life == null:
+		session.public_life = PublicLifeService.new()
+		session._load_catalog("res://data/civic/public_events.json", "events", session.public_life)
+	session.public_life.sync_property_contributions(ensure_properties(session))
+	return session.public_life
+
+
+func ensure_story(session):
+	if session.story == null:
+		session.story = ActThreeService.new()
+		session._load_catalog("res://data/story/act_three.json", "story", session.story)
+	return session.story

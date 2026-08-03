@@ -18,6 +18,8 @@ This is an evidence ledger for `CODEX_MASTER_EXECUTION_PLAN.md`. It is not a com
 | P10: Red Testament mystery | Code complete / manual checkpoint pending | Red Testament connects from Gull's Rest and adds Ash Varela, all remaining deterministic weather variants and ambience, weather-gated Windward Pass, bonfire, saved expedition-property access to ruins, supernatural records, every-weather expert schedules, and the counterable Texas King rule clue. King's Reach is visibly locked with no route until P14. Schema 15 gives prior saves safe empty desert state; focused migration, smoke, and editor gates pass. |
 | P11: Community arcs, first half | Code complete / manual checkpoint pending | Mayor Bell, River Rose, Dynamite Bill, Ada Rook, and Gideon Shaw have three-stage data-backed arcs, persistent choices/relationship values, completion-state schedules, and helper rewards. Their farm, fishing, trade, and Mahjong effects have direct player-visible consumers. Schema 16 gives prior saves safe empty community state; active/completed/mixed round trips are covered. |
 | P12: Community arcs, second half | Code complete / manual checkpoint pending | Registrar Elise, Constable Mara, Mariner Ves, Captain Coral Fenn, and Ash Varela complete the ten-person roster. All ten homes are visitable and display accessible portrait cards; eight arc-gated secrets are recorded; all resolved arcs set the saved `community_allies_ready` finale-support flag. Schema 17 preserves P11 state while extending forward migration. |
+| P13: Hall, property, rank, and public life | Code complete / manual checkpoint pending | Six persistent property outcomes contribute to a public ledger. Saved rank, Market Day scheduling/rescheduling, a real Frontier Rules town-tournament win, Hall reopening, and final-championship scheduling restore Hall stages 4–5 without starting Phase 15. Schema 18 creates safe public-life state; `test_phase_thirteen_fourteen`, smoke, and editor gates pass. |
+| P14: Act III convergence and King's Reach | Code complete / manual checkpoint pending | The inheritance deed and all regional clues validate the bargain chain; one saved consequence, three explicit altered-rule explanations, the proof Silas is alive, and three saved King's Reach sites converge at a separately gated final warning. Schema 19 preserves P13 records and gives every prior save safe story state; `test_phase_thirteen_fourteen`, smoke, and editor gates pass. |
 | A–C: orientation and source import | Complete for the expanded canonical asset folder | `docs/assets/master_import.md` establishes `assets/MahjongRPG/` as the local source. The user explicitly retained archives outside the repo; no archive is committed. |
 | D: Godot 4.7.1 smoke | Complete | Official Godot `4.7.1.stable.official.a13da4feb` and matching Windows templates passed preflight, the 31-suite native runner, runtime smoke, and headless editor initialization. |
 | E: foundation integration | External gate | Work is on `agent/project-foundation`; no merge into `develop`, push, or PR is claimed. |
@@ -41,7 +43,7 @@ python tools/validate_repository.py
 <Godot 4.7.1 engine> --headless --path . --editor --quit
 ```
 
-The current native run reports 43 suites. The complete commands and latest milestones are maintained in `implementation_log.md`.
+The current native run reports 44 suites. The complete commands and latest milestones are maintained in `implementation_log.md`.
 
 ## Required delivery actions
 
