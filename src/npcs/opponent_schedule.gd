@@ -22,6 +22,7 @@ static func state(opponent_id: StringName, weather_id: StringName, hour: int) ->
 		"available": hour >= int(hours_value[0]) and hour < int(hours_value[1]),
 		"position": Vector2(float(position_value[0]), float(position_value[1])),
 		"activity": String(weather_value.get("activity", "away")),
+		"resolved_activity": String(weather_value.get("resolved_activity", weather_value.get("activity", "away"))),
 	}
 
 

@@ -1,0 +1,50 @@
+[gd_scene load_steps=7 format=3]
+[ext_resource type="Script" path="res://src/world/community_home.gd" id="1"]
+[ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2"]
+[ext_resource type="Script" path="res://src/world/scene_exit.gd" id="3"]
+[ext_resource type="Script" path="res://src/world/community_landmark.gd" id="4"]
+[sub_resource type="CircleShape2D" id="Exit"]
+radius = 42.0
+[sub_resource type="CircleShape2D" id="Action"]
+radius = 36.0
+[node name="AdaRookHome" type="Node2D"]
+script = ExtResource("1")
+location_name = "ADA ROOK'S COTTAGE"
+floor_color = Color(0.27, 0.35, 0.21, 1)
+resident_id = &"ada_rook"
+[node name="Doc" parent="." instance=ExtResource("2")]
+position = Vector2(480, 380)
+movement_bounds = Rect2(65, 115, 830, 300)
+[node name="Exit" type="Area2D" parent="."]
+position = Vector2(480, 405)
+script = ExtResource("3")
+prompt_text = "Leave Ada Rook's cottage"
+destination_scene = "res://src/world/bridlewood.tscn"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
+shape = SubResource("Exit")
+[node name="ArcConversation" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(360, 220)
+script = ExtResource("4")
+prompt_text = "Continue Ada Rook's community arc"
+arc_id = &"ada_rook"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ArcConversation"]
+shape = SubResource("Action")
+[node name="Secret" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(600, 220)
+script = ExtResource("4")
+prompt_text = "Inspect the seed-vault keepsake"
+action = 1
+arc_id = &"ada_rook"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Secret"]
+shape = SubResource("Action")
+[node name="HUD" type="CanvasLayer" parent="."]
+[node name="Status" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 20.0
+offset_right = 910.0
+offset_bottom = 60.0
+[node name="Message" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 480.0
+offset_right = 900.0
+offset_bottom = 520.0

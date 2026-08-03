@@ -25,6 +25,7 @@ func _ready() -> void:
 	interacted.connect(_on_interacted)
 	_load_definitions()
 	_gear_profile = GameSession.angler.gear_profile() if GameSession.angler != null else FishingGearCatalog.default_profile()
+	_apply_community_passives()
 	_overlay = FishingOverlay.new()
 	add_child(_overlay)
 	queue_redraw()
@@ -141,6 +142,14 @@ func _update_feedback() -> void:
 
 func _load_definitions() -> void:
 	_definitions = FishCatalog.definitions()
+
+
+func _apply_community_passives() -> void:
+
+	if GameSession.helpers == null:
+		return
+	_gear_profile["reel_multiplier"] = float(_gear_profile["reel_multiplier"]) + GameSession.helpers.passive_total(&"fish_reel_bonus")
+	_gear_profile["hook_window_multiplier"] = float(_gear_profile["hook_window_multiplier"]) + GameSession.helpers.passive_total(&"fish_hook_window_bonus")
 
 
 func _record_catch_if_needed() -> void:

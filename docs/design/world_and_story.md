@@ -24,6 +24,8 @@ P7–P8 make the first part of that regional promise playable. Bridlewood leads 
 
 P9 opens Gull's Rest from Ironhook. Captain Coral Fenn's saved relationship letter supplies the next Silas lead; the region has a fish market, Coral's cabin, harbor/coast/reef/spring conditions, a rare-tide journal, gear upgrades, an explicit catch contest, and an expert table. P10 opens Red Testament from Gull's Rest. Windward Pass only records as survived in dust wind or supernatural fog, the expedition right opens the ruin interior, a red-lantern record is saved, and the recovered Texas King clue explains that an exposed conflicting Deed counters a declared final category. King's Reach remains a locked approach until the Act III convergence.
 
+P11–P12 complete the launch-community layer. Mayor Bell, River Rose, Dynamite Bill, Ada Rook, Gideon Shaw, Registrar Elise, Constable Mara, Mariner Ves, Captain Coral Fenn, and Ash Varela each have a three-step relationship arc available from their regional Community Journal and from their home. Resolution persists the relationship choices, changes their schedule-facing activity, grants an active helper or passive, and, after all ten, records `community_allies_ready` for the finale. Eight homes contain an arc-gated secret; the remaining two are deliberately ordinary homes rather than false collectible prompts. All ten homes have a non-color-only portrait card and a warm post-resolution expression.
+
 ## The hall
 
 The original **Six Brands Hall** stands in Saint's Landing. Texas King owns it and operates it as a private club. Doc gradually wins access to sections of the same building and restores it through five visible stages:

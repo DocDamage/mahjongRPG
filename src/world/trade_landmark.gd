@@ -33,7 +33,7 @@ func _on_interacted(_actor: Node2D) -> void:
 					GameSession.properties.resolve(&"ironhook_customs_warehouse", &"order")
 				feedback.emit("Order delivered: $%.2f and %d table token(s)." % [int(result["money_cents"]) / 100.0, GameSession.trade.table_tokens])
 		Action.BUY_ITEM:
-			feedback.emit("Bought %s." % String(target_id).replace("_", " ") if GameSession.trade.buy(shop_id, target_id, GameSession.inventory) == OK else "That shop is sold out or you need more money.")
+			feedback.emit("Bought %s%s." % [String(target_id).replace("_", " "), _discount_note()] if GameSession.trade.buy(shop_id, target_id, GameSession.inventory, GameSession.helpers.passive_total(&"shop_discount_percent")) == OK else "That shop is sold out or you need more money.")
 		Action.CRAFT:
 			var crafted: Dictionary = GameSession.crafting.craft(target_id, GameSession.inventory)
 			feedback.emit("Prepared %s." % String(crafted.get("output_id", "")).replace("_", " ") if not crafted.has("error") else "Bring the listed ingredients to prepare that recipe.")
@@ -44,3 +44,9 @@ func _on_interacted(_actor: Node2D) -> void:
 		Action.DISCOVER_CLUE:
 			var result: Error = GameSession.evidence.discover(target_id)
 			feedback.emit("The cargo ledger joins your evidence journal." if result == OK else "That cargo ledger is already in your journal.")
+
+
+func _discount_note() -> String:
+
+	var discount := int(GameSession.helpers.passive_total(&"shop_discount_percent"))
+	return " with %d%% community terms" % discount if discount > 0 else ""

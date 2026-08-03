@@ -90,4 +90,10 @@ static func migrate(snapshot_data: Dictionary, current_version: int) -> Dictiona
 		migrated["angler"] = {"owned_gear": {"frontier_rod": true, "mealworm_bait": true, "river_spinner": true, "barbless_hook": true, "braided_line": true, "cork_bobber": true}, "loadout": {"rod": "frontier_rod", "bait": "mealworm_bait", "lure": "river_spinner", "hook": "barbless_hook", "line": "braided_line", "bobber": "cork_bobber"}, "discovered_conditions": {}, "records": {}, "contests": {}}
 	if schema_version <= 14:
 		migrated["desert"] = {"route_states": {}, "supernatural_records": {}, "recovered_clues": {}, "region_secrets": {}}
+	if schema_version <= 15:
+		migrated["community"] = {"active": {}, "completed": {}, "progress": {}, "discovered_secrets": {}, "finale_support": {}}
+	if schema_version <= 16:
+		var community_data: Dictionary = migrated.get("community", {})
+		community_data["finale_support"] = community_data.get("finale_support", {})
+		migrated["community"] = community_data
 	return migrated

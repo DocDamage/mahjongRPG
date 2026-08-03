@@ -56,13 +56,14 @@ func fulfill_order(order_id: StringName, inventory) -> Dictionary:
 	return {"order_id": order_id, "table_tokens": table_tokens, "money_cents": int(rewards.get("money_cents", 0))}
 
 
-func buy(shop_id: StringName, item_id: StringName, inventory) -> Error:
+func buy(shop_id: StringName, item_id: StringName, inventory, discount_percent := 0.0) -> Error:
 	if inventory == null or not shop_definitions.has(shop_id):
 		return ERR_INVALID_PARAMETER
 	_ensure_shop_stock(shop_id)
 	var shop: Dictionary = shop_stock[shop_id]
 	var entry: Dictionary = shop.get(item_id, {})
-	if entry.is_empty() or int(entry.get("count", 0)) < 1 or inventory.spend_money(int(entry.get("price_cents", -1))) != OK:
+	var price := maxi(0, int(roundi(int(entry.get("price_cents", -1)) * (1.0 - clampf(discount_percent, 0.0, 90.0) / 100.0))))
+	if entry.is_empty() or int(entry.get("count", 0)) < 1 or inventory.spend_money(price) != OK:
 		return ERR_UNAVAILABLE
 	entry["count"] = int(entry["count"]) - 1
 	shop[item_id] = entry

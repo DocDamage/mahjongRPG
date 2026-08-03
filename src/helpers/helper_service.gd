@@ -25,6 +25,23 @@ func is_assigned(helper_id: StringName) -> bool:
 	return assignments.has(helper_id)
 
 
+func has_action(action_id: StringName) -> bool:
+	for helper_id_value in assignments:
+		var definition: Dictionary = definitions.get(StringName(helper_id_value), {})
+		if StringName(definition.get("action", "")) == action_id:
+			return true
+	return false
+
+
+func passive_total(key: StringName) -> float:
+	var total := 0.0
+	for helper_id_value in assignments:
+		var definition: Dictionary = definitions.get(StringName(helper_id_value), {})
+		if StringName(definition.get("action", "")) == &"passive":
+			total += float(definition.get(key, 0.0))
+	return total
+
+
 func activate(helper_id: StringName, farm, day: int, animals = null, processing = null) -> Dictionary:
 	if not is_assigned(helper_id) or not definitions.has(helper_id) or farm == null:
 		return {"error": ERR_UNAVAILABLE}

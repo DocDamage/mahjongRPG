@@ -4,7 +4,7 @@
 
 - Active local branch: `agent/project-foundation`
 - Integration target defined by the plan: `develop`
-- Local P1–P10 code is complete; physical checkpoints and target-engine release evidence remain pending.
+- Local P1–P12 code is complete; physical checkpoints and target-engine release evidence remain pending.
 - This log records verified local milestones; it does not claim that the full execution plan is complete.
 
 ## Verified milestones
@@ -49,6 +49,7 @@
 | P8 Ironhook trade network | Added Ironhook's docks, warehouses/offices, token-gated opponent, atomic posted orders, persistent shop stock, dock property arc, cargo-ledger clue, seven recipe categories, and bounded prepared-food Brand-charge effects. Schema 13 migrates token/order/shop/recipe/effect records from every older save. |
 | P9 Gull's Rest angler path | Added Gull's Rest ferry, market/cabin interiors, Captain Coral Fenn, all shore-condition fish data, saved six-category gear upgrades, rare conditions, independent records, tarpon contest, grouper recipe, relationship clue, and a tarpon catch wager. Schema 14 migrates prior saves with starter gear and empty records/contest state. |
 | P10 Red Testament mystery | Added the Red Testament route, Ash Varela, deterministic remaining weather and ambience, Windward Pass, bonfire, expedition-property ruins, supernatural record, complete expert schedules, and counterable final-rule clue while keeping King's Reach locked. Schema 15 migrates prior saves with empty desert state. |
+| P11–P12 community completion | Added a data-driven ten-arc community service with three saved stages per opponent, stable relationship-choice IDs, active/completed/mixed restore validation, ten visitable homes, procedural portrait cards, conditional post-resolution schedules, eight gated secrets, locale-keyed dialogue, farm/fishing/economy/Mahjong helper consumers, and the `community_allies_ready` finale-support state. Schema 17 forward-migrates all earlier saves and preserves P11 state. |
 | Target-engine CI evidence | GitHub Actions run `30770900107` passed Linux resource import, validator, all 33 suites, smoke, and editor initialization plus Windows Godot-template/export preflight. |
 
 ## Current local verification baseline
@@ -62,4 +63,4 @@ python tools/validate_repository.py
 <Godot 4.7.1 engine> --headless --path . --editor --quit
 ```
 
-The most recent local implementation run used Godot 4.6.2 and reports 42 suites plus smoke/editor success. Godot 4.7.1 with matching Windows templates remains the required target for release/export evidence. The Windows debug export and isolated-AppData headless launch are verified on the P2 baseline; user-observed clean-profile, manual device/display/accessibility, and P5–P10 physical player-path passes remain external evidence gates. See [setup_and_recovery.md](../release/setup_and_recovery.md).
+The most recent local implementation run used Godot 4.6.2 and reports 43 suites plus smoke/editor success. Godot 4.7.1 with matching Windows templates remains the required target for release/export evidence. The Windows debug export and isolated-AppData headless launch are verified on the P2 baseline; user-observed clean-profile, manual device/display/accessibility, and P5–P12 physical player-path passes remain external evidence gates. See [setup_and_recovery.md](../release/setup_and_recovery.md).

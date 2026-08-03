@@ -23,6 +23,7 @@ const DATA_TABLES := {
 	&"processing": "res://data/farm/vertical_slice_processing.json",
 	&"gulls_rest": "res://data/regions/gulls_rest/region.json",
 	&"red_testament": "res://data/regions/red_testament/region.json",
+	&"community_arcs": "res://data/community/community_arcs.json",
 }
 const REQUIRED_ASSETS := [
 	"res://assets/generated/player/cowboy_down_walk.png",
@@ -43,6 +44,8 @@ const REQUIRED_ASSETS := [
 	"res://assets/generated/audio/footstep_gravel.wav",
 	"res://assets/generated/audio/footstep_wood.wav",
 	"res://assets/generated/audio/mahjong_tile_wood.wav",
+	"res://src/world/home_mayor_bell.tscn",
+	"res://src/world/home_witness_ash.tscn",
 ]
 
 

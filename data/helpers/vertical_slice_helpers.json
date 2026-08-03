@@ -2,6 +2,16 @@
   "schema_version": 2,
   "helpers": [
     {"id":"mabel","display_name":"Mabel","action":"water_all","success_text":"Mabel waters every planted field. She can help again tomorrow."},
-    {"id":"bridlewood_hand","display_name":"Bridlewood ranch hand","action":"feed_animals","success_text":"The ranch hand feeds every active animal. They can help again tomorrow."}
+    {"id":"bridlewood_hand","display_name":"Bridlewood ranch hand","action":"feed_animals","success_text":"The ranch hand feeds every active animal. They can help again tomorrow."},
+    {"id":"mayor_bell","display_name":"Mayor Bell","action":"passive","shop_discount_percent":10,"success_text":"Bell's fair-market introduction lowers listed shop prices."},
+    {"id":"river_rose","display_name":"River Rose","action":"passive","fish_reel_bonus":0.12,"success_text":"Rose's river notes steady the reel."},
+    {"id":"dynamite_bill","display_name":"Dynamite Bill","action":"passive","mahjong_opening_charge":1,"success_text":"Bill's calm-opening advice adds a Brand charge."},
+    {"id":"ada_rook","display_name":"Ada Rook","action":"water_all","success_text":"Ada waters every planted field. She can help again tomorrow."},
+    {"id":"gideon_shaw","display_name":"Gideon Shaw","action":"feed_animals","success_text":"Gideon feeds every active animal. He can help again tomorrow."},
+    {"id":"registrar_elise","display_name":"Registrar Elise","action":"passive","shop_discount_percent":5,"success_text":"Elise's corrected records prevent a small trade surcharge."},
+    {"id":"constable_mara","display_name":"Constable Mara","action":"passive","mahjong_opening_charge":1,"success_text":"Mara's fair-play call steadies your opening hand."},
+    {"id":"mariner_ves","display_name":"Mariner Ves","action":"passive","shop_discount_percent":5,"success_text":"Ves's dock ledger improves your trade terms."},
+    {"id":"captain_coral","display_name":"Captain Coral Fenn","action":"passive","fish_hook_window_bonus":0.25,"success_text":"Coral's lantern-tide advice gives you more time to set a hook."},
+    {"id":"witness_ash","display_name":"Ash Varela","action":"passive","mahjong_opening_charge":1,"success_text":"Ash's witness statement strengthens your resolve at the table."}
   ]
 }

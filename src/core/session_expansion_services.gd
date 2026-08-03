@@ -7,11 +7,12 @@ const CraftingService = preload("res://src/economy/crafting_service.gd")
 const FoodEffectService = preload("res://src/economy/food_effect_service.gd")
 const FishingProgressService = preload("res://src/fishing/fishing_progress_service.gd")
 const DesertProgressService = preload("res://src/desert/desert_progress_service.gd")
+const CommunityArcService = preload("res://src/community/community_arc_service.gd")
 
 
 func reset(session) -> void:
 	session.relationships = null; session.properties = null; session.trade = null
-	session.crafting = null; session.effects = null; session.angler = null; session.desert = null
+	session.crafting = null; session.effects = null; session.angler = null; session.desert = null; session.community = null
 
 
 func ensure_relationships(session):
@@ -60,3 +61,10 @@ func ensure_desert(session):
 	if session.desert == null:
 		session.desert = DesertProgressService.new()
 	return session.desert
+
+
+func ensure_community(session):
+	if session.community == null:
+		session.community = CommunityArcService.new()
+		session._load_catalog("res://data/community/community_arcs.json", "arcs", session.community)
+	return session.community

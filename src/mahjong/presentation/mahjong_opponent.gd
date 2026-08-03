@@ -65,6 +65,8 @@ func _update_availability() -> void:
 	var schedule := OpponentSchedule.state(opponent_id, GameSession.weather_id, GameSession.minute_of_day / 60)
 	_available = bool(schedule.get("available", false))
 	_activity = String(schedule.get("activity", "away"))
+	if GameSession.community != null and GameSession.community.is_completed(opponent_id):
+		_activity = String(schedule.get("resolved_activity", _activity))
 	var position_value: Variant = schedule.get("position")
 	if position_value is Vector2:
 		position = position_value

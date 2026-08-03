@@ -2,7 +2,7 @@
 
 ## Scope and evidence
 
-This audit records the code-complete P9/P10 slice. It does not claim the physical player checkpoints, the existing P2 manual device/display matrix, or any P11+ content is complete.
+This audit records the code-complete P9/P10 slice as it was delivered. It does not claim the physical player checkpoints or the existing P2 manual device/display matrix; P11–P12 are documented separately in the later community completion audit.
 
 | Planned outcome | Local implementation and automated evidence |
 | --- | --- |

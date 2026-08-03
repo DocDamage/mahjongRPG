@@ -8,6 +8,7 @@ const FarmPlot = preload("res://src/farm/farm_plot.gd")
 
 var _placement_menu
 var _mabel_button: Button
+var _community_helper_buttons: Dictionary = {}
 
 
 func _ready() -> void:
@@ -124,6 +125,20 @@ func _create_helper_action() -> void:
 	_mabel_button.size = Vector2(228, 42)
 	_mabel_button.pressed.connect(_ask_mabel_for_help)
 	add_child(_mabel_button)
+	var action_helpers: Array[StringName] = []
+	for helper_id_value in GameSession.helpers.definitions:
+		var helper_id := StringName(helper_id_value)
+		if helper_id != &"mabel" and StringName(GameSession.helpers.definitions[helper_id].get("action", "")) in [&"water_all", &"feed_animals"]:
+			action_helpers.append(helper_id)
+	action_helpers.sort()
+	for index in action_helpers.size():
+		var helper_id := action_helpers[index]
+		var button := Button.new()
+		button.position = Vector2(460 + (index % 2) * 235, 100 + (index / 2) * 42)
+		button.size = Vector2(225, 36)
+		button.pressed.connect(_ask_community_helper.bind(helper_id))
+		add_child(button)
+		_community_helper_buttons[helper_id] = button
 	_update_helper_action()
 	GameSession.time_advanced.connect(func(_day: int, _minute: int) -> void: _update_helper_action())
 	GameSession.quests.quest_completed.connect(func(_quest_id: StringName) -> void: _update_helper_action())
@@ -136,6 +151,14 @@ func _update_helper_action() -> void:
 	_mabel_button.visible = assigned
 	_mabel_button.disabled = not assigned or int(GameSession.helpers.last_used_day.get(&"mabel", 0)) == GameSession.day
 	_mabel_button.text = "Ask Mabel to water crops" if not _mabel_button.disabled else "Mabel helped today"
+	for helper_id_value in _community_helper_buttons:
+		var helper_id := StringName(helper_id_value)
+		var button: Button = _community_helper_buttons[helper_id]
+		var definition: Dictionary = GameSession.helpers.definitions[helper_id]
+		var assigned_helper: bool = GameSession.helpers.is_assigned(helper_id)
+		button.visible = assigned_helper
+		button.disabled = not assigned_helper or int(GameSession.helpers.last_used_day.get(helper_id, 0)) == GameSession.day
+		button.text = "Ask %s to help" % String(definition.get("display_name", helper_id)) if not button.disabled else "%s helped today" % String(definition.get("display_name", helper_id))
 
 
 func _ask_mabel_for_help() -> void:
@@ -144,4 +167,10 @@ func _ask_mabel_for_help() -> void:
 		_show_message("Mabel cannot help again until tomorrow.")
 	else:
 		_show_message("%s (%d crop%s watered.)" % [result.get("message", "Mabel helped."), int(result.get("watered", 0)), "" if int(result.get("watered", 0)) == 1 else "s"])
+		_update_helper_action()
+
+
+func _ask_community_helper(helper_id: StringName) -> void:
+	var result: Dictionary = GameSession.helpers.activate(helper_id, GameSession.farm, GameSession.day, GameSession.animals)
+	_show_message(String(result.get("message", "That helper cannot help again until tomorrow.")))
 	_update_helper_action()

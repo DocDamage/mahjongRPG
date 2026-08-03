@@ -1,5 +1,7 @@
 extends Node2D
 
+const CommunityArcPanel = preload("res://src/world/community_arc_panel.gd")
+
 @onready var status_label: Label = $HUD/Status
 @onready var message_label: Label = $HUD/Message
 
@@ -12,7 +14,14 @@ func _ready() -> void:
 		node.feedback.connect(_show_message)
 	for node in get_tree().get_nodes_in_group(&"gulls_exit"):
 		node.feedback.connect(_show_message)
+	_add_community_panel()
 	_update_status()
+
+
+func _add_community_panel() -> void:
+	var panel := CommunityArcPanel.new()
+	panel.configure(&"gulls_rest")
+	add_child(panel)
 
 
 func _draw() -> void:

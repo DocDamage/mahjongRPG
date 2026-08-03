@@ -14,6 +14,8 @@ src/
   bootstrap/
   regions/         region progression and data-backed regional objectives
   relationships/   bounded relationship values and persistent dialogue choices
+  community/       data-driven multi-stage arcs, secrets, finale support, and home contracts
+  dialogue/        localization-ready dialogue catalog and procedural portrait presentation
   property/        authored property-case outcomes and route access
   economy/         orders, stocked shops, crafting, and consumable effects
   fishing/         catalog, live fishing flow, gear progression, records, and contests

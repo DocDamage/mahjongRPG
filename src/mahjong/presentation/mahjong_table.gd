@@ -155,10 +155,10 @@ func _show_wager_selection() -> void:
 func _start_match(next_wager_tier: StringName) -> void:
 	if not MatchWager.can_start(next_wager_tier, GameSession.inventory.money_cents, GameSession.inventory): return
 	wager_tier = next_wager_tier; flow = MatchFlow.new(GameSession.seed + GameSession.day * 100 + GameSession.minute_of_day); flow.configure_ruleset(ruleset); flow.configure_loadouts(GameSession.brands.last_selected, opponent_loadout); flow.configure_upgrades(GameSession.brands.upgrades, opponent_upgrades); flow.start_match()
-	var bonus: int = int(GameSession.effects.consume_for_match(&"mahjong_charge"))
+	var bonus: int = int(GameSession.effects.consume_for_match(&"mahjong_charge")) + int(GameSession.helpers.passive_total(&"mahjong_opening_charge"))
 	if bonus > 0:
 		flow.brand_state(0).grant_charge(flow.brand_state(0).equipped[0])
-		_effect_message = "Your prepared food gives %d opening Brand charge." % bonus
+		_effect_message = "Prepared supplies and community support give %d opening Brand charge." % bonus
 	_match_started = true; _refresh()
 
 

@@ -1,5 +1,7 @@
 extends Node2D
 
+const CommunityArcPanel = preload("res://src/world/community_arc_panel.gd")
+
 @onready var status_label: Label = $HUD/Status
 @onready var message_label: Label = $HUD/Message
 
@@ -13,7 +15,14 @@ func _ready() -> void:
 	for exit_node in get_tree().get_nodes_in_group(&"ironhook_exit"):
 		exit_node.feedback.connect(_show_message)
 	_create_trade_controls()
+	_add_community_panel()
 	_update_status()
+
+
+func _add_community_panel() -> void:
+	var panel := CommunityArcPanel.new()
+	panel.configure(&"ironhook")
+	add_child(panel)
 
 
 func _draw() -> void:
@@ -78,4 +87,5 @@ func _use_food(item_id: StringName) -> void:
 
 
 func _buy_item(shop_id: StringName, item_id: StringName) -> void:
-	_show_message("Bought %s." % String(item_id).replace("_", " ") if GameSession.trade.buy(shop_id, item_id, GameSession.inventory) == OK else "That shop is sold out or you need more money.")
+	var discount: float = GameSession.helpers.passive_total(&"shop_discount_percent")
+	_show_message("Bought %s%s." % [String(item_id).replace("_", " "), " with community terms" if discount > 0 else ""] if GameSession.trade.buy(shop_id, item_id, GameSession.inventory, discount) == OK else "That shop is sold out or you need more money.")

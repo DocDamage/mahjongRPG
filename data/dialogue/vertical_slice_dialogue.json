@@ -1,15 +1,29 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "default_locale": "en",
-  "locales": {"en": {"lines": {
-    "first_lantern.intro": "Mabel: Mayor Bell calls this Hall a dead building. I call it a promise waiting on a match.",
-    "first_lantern.gather": "Mabel: Bring one bean crop and any fish. We will set the first lantern alight and settle Riverbend's access dispute.",
-    "first_lantern.missing": "Mabel: I still need one bean crop and any fish. Beans: {beans}; fish: {fish}.",
-    "first_lantern.delivery": "Mabel: Good. The beans will feed the wick and the fish oil will keep it through rain. Give me one moment at the lantern.",
-    "first_lantern.light": "Mabel: The wick is ready. Stand with me and light the first lantern.",
-    "first_lantern.complete": "The first lantern shines. Mabel joins Wayward Farm, the Hall begins to return, and Riverbend access is restored.",
-    "first_lantern.after": "Mabel keeps the first lantern bright. Helper unlocked: Mabel — ask her at Wayward Farm to water your crops.",
-    "evidence.silas_first_lantern_note.title": "Silas's Lantern Note",
-    "evidence.silas_first_lantern_note.text": "Evidence found — Silas's Lantern Note: ‘The Hall's first light still remembers the true rules. Do not let King choose the terms.’"
-  }}}
+  "locales": {
+    "en": {
+      "lines": {
+        "first_lantern.intro": "Mabel: Mayor Bell calls this Hall a dead building. I call it a promise waiting on a match.",
+        "first_lantern.gather": "Mabel: Bring one bean crop and any fish. We will set the first lantern alight and settle Riverbend's access dispute.",
+        "first_lantern.missing": "Mabel: I still need one bean crop and any fish. Beans: {beans}; fish: {fish}.",
+        "first_lantern.delivery": "Mabel: Good. The beans will feed the wick and the fish oil will keep it through rain. Give me one moment at the lantern.",
+        "first_lantern.light": "Mabel: The wick is ready. Stand with me and light the first lantern.",
+        "first_lantern.complete": "The first lantern shines. Mabel joins Wayward Farm, the Hall begins to return, and Riverbend access is restored.",
+        "first_lantern.after": "Mabel keeps the first lantern bright. Helper unlocked: Mabel — ask her at Wayward Farm to water your crops.",
+        "evidence.silas_first_lantern_note.title": "Silas's Lantern Note",
+        "evidence.silas_first_lantern_note.text": "Evidence found — Silas's Lantern Note: ‘The Hall's first light still remembers the true rules. Do not let King choose the terms.’",
+        "community.mayor_bell.meet": "Bell trusts you with the courthouse claim.", "community.mayor_bell.favor": "You compare the public deeds instead of repeating a rumor.", "community.mayor_bell.resolve": "Bell resolves the claim fairly and offers a market introduction.",
+        "community.river_rose.meet": "Rose shows you the quiet bend.", "community.river_rose.favor": "You map a safe current together.", "community.river_rose.resolve": "Rose leaves a river guide in your tackle roll.",
+        "community.dynamite_bill.meet": "Bill asks you to inspect the safe side of the old rail.", "community.dynamite_bill.favor": "You mark the dangerous ground without making a spectacle.", "community.dynamite_bill.resolve": "Bill retires the fuse and teaches a composed opening.",
+        "community.ada_rook.meet": "Ada explains which bids are fair.", "community.ada_rook.favor": "You help Ada rescue a mixed seed order.", "community.ada_rook.resolve": "Ada opens her seed ledger and joins the farm roster.",
+        "community.gideon_shaw.meet": "Gideon introduces the animals by name.", "community.gideon_shaw.favor": "You mend the tack before the evening game.", "community.gideon_shaw.resolve": "Gideon takes a place on the daily animal roster.",
+        "community.registrar_elise.meet": "Elise lets you review a disputed testimony.", "community.registrar_elise.favor": "You index records so a claimant can be heard.", "community.registrar_elise.resolve": "Elise files the correction and shares a civic lead.",
+        "community.constable_mara.meet": "Mara asks you to walk the practice-hall beat.", "community.constable_mara.favor": "You post a clear, accessible table-night notice.", "community.constable_mara.resolve": "Mara calls fair play and stands ready for the championship.",
+        "community.mariner_ves.meet": "Ves shows you the dock's public manifest.", "community.mariner_ves.favor": "You weigh a shipment without shaving its count.", "community.mariner_ves.resolve": "Ves closes the ledger and backs your honest trade.",
+        "community.captain_coral.meet": "Coral teaches you to read the lantern tide.", "community.captain_coral.favor": "You mend a net before the fog settles.", "community.captain_coral.resolve": "Coral marks a lantern cove on your chart.",
+        "community.witness_ash.meet": "Ash asks you to read the weathered stones.", "community.witness_ash.favor": "You tend the bonfire through an uneasy weather shift.", "community.witness_ash.resolve": "Ash records a final witness statement for the coming confrontation."
+      }
+    }
+  }
 }

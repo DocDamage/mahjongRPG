@@ -3,6 +3,14 @@
   "relationships": [
     {"id":"registrar_elise","display_name":"Registrar Elise","lines":{"cool":"Elise asks for records, not rumors.","neutral":"Elise has the depot file open on her desk.","warm":"Elise trusts your account of the old property line."}},
     {"id":"foreman_cato","display_name":"Foreman Cato","lines":{"cool":"Cato keeps the dock ledger close.","neutral":"Cato says a fair cargo run proves a fair claimant.","warm":"Cato has set aside a berth for your next shipment."}},
-    {"id":"coral_fenn","display_name":"Captain Coral Fenn","lines":{"cool":"Coral asks for tide facts, not tall tales.","neutral":"Coral keeps Silas's letter beneath the contest board.","warm":"Coral trusts you with the lantern tide."}}
+    {"id":"coral_fenn","display_name":"Captain Coral Fenn","lines":{"cool":"Coral asks for tide facts, not tall tales.","neutral":"Coral keeps Silas's letter beneath the contest board.","warm":"Coral trusts you with the lantern tide."}},
+    {"id":"mayor_bell","display_name":"Mayor Bell","lines":{"cool":"Bell refuses a claim built on noise.","neutral":"Bell is comparing the courthouse copies.","warm":"Bell calls you a careful witness."}},
+    {"id":"river_rose","display_name":"River Rose","lines":{"cool":"Rose keeps to the far bank.","neutral":"Rose is watching the current.","warm":"Rose trusts you with the quiet bend."}},
+    {"id":"dynamite_bill","display_name":"Dynamite Bill","lines":{"cool":"Bill keeps the old fuse locked away.","neutral":"Bill is marking safe ground.","warm":"Bill says a calm opening beats a loud one."}},
+    {"id":"ada_rook","display_name":"Ada Rook","lines":{"cool":"Ada wants numbers, not promises.","neutral":"Ada is sorting the auction sacks.","warm":"Ada has a seed ledger waiting for you."}},
+    {"id":"gideon_shaw","display_name":"Gideon Shaw","lines":{"cool":"Gideon checks the barn latch twice.","neutral":"Gideon is mending tack.","warm":"Gideon knows your animals by name."}},
+    {"id":"constable_mara","display_name":"Constable Mara","lines":{"cool":"Mara expects everyone to play fair.","neutral":"Mara is posting table-night notices.","warm":"Mara trusts your call at the table."}},
+    {"id":"mariner_ves","display_name":"Mariner Ves","lines":{"cool":"Ves weighs every word twice.","neutral":"Ves is checking a manifest.","warm":"Ves will vouch for your cargo."}},
+    {"id":"witness_ash","display_name":"Ash Varela","lines":{"cool":"Ash keeps one eye on the ruin shadows.","neutral":"Ash is studying the weathered stones.","warm":"Ash has signed a witness statement for you."}}
   ]
 }
