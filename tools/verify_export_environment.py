@@ -31,6 +31,8 @@ REQUIRED_EXCLUSIONS = (
     "artifacts/local/*",
     "docs/*",
     "tests/*",
+    "tools/*",
+    "src/content/content_validation_report.gd",
 )
 
 

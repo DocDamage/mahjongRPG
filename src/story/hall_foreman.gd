@@ -4,11 +4,20 @@ signal feedback(message: String)
 
 const QUEST_ID := &"first_lantern"
 const DialogueCatalog = preload("res://src/dialogue/dialogue_catalog.gd")
+const FirstLanternCoordinator = preload("res://src/quests/first_lantern_coordinator.gd")
+const ProvisionDeliveryDialog = preload("res://src/ui/provision_delivery_dialog.gd")
+
+var _coordinator = FirstLanternCoordinator.new()
+var _dialog
+var _bound_quests
 
 
 func _ready() -> void:
 	interacted.connect(_on_interacted)
-	GameSession.quests.quest_completed.connect(_on_quest_completed)
+	GameSession.session_replacing.connect(_on_session_replacing)
+	GameSession.session_started.connect(_on_session_ready.unbind(1))
+	GameSession.session_restored.connect(_on_session_ready)
+	_on_session_ready()
 	queue_redraw()
 
 
@@ -25,45 +34,72 @@ func _draw() -> void:
 
 
 func _on_interacted(_actor: Node2D) -> void:
+	if _dialog != null:
+		return
 	if GameSession.quests.completed.has(QUEST_ID):
 		feedback.emit("%s\n%s\n%s" % [DialogueCatalog.text(&"first_lantern.after"), _hall_mastery_text(), _silas_evidence_text()])
 		return
-	if not GameSession.quests.is_active(QUEST_ID):
-		GameSession.quests.start(QUEST_ID)
-		GameSession.quests.advance(QUEST_ID)
-		feedback.emit("%s\n%s" % [DialogueCatalog.text(&"first_lantern.intro"), DialogueCatalog.text(&"first_lantern.gather")])
+	if not GameSession.quests.is_active(QUEST_ID) or GameSession.quests.expects_objective(QUEST_ID, &"meet_mabel"):
+		var result: int = _coordinator.introduce()
+		if GameSession.quest_events.is_progress_result(result):
+			feedback.emit("%s\n%s" % [DialogueCatalog.text(&"first_lantern.intro"), DialogueCatalog.text(&"first_lantern.gather")])
 		return
-	if GameSession.quests.stage(QUEST_ID) == 2:
+	if GameSession.quests.expects_objective(QUEST_ID, &"deliver_selected_provisions"):
+		_offer_delivery()
+		return
+	if GameSession.quests.expects_objective(QUEST_ID, &"complete_lantern_interaction"):
 		_complete_lantern()
-		return
-	var bean_count: int = GameSession.quests.requirement_count(QUEST_ID, GameSession.inventory, &"crop_beans")
-	var fish_count: int = GameSession.quests.requirement_count(QUEST_ID, GameSession.inventory, &"any_fish")
-	if bean_count < 1 or fish_count < 1:
-		feedback.emit(DialogueCatalog.text(&"first_lantern.missing", {"beans": bean_count, "fish": fish_count}))
-		return
-	GameSession.inventory.remove_item(&"crop_beans")
-	_remove_one_fish()
-	GameSession.quests.advance(QUEST_ID)
-	feedback.emit(DialogueCatalog.text(&"first_lantern.delivery"))
 
 
-func _remove_one_fish() -> void:
-	for key_value in GameSession.inventory.items.keys():
-		var item_id := StringName(key_value)
-		if String(item_id).begins_with("fish_"):
-			GameSession.inventory.remove_item(item_id)
-			return
+func _offer_delivery() -> void:
+	var bean_count: int = GameSession.inventory.item_count(&"crop_beans")
+	var fish_ids: Array[StringName] = _coordinator.eligible_fish()
+	if bean_count < 1 or fish_ids.is_empty():
+		feedback.emit(DialogueCatalog.text(&"first_lantern.missing", {"beans": bean_count, "fish": fish_ids.size()}))
+		return
+	_dialog = ProvisionDeliveryDialog.new()
+	add_child(_dialog)
+	_dialog.confirmed.connect(_on_delivery_confirmed)
+	_dialog.canceled.connect(_on_delivery_canceled)
+	_dialog.configure(fish_ids, bean_count)
+
+
+func _on_delivery_confirmed(fish_id: StringName) -> void:
+	_dialog = null
+	var result: Dictionary = _coordinator.deliver_selected(fish_id)
+	feedback.emit(DialogueCatalog.text(&"first_lantern.delivery") if not result.has("error") else DialogueCatalog.text(&"first_lantern.missing", {"beans": GameSession.inventory.item_count(&"crop_beans"), "fish": _coordinator.eligible_fish().size()}))
+
+
+func _on_delivery_canceled() -> void:
+	_dialog = null
+	feedback.emit("Provision delivery canceled; no items were removed.")
 
 
 func _complete_lantern() -> void:
-	if GameSession.quests.complete(QUEST_ID) != OK:
+	var result: Dictionary = _coordinator.complete_lantern(Callable(SaveService, "autosave").bind(&"quest_completion"))
+	if result.has("error"):
 		return
-	GameSession.helpers.assign(&"mabel")
-	GameSession.evidence.discover(&"silas_first_lantern_note")
-	var save_result: Error = SaveService.autosave(&"quest_completion")
 	var completion_text := DialogueCatalog.text(&"first_lantern.complete")
-	feedback.emit("%s\n%s%s" % [completion_text, _silas_evidence_text(), " Autosaved." if save_result == OK else ""])
+	feedback.emit("%s\n%s%s" % [completion_text, _silas_evidence_text(), " Autosaved." if int(result.get("save_result", FAILED)) == OK else ""])
 	queue_redraw()
+
+
+func _on_session_replacing() -> void:
+	_unbind_quest_signal()
+
+
+func _on_session_ready() -> void:
+	_unbind_quest_signal()
+	_bound_quests = GameSession.quests
+	_bound_quests.quest_completed.connect(_on_quest_completed)
+	_coordinator.configure(GameSession.quests, GameSession.inventory, GameSession.helpers, GameSession.evidence, GameSession.quest_events)
+	queue_redraw()
+
+
+func _unbind_quest_signal() -> void:
+	if _bound_quests != null and _bound_quests.quest_completed.is_connected(_on_quest_completed):
+		_bound_quests.quest_completed.disconnect(_on_quest_completed)
+	_bound_quests = null
 
 
 func _on_quest_completed(quest_id: StringName) -> void:

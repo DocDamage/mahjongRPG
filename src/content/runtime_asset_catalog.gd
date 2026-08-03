@@ -30,6 +30,16 @@ static func portrait_expression_supported(resident_id: StringName, expression: S
 	return resident_id in portraits_value.get("residents", []) and expression in portraits_value.get("expressions", [])
 
 
+static func portrait_residents() -> Array:
+	var portraits_value: Variant = _catalog().get("portraits", {})
+	return portraits_value.get("residents", []).duplicate() if portraits_value is Dictionary else []
+
+
+static func portrait_expressions() -> Array:
+	var portraits_value: Variant = _catalog().get("portraits", {})
+	return portraits_value.get("expressions", []).duplicate() if portraits_value is Dictionary else []
+
+
 static func atlas_path(atlas_id: StringName) -> String:
 	var atlases_value: Variant = _catalog().get("atlases", {})
 	return String(atlases_value.get(atlas_id, "")) if atlases_value is Dictionary else ""

@@ -17,4 +17,15 @@ func run() -> Array[String]:
 	var restored = InventoryService.new()
 	if restored.restore(inventory.snapshot()) != OK or restored.snapshot() != inventory.snapshot():
 		failures.append("inventory and records should survive a snapshot round-trip")
+	inventory.add_item(&"crop_beans", 2)
+	inventory.add_item(&"fish_anchovy")
+	var batch: Array = [{"item_id": &"crop_beans", "quantity": 1}, {"item_id": &"fish_anchovy", "quantity": 1}]
+	var receipt := inventory.remove_batch(batch)
+	if receipt.has("error") or inventory.item_count(&"crop_beans") != 1 or inventory.item_count(&"fish_anchovy") != 0:
+		failures.append("batch removal should validate and atomically remove every selected item")
+	if inventory.rollback_transaction(StringName(receipt.get("transaction_id", ""))) != OK or inventory.item_count(&"crop_beans") != 2 or inventory.item_count(&"fish_anchovy") != 1:
+		failures.append("an open inventory transaction should roll back its exact batch")
+	var unavailable := inventory.remove_batch([{"item_id": &"crop_beans", "quantity": 3}, {"item_id": &"fish_anchovy", "quantity": 1}])
+	if not unavailable.has("error") or inventory.item_count(&"crop_beans") != 2 or inventory.item_count(&"fish_anchovy") != 1:
+		failures.append("a failed batch preflight must not partially remove inventory")
 	return failures

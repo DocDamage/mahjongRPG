@@ -2,13 +2,32 @@
   "schema_version": 2,
   "quests": [
     {
+      "objective_schema": 1,
       "id": "first_lantern",
+      "definition_version": 2,
+      "required_save_schema": 21,
       "title": "The First Lantern",
+      "title_key": "quest.first_lantern.title",
       "requirements": {"crop_beans": 1, "any_fish": 1},
       "stages": [
-        {"id": "meet_mabel", "dialogue_id": "first_lantern.intro"},
-        {"id": "gather_provisions", "dialogue_id": "first_lantern.gather"},
-        {"id": "light_lantern", "dialogue_id": "first_lantern.light"}
+        {
+          "id": "meet_mabel",
+          "legacy_stage": 0,
+          "completion_mode": "all",
+          "objectives": [{"id": "meet_mabel", "type": "event_once", "label_key": "quest.first_lantern.meet_mabel", "event_kind": "interaction.completed", "match": {"interaction_id": "first_lantern.meet_mabel"}}]
+        },
+        {
+          "id": "gather_provisions",
+          "legacy_stage": 1,
+          "completion_mode": "all",
+          "objectives": [{"id": "deliver_selected_provisions", "type": "event_once", "label_key": "quest.first_lantern.gather_provisions", "event_kind": "inventory.delivered", "match": {"delivery_id": "first_lantern.provisions"}}]
+        },
+        {
+          "id": "light_lantern",
+          "legacy_stage": 2,
+          "completion_mode": "all",
+          "objectives": [{"id": "complete_lantern_interaction", "type": "event_once", "label_key": "quest.first_lantern.light_lantern", "event_kind": "interaction.completed", "match": {"interaction_id": "first_lantern.lantern"}}]
+        }
       ],
       "rewards": {"helper": "mabel", "hall_milestone": "first_lantern"}
     }

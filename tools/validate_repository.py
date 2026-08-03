@@ -38,6 +38,11 @@ REQUIRED = (
     "docs/release/release_candidate_evidence.md",
     "tools/verify_release_candidate.py",
     "tools/package_windows_release.py",
+    ".pre-commit-config.yaml",
+    "tools/validate_content.gd",
+    "tools/run_content_validation.ps1",
+    "tools/precommit_project_checks.py",
+    "docs/contributing/content-validation.md",
 )
 MASTER_ARCHIVE_NAMES = (
     "MahjongRPG.z01",
@@ -215,6 +220,15 @@ def check_release_metadata(errors: list[str]) -> None:
         errors.append("Release metadata compatibility versions differ from the P17/P18 contract")
 
 
+def check_json_documents(errors: list[str]) -> None:
+    for root_name in ("data", "tests/fixtures"):
+        for path in (ROOT / root_name).rglob("*.json"):
+            try:
+                json.loads(path.read_text(encoding="utf-8"))
+            except (UnicodeDecodeError, json.JSONDecodeError) as error:
+                errors.append(f"Malformed JSON: {relative(path)} ({error})")
+
+
 def main() -> int:
     errors: list[str] = []
     warnings: list[str] = []
@@ -227,6 +241,7 @@ def main() -> int:
     check_mahjong_atlas(errors)
     check_release_assets(errors)
     check_release_metadata(errors)
+    check_json_documents(errors)
     if errors:
         print("Repository validation failed:", file=sys.stderr)
         for error in errors:

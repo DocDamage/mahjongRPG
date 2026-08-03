@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "default_locale": "en",
   "release_required_keys": [
     "ui.title.new_game", "ui.title.load_autosave", "ui.title.accessibility", "ui.pause.save_load",
@@ -16,9 +16,19 @@
         "first_lantern.light": "Mabel: The wick is ready. Stand with me and light the first lantern.",
         "first_lantern.complete": "The first lantern shines. Mabel joins Wayward Farm, the Hall begins to return, and Riverbend access is restored.",
         "first_lantern.after": "Mabel keeps the first lantern bright. Helper unlocked: Mabel — ask her at Wayward Farm to water your crops.",
+        "quest.first_lantern.title": "The First Lantern",
+        "quest.first_lantern.meet_mabel": "Speak with Mabel at Six Brands Hall.",
+        "quest.first_lantern.gather_provisions": "Select and deliver one bean crop and one fish to Mabel.",
+        "quest.first_lantern.light_lantern": "Return to Mabel and light the first lantern.",
         "evidence.silas_first_lantern_note.title": "Silas's Lantern Note",
         "evidence.silas_first_lantern_note.text": "Evidence found — Silas's Lantern Note: ‘The Hall's first light still remembers the true rules. Do not let King choose the terms.’",
         "community.mayor_bell.meet": "Bell trusts you with the courthouse claim.", "community.mayor_bell.favor": "You compare the public deeds instead of repeating a rumor.", "community.mayor_bell.resolve": "Bell resolves the claim fairly and offers a market introduction.",
+        "dialogue.mayor_bell.meet.opening": "Mayor Bell: The courthouse claim has drawn more rumor than careful listening. Hear the record before you judge it.",
+        "dialogue.mayor_bell.meet.commit": "Mayor Bell: I trust you with the courthouse claim. Return when you are ready to compare the public deeds.",
+        "dialogue.mayor_bell.favor.opening": "Mayor Bell: Two deeds describe the same boundary differently. Read both; do not repeat what the loudest claimant says.",
+        "dialogue.mayor_bell.favor.commit": "Mayor Bell: You compared the public deeds fairly. One final hearing can settle this without favor or spectacle.",
+        "dialogue.mayor_bell.resolve.opening": "Mayor Bell: The record is clear now. A fair settlement protects the claimant and the town together.",
+        "dialogue.mayor_bell.resolve.commit": "Mayor Bell: The claim is settled fairly. I will introduce Wayward Farm at the market and welcome claimants to an open hearing.",
         "community.river_rose.meet": "Rose shows you the quiet bend.", "community.river_rose.favor": "You map a safe current together.", "community.river_rose.resolve": "Rose leaves a river guide in your tackle roll.",
         "community.dynamite_bill.meet": "Bill asks you to inspect the safe side of the old rail.", "community.dynamite_bill.favor": "You mark the dangerous ground without making a spectacle.", "community.dynamite_bill.resolve": "Bill retires the fuse and teaches a composed opening.",
         "community.ada_rook.meet": "Ada explains which bids are fair.", "community.ada_rook.favor": "You help Ada rescue a mixed seed order.", "community.ada_rook.resolve": "Ada opens her seed ledger and joins the farm roster.",
@@ -42,5 +52,34 @@
         "finale.credits.continue": "Continue to postgame", "accessibility.timing_assist": "Timing assist", "accessibility.high_contrast": "High contrast", "accessibility.haptics": "Controller vibration"
       }
     }
-  }
+  },
+  "sequences": [
+    {
+      "schema_version": 1,
+      "id": "mayor_bell.meet",
+      "start_node": "opening",
+      "nodes": [
+        {"id": "opening", "speaker_id": "mayor_bell", "text_key": "dialogue.mayor_bell.meet.opening", "portrait_expression": "steady", "next": "commit"},
+        {"id": "commit", "speaker_id": "mayor_bell", "text_key": "dialogue.mayor_bell.meet.commit", "portrait_expression": "warm", "next": ""}
+      ]
+    },
+    {
+      "schema_version": 1,
+      "id": "mayor_bell.favor",
+      "start_node": "opening",
+      "nodes": [
+        {"id": "opening", "speaker_id": "mayor_bell", "text_key": "dialogue.mayor_bell.favor.opening", "portrait_expression": "determined", "next": "commit"},
+        {"id": "commit", "speaker_id": "mayor_bell", "text_key": "dialogue.mayor_bell.favor.commit", "portrait_expression": "warm", "next": ""}
+      ]
+    },
+    {
+      "schema_version": 1,
+      "id": "mayor_bell.resolve",
+      "start_node": "opening",
+      "nodes": [
+        {"id": "opening", "speaker_id": "mayor_bell", "text_key": "dialogue.mayor_bell.resolve.opening", "portrait_expression": "determined", "next": "commit"},
+        {"id": "commit", "speaker_id": "mayor_bell", "text_key": "dialogue.mayor_bell.resolve.commit", "portrait_expression": "warm", "next": ""}
+      ]
+    }
+  ]
 }

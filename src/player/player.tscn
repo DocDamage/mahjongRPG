@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://src/player/player.gd" id="1_player"]
+[ext_resource type="Script" path="res://src/ui/quest_tracker.gd" id="2_tracker"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_player"]
 radius = 10.0
@@ -25,3 +26,6 @@ monitoring = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
 shape = SubResource("CircleShape2D_interaction")
+
+[node name="QuestTracker" type="CanvasLayer" parent="."]
+script = ExtResource("2_tracker")

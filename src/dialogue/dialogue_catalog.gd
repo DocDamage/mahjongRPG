@@ -29,6 +29,26 @@ static func release_required_keys() -> Array[StringName]:
 	return keys
 
 
+static func sequence(sequence_id: StringName) -> Dictionary:
+	for value in _table().get("sequences", []):
+		if value is Dictionary and StringName(value.get("id", "")) == sequence_id:
+			return value.duplicate(true)
+	return {}
+
+
+static func sequences() -> Array:
+	var values: Variant = _table().get("sequences", [])
+	return values.duplicate(true) if values is Array else []
+
+
+static func localization_keys() -> Array:
+	var table := _table()
+	var locales_value: Variant = table.get("locales", {})
+	var locale: Variant = locales_value.get(table.get("default_locale", "en"), {}) if locales_value is Dictionary else {}
+	var lines: Variant = locale.get("lines", {}) if locale is Dictionary else {}
+	return lines.keys() if lines is Dictionary else []
+
+
 static func _table() -> Dictionary:
 	var scene_tree := Engine.get_main_loop() as SceneTree
 	var registry = scene_tree.root.get_node_or_null("ContentRegistry") if scene_tree != null else null

@@ -6,7 +6,6 @@ const FarmGrid = preload("res://src/farm/farm_grid.gd")
 const FarmService = preload("res://src/farm/farm_service.gd")
 const HorseTravelState = preload("res://src/horses/horse_travel_state.gd")
 const InventoryService = preload("res://src/inventory/inventory_service.gd")
-const QuestService = preload("res://src/quests/quest_service.gd")
 const BrandLoadoutState = preload("res://src/mahjong/application/brand_loadout_state.gd")
 const HelperService = preload("res://src/helpers/helper_service.gd")
 const EvidenceService = preload("res://src/story/evidence_service.gd")
@@ -17,7 +16,10 @@ const GameSessionSnapshot = preload("res://src/save/game_session_snapshot.gd")
 const SessionSnapshotMigrator = preload("res://src/save/session_snapshot_migrator.gd")
 const WeatherCatalog = preload("res://src/weather/weather_catalog.gd")
 const SessionCatalogLoader = preload("res://src/core/session_catalog_loader.gd")
+const QuestSessionRuntime = preload("res://src/quests/quest_session_runtime.gd")
+const SessionGate = preload("res://src/core/session_gate.gd")
 signal session_started(seed: int)
+signal session_replacing()
 signal time_advanced(day: int, minute_of_day: int)
 signal pause_changed(paused: bool)
 signal weather_changed(weather_id: StringName)
@@ -43,6 +45,10 @@ var regions
 var relationships; var properties; var trade; var crafting; var effects
 var angler; var desert; var community; var public_life; var story; var finale; var postgame
 var expansion_services = SessionExpansionServices.new()
+var quest_runtime = QuestSessionRuntime.new()
+var quest_events = quest_runtime.event_adapter
+var quest_journal = quest_runtime.journal
+var session_gate = SessionGate.new()
 var player_scene := ""
 var player_position := Vector2.ZERO
 var tutorial_steps: Dictionary = {}
@@ -68,7 +74,12 @@ func _ready() -> void:
 	_ensure_processing()
 	_ensure_regions()
 	expansion_services.ensure_all(self)
-func start_new_game(new_seed: int) -> void:
+	quest_runtime.bind(self)
+func start_new_game(new_seed: int) -> Error:
+	if not session_gate.can_replace_session():
+		return ERR_BUSY
+	session_replacing.emit()
+	quest_runtime.unbind()
 	seed = new_seed
 	day = 1
 	minute_of_day = 8 * 60
@@ -98,11 +109,13 @@ func start_new_game(new_seed: int) -> void:
 	_ensure_regions()
 	expansion_services.ensure_all(self)
 	_ensure_farm()
+	quest_runtime.bind(self)
 	_pause_reasons.clear()
 	_time_accumulator = 0.0
 	session_started.emit(seed)
 	time_advanced.emit(day, minute_of_day)
 	weather_changed.emit(weather_id)
+	return OK
 func is_paused() -> bool:
 	return not _pause_reasons.is_empty()
 func request_pause(reason: StringName) -> void:
@@ -156,11 +169,19 @@ func set_tutorial_step(tutorial_id: StringName, next_step: int) -> void:
 func snapshot() -> Dictionary:
 	return GameSessionSnapshot.capture(self)
 func restore(snapshot_data: Dictionary) -> Error:
+	if not session_gate.can_replace_session():
+		return ERR_BUSY
 	var migrated := SessionSnapshotMigrator.migrate(snapshot_data, SAVE_SCHEMA_VERSION)
 	if migrated.is_empty():
 		return ERR_FILE_UNRECOGNIZED
-	if GameSessionSnapshot.restore(self, migrated) != OK:
+	var candidate = GameSessionSnapshot.stage(self, migrated)
+	if candidate == null:
 		return ERR_INVALID_DATA
+	session_replacing.emit()
+	quest_runtime.unbind()
+	GameSessionSnapshot.commit(self, candidate)
+	candidate.free()
+	quest_runtime.bind(self)
 	_pause_reasons.clear()
 	_time_accumulator = 0.0
 	time_advanced.emit(day, minute_of_day)
@@ -214,21 +235,7 @@ func _ensure_inventory():
 		inventory = InventoryService.new()
 	return inventory
 func _ensure_quests():
-	if quests != null:
-		return quests
-	quests = QuestService.new()
-	var file := FileAccess.open("res://data/quests/vertical_slice_quests.json", FileAccess.READ)
-	if file == null:
-		push_error("Missing vertical-slice quest data")
-		return quests
-	var parsed: Variant = JSON.parse_string(file.get_as_text())
-	if parsed is Dictionary:
-		var quest_values: Variant = parsed.get("quests", [])
-		if quest_values is Array:
-			for quest_value in quest_values:
-				if quest_value is Dictionary:
-					quests.register_definition(quest_value)
-	return quests
+	return quest_runtime.ensure_service(self)
 func _ensure_animals():
 	if animals != null:
 		return animals

@@ -1,8 +1,11 @@
 extends Control
 
+const CommunityDialogueFlow = preload("res://src/dialogue/community_dialogue_flow.gd")
+
 var region_id: StringName
 var _status: Label
 var _message: Label
+var _dialogue_flow
 
 
 func configure(next_region_id: StringName) -> void:
@@ -45,9 +48,22 @@ func _build(message := "") -> void:
 
 
 func _advance(arc_id: StringName) -> void:
-
+	if not GameSession.community.expected_dialogue_sequence(arc_id).is_empty():
+		_dialogue_flow = CommunityDialogueFlow.new()
+		add_child(_dialogue_flow)
+		_dialogue_flow.finished.connect(_on_dialogue_finished)
+		if _dialogue_flow.start(arc_id) != OK:
+			_dialogue_flow.queue_free()
+			_dialogue_flow = null
+			_message.text = "That authored conversation is unavailable."
+		return
 	var result: Dictionary = GameSession.community.advance(arc_id, GameSession.community.expected_action(arc_id), GameSession.relationships, GameSession.helpers)
 	_build(String(result.get("message", "That arc is already resolved.")))
+
+
+func _on_dialogue_finished(message: String) -> void:
+	_dialogue_flow = null
+	_build(message)
 
 
 func _visit_home(arc_id: StringName) -> void:

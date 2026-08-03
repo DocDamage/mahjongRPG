@@ -78,6 +78,13 @@ func expected_action(arc_id: StringName) -> StringName:
 	return StringName(stages[int(progress.get(arc_id, 0))].get("action", ""))
 
 
+func expected_dialogue_sequence(arc_id: StringName) -> StringName:
+	if not definitions.has(arc_id) or completed.has(arc_id):
+		return &""
+	var stages: Array = definitions[arc_id]["stages"]
+	return StringName(stages[int(progress.get(arc_id, 0))].get("dialogue_sequence_id", ""))
+
+
 func stage_label(arc_id: StringName) -> String:
 
 	if completed.has(arc_id):

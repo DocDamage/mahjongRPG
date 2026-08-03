@@ -1,5 +1,7 @@
 extends RefCounted
 
+const SERVICE_FIELDS := ["farm", "horse", "inventory", "quests", "animals", "brands", "helpers", "evidence", "regions", "relationships", "properties", "trade", "crafting", "effects", "angler", "desert", "community", "public_life", "story", "finale", "postgame"]
+
 
 static func capture(session) -> Dictionary:
 	return {
@@ -34,12 +36,40 @@ static func capture(session) -> Dictionary:
 	}
 
 
+static func stage(session, migrated: Dictionary):
+	var candidate = session.get_script().new()
+	candidate.set_process(false)
+	if _restore_candidate(candidate, migrated) != OK:
+		candidate.free()
+		return null
+	return candidate
+
+
+static func commit(session, candidate) -> void:
+	for field in SERVICE_FIELDS:
+		session.set(field, candidate.get(field))
+	session.seed = candidate.seed
+	session.day = candidate.day
+	session.minute_of_day = candidate.minute_of_day
+	session.weather_id = candidate.weather_id
+	session.player_scene = candidate.player_scene
+	session.player_position = candidate.player_position
+	session.tutorial_steps = candidate.tutorial_steps.duplicate(true)
+
+
 static func restore(session, migrated: Dictionary) -> Error:
+	var candidate = stage(session, migrated)
+	if candidate == null:
+		return ERR_INVALID_DATA
+	commit(session, candidate)
+	candidate.free()
+	return OK
+
+
+static func _restore_candidate(session, migrated: Dictionary) -> Error:
 	var next_day := int(migrated.get("day", 0))
 	var next_minute := int(migrated.get("minute_of_day", -1))
 	if next_day < 1 or next_minute < 0 or next_minute >= session.MINUTES_PER_DAY:
-		return ERR_INVALID_DATA
-	if not _restore_services(session, migrated) or not _valid_cross_service_state(session):
 		return ERR_INVALID_DATA
 	var player_data_value: Variant = migrated.get("player", {})
 	var tutorial_steps_value: Variant = migrated.get("tutorial_steps", {})
@@ -47,6 +77,8 @@ static func restore(session, migrated: Dictionary) -> Error:
 		return ERR_INVALID_DATA
 	var position_value: Variant = player_data_value.get("position", [])
 	if not position_value is Array or position_value.size() != 2:
+		return ERR_INVALID_DATA
+	if not _restore_services(session, migrated) or not _valid_cross_service_state(session):
 		return ERR_INVALID_DATA
 	session.seed = int(migrated.get("seed", 0))
 	session.day = next_day

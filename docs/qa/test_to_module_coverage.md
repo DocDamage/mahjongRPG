@@ -1,6 +1,6 @@
 # Test-to-module coverage inventory
 
-The native Godot runner is the authoritative automated suite registry: `tests/test_runner.gd`. This inventory maps every runtime responsibility added through P16 to a focused test or smoke gate; it is a traceability map, not a numeric line-coverage claim.
+The native Godot runner is the authoritative automated suite registry: `tests/test_runner.gd`. This inventory maps every runtime responsibility added through P16 and quest-objective phases Q0-Q4 to a focused test or smoke gate; it is a traceability map, not a numeric line-coverage claim.
 
 | Module / player contract | Automated evidence |
 | --- | --- |
@@ -28,6 +28,16 @@ The native Godot runner is the authoritative automated suite registry: `tests/te
 | Input remapping, controller focus, display preferences | `tests/unit/test_input_service.gd`, `test_input_settings.gd`, `test_display_preferences.gd` |
 | Project resources and scene references | `tests/unit/test_project_resources.gd`, `tests/smoke_test.gd` |
 | Connected First Lantern progression/save continuation | `tests/integration/test_vertical_slice_progression.gd` |
+| Q1 quest definition/state validation and stable schema-21 mapping | `tests/unit/test_quest_definition_validator.gd`, `tests/unit/test_quest_service.gd`, `tests/integration/test_first_lantern_objectives.gd` |
+| Q1 closed quest-event envelope, normalization, receipt authentication, adapter lifecycle, dedupe, ordering, and same-event cascade prevention | `tests/unit/test_quest_event.gd`, `tests/unit/test_quest_event_adapter.gd`, `tests/unit/test_quest_objective_evaluator.gd`, `tests/unit/test_quest_service.gd` |
+| Q2 First Lantern explicit delivery, transactional rollback, completion effects, legacy fixtures, restore/replacement, and exactly-once behavior | `tests/integration/test_first_lantern_objectives.gd`, `tests/integration/test_vertical_slice_progression.gd`, `tests/unit/test_inventory_service.gd`, `tests/unit/test_quest_service.gd` |
+| Q2 read-only quest projection, tracker/journal presentation, focus neutrality, selection modal, and accessibility preferences | `tests/unit/test_quest_ui.gd`, `tests/integration/test_first_lantern_objectives.gd` |
+| Q3 linear dialogue schema, graph/reference validation, and forbidden side-effect fields | `tests/unit/test_dialogue_sequence_validator.gd`, `tests/unit/test_content_validation_report.gd` |
+| Q3 sequence presentation, typewriter speed, reduced motion, contrast/scaling, focus, keyboard/controller input, cancel, rapid confirm, and persistence restriction teardown | `tests/unit/test_dialogue_sequence_runner.gd` |
+| Q3 Mayor Bell fresh/legacy-stage flow, exact relationship changes, helper/schedule outcome, completion reopen, service replacement, and exactly-once domain commit | `tests/integration/test_mayor_bell_dialogue_pilot.gd`, `tests/fixtures/community/*.json` |
+| Q4 shared production content report: invalid definitions, duplicates, missing references/keys, unsupported schemas, unreachable nodes, save-schema requirements, and source diagnostics | `tests/unit/test_content_validation_report.gd`; `tools/run_content_validation.ps1` |
+| Q4 repository JSON/naming/size checks, advisory pre-commit exclusions, and CI wiring | `tools/validate_repository.py`; `tools/precommit_project_checks.py --all`; `pre-commit validate-config`; `pre-commit run --all-files`; `.github/workflows/godot-validation.yml` |
+| Q4 contributor-tool exclusion and production-validator inclusion in Windows release data | `tools/verify_export_environment.py`; post-export PCK contract audit documented in `docs/production/QUEST_Q3_Q4_COMPLETION_AUDIT_2026-08-03.md` |
 | Whole project bootstrap/editor load | `tests/smoke_test.gd`; target-engine CI editor initialization |
 
 All new behaviors need a row here and a matching runner registration before a phase can be marked complete.

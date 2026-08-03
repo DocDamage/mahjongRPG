@@ -1,0 +1,40 @@
+default_stages: [pre-commit]
+exclude: ^(?:\.godot/|assets/|vendor/|exports/|artifacts/|.*\.(?:tscn|tres|res|uid|png|jpg|jpeg|webp|wav|ogg|mp3|pck|exe)$)
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-merge-conflict
+      - id: check-json
+        files: ^(?:data/|tests/fixtures/).+\.json$
+      - id: check-case-conflict
+
+  - repo: local
+    hooks:
+      - id: mahjongrpg-project-conventions
+        name: Project naming and new handwritten-file size
+        entry: python tools/precommit_project_checks.py
+        language: system
+        types_or: [gdscript, python, json]
+      - id: mahjongrpg-repository-validation
+        name: Repository validation
+        entry: python tools/validate_repository.py
+        language: system
+        pass_filenames: false
+      - id: mahjongrpg-content-validation
+        name: Production quest/dialogue content validation
+        entry: pwsh -NoProfile -File tools/run_content_validation.ps1
+        language: system
+        pass_filenames: false
+
+  - repo: https://github.com/Scony/godot-gdscript-toolkit
+    rev: 4.5.0
+    hooks:
+      - id: gdlint
+        name: gdlint advisory trial
+        stages: [manual]
+      - id: gdformat
+        name: gdformat non-mutating advisory trial
+        args: [--check]
+        stages: [manual]

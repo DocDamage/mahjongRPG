@@ -39,6 +39,8 @@ func save_current_session(slot_id: StringName) -> Error:
 func load_current_session(slot_id: StringName) -> Error:
 	if not is_inside_tree():
 		return ERR_UNAVAILABLE
+	if not can_save():
+		return ERR_BUSY
 	var session = get_node_or_null("/root/GameSession")
 	if session == null:
 		return ERR_UNAVAILABLE

@@ -36,6 +36,8 @@ The supplemental importer normalizes the expanded source into ignored `assets/so
 
 Use the target Godot 4.7.1 executable—not an arbitrary `godot` on `PATH`. The canonical setup, validation, recovery, archive, and troubleshooting instructions are in [Windows setup and recovery](docs/release/setup_and_recovery.md).
 
+Quest/dialogue authors should also run the read-only production content report and optional advisory hooks documented in [Content validation and advisory tooling](docs/contributing/content-validation.md).
+
 ## Branch model
 
 - `main`: stable milestones
