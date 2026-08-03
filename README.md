@@ -6,7 +6,7 @@ Doc inherits Wayward Farm outside Mercy's Wake, a Gulf Coast frontier town where
 
 ## Playable-slice status
 
-This checkout contains the Phase 1–8 playable foundation. In addition to the ranch loop, a player can travel from Bridlewood to Saint's Landing, build a recorded relationship with Registrar Elise, settle the Landing Depot dispute through a cheese-backed petition or a Mahjong match, restore Hall practice stage 3, and open Ironhook Docks. At Ironhook, posted orders consume goods atomically, reward money and table tokens, settle the customs-warehouse property arc, unlock its interior, and admit the player to Mariner Ves's token table. The docks expose stocked shops plus cooking, preserves, flour, dairy, smoked fish, feed, and tonic recipes; prepared food grants one clearly bounded next-match Brand charge. Saves migrate through schema 13 from all pre-P7/P8 saves. It is not a claim that the full planned game is complete.
+This checkout contains the Phase 1–10 playable foundation. Beyond the ranch, civic, and Ironhook loops, the ferry opens Gull's Rest: its market and cabin interiors, shore-condition fishing, six-slot gear progression, rare-condition journal, persistent fish records, repeatable tarpon contest, coastal recipe, relationship clue, and catch-based Mahjong wager are all playable. The Red Testament trail adds every remaining weather variant, a weather-gated Windward Pass, bonfire, Red Testament ruins behind a saved expedition right, supernatural records, expert opponent Ash Varela, and a counterable Texas King rule clue. Earlier schedules and fishing remain available during the new weather set. King's Reach is visibly present but honestly locked until P14. Saves migrate through schema 15 from every earlier schema; P11+ content is not claimed complete.
 
 ## Technical target
 
@@ -58,6 +58,7 @@ Use the target Godot 4.7.1 executable—not an arbitrary `godot` on `PATH`. The 
 - [Phase 3–4 completion audit](docs/production/PHASE_3_4_COMPLETION_AUDIT_2026-08-02.md)
 - [Phase 5–6 completion audit](docs/production/PHASE_5_6_COMPLETION_AUDIT_2026-08-02.md)
 - [Phase 7–8 completion audit](docs/production/PHASE_7_8_COMPLETION_AUDIT_2026-08-02.md)
+- [Phase 9–10 completion audit](docs/production/PHASE_9_10_COMPLETION_AUDIT_2026-08-02.md)
 - [Windows setup and recovery](docs/release/setup_and_recovery.md)
 
 ## Licensing

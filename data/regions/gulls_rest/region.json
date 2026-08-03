@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "regions": [
+    {"id":"gulls_rest","display_name":"Gull's Rest","shore_conditions":["harbor","coast","reef"],"contest_id":"gulls_rest_weekly","opponents":["captain_coral"]}
+  ]
+}

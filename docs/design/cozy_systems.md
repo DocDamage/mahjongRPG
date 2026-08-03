@@ -114,7 +114,7 @@ Fishing phases:
 4. Directional tug-of-war with line tension
 5. Catch presentation and record update
 
-Fish vary by location, time, weather, bait, lure, rod, hook, and line. Fish can be sold, cooked, gifted, collected, used in quests, used as wagers, released, or converted into bait.
+Fish vary by location, time, weather, shore condition, rare condition, bait, lure, rod, hook, line, and bobber. Gull's Rest persists owned gear, the equipped six-part loadout, rare-condition discoveries, per-fish records, and repeatable contest entries. Fish can be sold, cooked, gifted, collected, used in quests, used as a named Mahjong wager, released, or converted into bait.
 
 On beginner difficulty, failure may cost only time. Higher settings may also consume bait, hook durability, lure durability, or occasionally break the line. Boat fishing is expansion content.
 

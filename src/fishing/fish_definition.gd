@@ -6,6 +6,8 @@ var hour_start: int
 var hour_end: int
 var sell_value_cents: int
 var weather_ids: Array[StringName] = []
+var shore_conditions: Array[StringName] = []
+var rare_conditions: Array[StringName] = []
 
 
 func _init(data: Dictionary) -> void:
@@ -20,9 +22,23 @@ func _init(data: Dictionary) -> void:
 	if weather_value is Array:
 		for weather in weather_value:
 			weather_ids.append(StringName(weather))
-	if id.is_empty() or sell_value_cents < 0 or hour_start < 0 or hour_end > 24 or hour_start >= hour_end or weather_ids.is_empty():
+	var shore_value: Variant = data.get("shore_conditions", ["river"])
+	if shore_value is Array:
+		for shore in shore_value:
+			shore_conditions.append(StringName(shore))
+	var rare_value: Variant = data.get("rare_conditions", [])
+	if rare_value is Array:
+		for condition in rare_value:
+			rare_conditions.append(StringName(condition))
+	if id.is_empty() or sell_value_cents < 0 or hour_start < 0 or hour_end > 24 or hour_start >= hour_end or weather_ids.is_empty() or shore_conditions.is_empty():
 		push_error("Invalid fish definition: %s" % id)
 
 
 func matches(hour: int, weather_id: StringName) -> bool:
-	return hour >= hour_start and hour < hour_end and weather_ids.has(weather_id)
+	return matches_conditions(hour, weather_id, &"river", &"")
+
+
+func matches_conditions(hour: int, weather_id: StringName, shore_condition: StringName, rare_condition: StringName) -> bool:
+	if hour < hour_start or hour >= hour_end or not weather_ids.has(weather_id) or not shore_conditions.has(shore_condition):
+		return false
+	return rare_conditions.is_empty() or rare_conditions.has(rare_condition)

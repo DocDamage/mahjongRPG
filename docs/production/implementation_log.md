@@ -4,7 +4,7 @@
 
 - Active local branch: `agent/project-foundation`
 - Integration target defined by the plan: `develop`
-- Local Phase 1–2 work is pending the requested commit and push after the final audit.
+- Local P1–P10 code is complete; physical checkpoints and target-engine release evidence remain pending.
 - This log records verified local milestones; it does not claim that the full execution plan is complete.
 
 ## Verified milestones
@@ -47,6 +47,8 @@
 | P6 Ranch legacy | Activated all supplied crops with quality feedback, expanded the route-safe farm, added named variant animals with capacity, lineage, breeding, aging, retirement, products, ranch-hand feeding, repairable processing machines, and persisted horse names. Schema 11 migrates all earlier saves safely. |
 | P7 Saint's Landing civic restoration | Added the connected Saint's Landing route, records and practice interiors, two scheduled civic opponents, data-backed relationships/dialogue choices, a cheese-backed petition or Mahjong property resolution, government-record clue, civic supply, and Hall stage 3. Schema 12 defaults every prior save to safe empty civic state. |
 | P8 Ironhook trade network | Added Ironhook's docks, warehouses/offices, token-gated opponent, atomic posted orders, persistent shop stock, dock property arc, cargo-ledger clue, seven recipe categories, and bounded prepared-food Brand-charge effects. Schema 13 migrates token/order/shop/recipe/effect records from every older save. |
+| P9 Gull's Rest angler path | Added Gull's Rest ferry, market/cabin interiors, Captain Coral Fenn, all shore-condition fish data, saved six-category gear upgrades, rare conditions, independent records, tarpon contest, grouper recipe, relationship clue, and a tarpon catch wager. Schema 14 migrates prior saves with starter gear and empty records/contest state. |
+| P10 Red Testament mystery | Added the Red Testament route, Ash Varela, deterministic remaining weather and ambience, Windward Pass, bonfire, expedition-property ruins, supernatural record, complete expert schedules, and counterable final-rule clue while keeping King's Reach locked. Schema 15 migrates prior saves with empty desert state. |
 | Target-engine CI evidence | GitHub Actions run `30770900107` passed Linux resource import, validator, all 33 suites, smoke, and editor initialization plus Windows Godot-template/export preflight. |
 
 ## Current local verification baseline
@@ -60,4 +62,4 @@ python tools/validate_repository.py
 <Godot 4.7.1 engine> --headless --path . --editor --quit
 ```
 
-The portable validation engine is official Godot 4.7.1 with matching Windows templates. The current run reports 41 suites plus smoke/editor success. The Windows debug export and isolated-AppData headless launch are verified on the P2 baseline; user-observed clean-profile, manual device/display/accessibility, and P5–P8 physical player-path passes remain external evidence gates. See [setup_and_recovery.md](../release/setup_and_recovery.md).
+The most recent local implementation run used Godot 4.6.2 and reports 42 suites plus smoke/editor success. Godot 4.7.1 with matching Windows templates remains the required target for release/export evidence. The Windows debug export and isolated-AppData headless launch are verified on the P2 baseline; user-observed clean-profile, manual device/display/accessibility, and P5–P10 physical player-path passes remain external evidence gates. See [setup_and_recovery.md](../release/setup_and_recovery.md).

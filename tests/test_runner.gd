@@ -38,6 +38,7 @@ const SUITES := [
 	"res://tests/unit/test_phase_three_four_migration.gd",
 	"res://tests/unit/test_phase_five_six.gd",
 	"res://tests/unit/test_phase_seven_eight.gd",
+	"res://tests/unit/test_phase_nine_ten.gd",
 	"res://tests/unit/test_player.gd",
 	"res://tests/unit/test_tenderfoot_tutorial.gd",
 	"res://tests/unit/test_tenderfoot_advisor.gd",

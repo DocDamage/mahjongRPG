@@ -153,7 +153,7 @@ func _show_wager_selection() -> void:
 
 
 func _start_match(next_wager_tier: StringName) -> void:
-	if not MatchWager.can_start(next_wager_tier, GameSession.inventory.money_cents): return
+	if not MatchWager.can_start(next_wager_tier, GameSession.inventory.money_cents, GameSession.inventory): return
 	wager_tier = next_wager_tier; flow = MatchFlow.new(GameSession.seed + GameSession.day * 100 + GameSession.minute_of_day); flow.configure_ruleset(ruleset); flow.configure_loadouts(GameSession.brands.last_selected, opponent_loadout); flow.configure_upgrades(GameSession.brands.upgrades, opponent_upgrades); flow.start_match()
 	var bonus: int = int(GameSession.effects.consume_for_match(&"mahjong_charge"))
 	if bonus > 0:
@@ -191,7 +191,7 @@ func _record_mastery() -> void:
 		var award: Variant = hand_result.get("award", {})
 		if award is Dictionary: GameSession.brands.record_deeds(award.get("deeds", []))
 	var result: Dictionary = GameSession.brands.record_match_win(opponent_id, ruleset)
-	if opponent_id in [&"ada_rook", &"gideon_shaw", &"registrar_elise", &"constable_mara", &"mariner_ves"]:
+	if opponent_id in [&"ada_rook", &"gideon_shaw", &"registrar_elise", &"constable_mara", &"mariner_ves", &"captain_coral", &"witness_ash"]:
 		GameSession.regions.record_table_win(opponent_id)
 	var property_note := ""
 	if opponent_id == &"registrar_elise":

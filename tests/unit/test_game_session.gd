@@ -27,8 +27,8 @@ func run() -> Array[String]:
 	if weather_session.farm.plant(Vector2i(0, 0), &"beans", weather_session.day) != OK or weather_session.farm.water(Vector2i(0, 0), weather_session.day) != OK:
 		failures.append("a new session should permit watering an active farm crop")
 	weather_session.advance_minutes(24 * 60)
-	if weather_session.weather_id not in [&"clear", &"rain"]:
-		failures.append("day changes should select a supported vertical-slice weather state")
+	if weather_session.weather_id not in [&"clear", &"rain", &"cloudy", &"thunderstorm", &"dust_wind", &"supernatural_fog"]:
+		failures.append("day changes should select an active authored weather state")
 	if weather_session.farm.crop_at(Vector2i(0, 0)).age_days != 1:
 		failures.append("crop growth should progress when time advances away from the farm scene")
 	var snapshot := session.snapshot()

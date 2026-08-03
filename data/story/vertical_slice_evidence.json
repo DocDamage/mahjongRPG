@@ -20,6 +20,16 @@
       "id": "silas_cargo_ledger",
       "title_key": "evidence.silas_cargo_ledger.title",
       "text_key": "evidence.silas_cargo_ledger.text"
+    },
+    {
+      "id": "silas_gulls_rest_letter",
+      "title_key": "evidence.silas_gulls_rest_letter.title",
+      "text_key": "evidence.silas_gulls_rest_letter.text"
+    },
+    {
+      "id": "texas_king_counter_deed",
+      "title_key": "evidence.texas_king_counter_deed.title",
+      "text_key": "evidence.texas_king_counter_deed.text"
     }
   ]
 }

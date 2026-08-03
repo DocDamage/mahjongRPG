@@ -1,6 +1,6 @@
 # Test-to-module coverage inventory
 
-The native Godot runner is the authoritative automated suite registry: `tests/test_runner.gd`. This inventory maps every runtime responsibility added through P8 to a focused test or smoke gate; it is a traceability map, not a numeric line-coverage claim.
+The native Godot runner is the authoritative automated suite registry: `tests/test_runner.gd`. This inventory maps every runtime responsibility added through P10 to a focused test or smoke gate; it is a traceability map, not a numeric line-coverage claim.
 
 | Module / player contract | Automated evidence |
 | --- | --- |
@@ -17,6 +17,8 @@ The native Godot runner is the authoritative automated suite registry: `tests/te
 | P6 all-crop activation, dense route safety, named animal lineage/capacity/aging/retirement, repairable processing | `tests/unit/test_phase_five_six.gd`, `test_crop_catalog.gd`, `test_farm_service.gd`, `test_animal_care_service.gd` |
 | P7 civic relationships, dialogue choices, property outcomes, route unlock, Hall stage 3, and pre-P7 migration | `tests/unit/test_phase_seven_eight.gd`, `tests/smoke_test.gd` |
 | P8 posted orders, duplicate-delivery rejection, full-inventory safety, table tokens, recipes, bounded food effects, dock property arc, and schema-13 round trip | `tests/unit/test_phase_seven_eight.gd`, `tests/smoke_test.gd` |
+| P9 fish roster/shore conditions, six-category gear progression, rare conditions, records, contest, recipe, and catch wager | `tests/unit/test_phase_nine_ten.gd`, `test_fishing_session.gd`, `test_fishing_gear_catalog.gd`, `test_match_wager.gd`, `tests/smoke_test.gd` |
+| P10 active weather, expert schedules, weather route, supernatural record, secret, property access, clue, and schema-15 migration | `tests/unit/test_phase_nine_ten.gd`, `test_weather_catalog.gd`, `test_audio_service.gd`, `tests/smoke_test.gd` |
 | Horse identity and mounted-location continuity | `tests/unit/test_horse_travel_state.gd`, `test_phase_one_services.gd` |
 | Input remapping, controller focus, display preferences | `tests/unit/test_input_service.gd`, `test_input_settings.gd`, `test_display_preferences.gd` |
 | Project resources and scene references | `tests/unit/test_project_resources.gd`, `tests/smoke_test.gd` |

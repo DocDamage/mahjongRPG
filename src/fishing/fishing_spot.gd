@@ -1,11 +1,15 @@
 extends "res://src/interaction/world_interactable.gd"
 
 const FishDefinition = preload("res://src/fishing/fish_definition.gd")
+const FishCatalog = preload("res://src/fishing/fish_catalog.gd")
 const FishingGearCatalog = preload("res://src/fishing/fishing_gear_catalog.gd")
 const FishingOverlay = preload("res://src/fishing/fishing_overlay.gd")
 const FishingSession = preload("res://src/fishing/fishing_session.gd")
 
 signal feedback(message: String)
+
+@export var shore_condition: StringName = &"river"
+@export var rare_condition: StringName
 
 var session
 var _definitions: Array = []
@@ -20,7 +24,7 @@ var _overlay
 func _ready() -> void:
 	interacted.connect(_on_interacted)
 	_load_definitions()
-	_gear_profile = FishingGearCatalog.default_profile()
+	_gear_profile = GameSession.angler.gear_profile() if GameSession.angler != null else FishingGearCatalog.default_profile()
 	_overlay = FishingOverlay.new()
 	add_child(_overlay)
 	queue_redraw()
@@ -80,7 +84,8 @@ func _begin(actor: Node2D) -> void:
 		feedback.emit("Fishing gear data is invalid.")
 		session = null
 		return
-	var result: int = session.cast(_definitions, hour, GameSession.weather_id)
+	var condition := rare_condition if rare_condition.is_empty() or GameSession.angler.has_condition(rare_condition) else &""
+	var result: int = session.cast(_definitions, hour, GameSession.weather_id, shore_condition, condition)
 	if result != OK:
 		session = null
 		feedback.emit("Nothing is biting under these conditions.")
@@ -123,6 +128,7 @@ func _update_feedback() -> void:
 		FishingSession.State.CAST, FishingSession.State.WAIT:
 			feedback.emit("Cast out. Wait for a bite.")
 		FishingSession.State.BITE:
+			AudioService.play_catalog_event(&"fishing_bite")
 			_pulse(0.3, 0.9, 0.25)
 			feedback.emit("Bite! Press %s to set the hook." % _binding(&"interact"))
 		FishingSession.State.CATCH:
@@ -134,23 +140,13 @@ func _update_feedback() -> void:
 
 
 func _load_definitions() -> void:
-	var file := FileAccess.open("res://data/fish/vertical_slice_fish.json", FileAccess.READ)
-	if file == null:
-		return
-	var parsed: Variant = JSON.parse_string(file.get_as_text())
-	if not parsed is Dictionary:
-		return
-	var fish_value: Variant = parsed.get("fish", [])
-	if fish_value is Array:
-		for fish_data_value in fish_value:
-			if fish_data_value is Dictionary:
-				_definitions.append(FishDefinition.new(fish_data_value))
+	_definitions = FishCatalog.definitions()
 
 
 func _record_catch_if_needed() -> void:
 	if _catch_recorded or session == null or session.state != FishingSession.State.CATCH or session.fish == null:
 		return
-	if GameSession.inventory.record_fish(session.fish.id, session.fish.sell_value_cents) == OK:
+	if GameSession.angler.record_catch(session.fish.id, session.fish.sell_value_cents, GameSession.inventory) == OK:
 		_catch_recorded = true
 
 
@@ -164,6 +160,7 @@ func _pulse_tension(tension: float) -> void:
 	if band == _last_tension_band:
 		return
 	_last_tension_band = band
+	AudioService.play_catalog_event(&"fishing_tension")
 	_pulse(0.15 + band * 0.1, 0.2 + band * 0.15, 0.12)
 
 

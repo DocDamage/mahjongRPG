@@ -5,11 +5,13 @@ const PropertyService = preload("res://src/property/property_service.gd")
 const TradeService = preload("res://src/economy/trade_service.gd")
 const CraftingService = preload("res://src/economy/crafting_service.gd")
 const FoodEffectService = preload("res://src/economy/food_effect_service.gd")
+const FishingProgressService = preload("res://src/fishing/fishing_progress_service.gd")
+const DesertProgressService = preload("res://src/desert/desert_progress_service.gd")
 
 
 func reset(session) -> void:
 	session.relationships = null; session.properties = null; session.trade = null
-	session.crafting = null; session.effects = null
+	session.crafting = null; session.effects = null; session.angler = null; session.desert = null
 
 
 func ensure_relationships(session):
@@ -46,3 +48,15 @@ func ensure_effects(session):
 		session.effects = FoodEffectService.new()
 		session._load_catalog("res://data/economy/ironhook_recipes.json", "recipes", session.effects)
 	return session.effects
+
+
+func ensure_angler(session):
+	if session.angler == null:
+		session.angler = FishingProgressService.new()
+	return session.angler
+
+
+func ensure_desert(session):
+	if session.desert == null:
+		session.desert = DesertProgressService.new()
+	return session.desert

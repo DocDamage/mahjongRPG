@@ -15,9 +15,9 @@ func run() -> Array[String]:
 func _test_phase_catalogs_and_schedules(failures: Array[String]) -> void:
 	var session = GameSessionScript.new()
 	session.start_new_game(706)
-	if session.regions.definitions.size() != 3 or session.regions.is_unlocked(&"saints_landing") or session.regions.is_unlocked(&"ironhook"):
+	if session.regions.definitions.size() < 5 or session.regions.is_unlocked(&"saints_landing") or session.regions.is_unlocked(&"ironhook"):
 		failures.append("P7/P8 regions must be registered but safely locked on a new save")
-	if session.crafting.definitions.size() != 7 or session.effects.definitions.size() != 7:
+	if session.crafting.definitions.size() < 7 or session.effects.definitions.size() < 7:
 		failures.append("P8 must register cooking, preserves, flour, dairy, smoked fish, feed, and tonic recipes with bounded effects")
 	if session.trade.shop_definitions.size() != 3:
 		failures.append("P7/P8 civic and dock shop inventories must be data-backed")

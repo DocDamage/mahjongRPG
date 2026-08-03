@@ -25,6 +25,16 @@ prompt_text = "Return to Saint's Landing"
 destination_scene = "res://src/world/saints_landing.tscn"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SaintsRoad"]
 shape = SubResource("ExitCircle")
+[node name="GullsFerry" type="Area2D" parent="." groups=["ironhook_exit"]]
+position = Vector2(880, 220)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_exit")
+prompt_text = "Take the Gull's Rest ferry"
+destination_scene = "res://src/world/gulls_rest.tscn"
+unlock_region_on_access = &"gulls_rest"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GullsFerry"]
+shape = SubResource("ExitCircle")
 [node name="Warehouse" type="Area2D" parent="." groups=["ironhook_exit"]]
 position = Vector2(205, 225)
 collision_layer = 2

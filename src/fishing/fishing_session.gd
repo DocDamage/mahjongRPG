@@ -25,12 +25,12 @@ func _init(next_seed: int) -> void:
 	_rng.seed = seed
 
 
-func cast(fish_definitions: Array, hour: int, weather_id: StringName) -> Error:
+func cast(fish_definitions: Array, hour: int, weather_id: StringName, shore_condition: StringName = &"river", rare_condition: StringName = &"") -> Error:
 	if state != State.AIM:
 		return ERR_INVALID_DATA
 	var eligible: Array = []
 	for definition in fish_definitions:
-		if definition is FishDefinition and definition.matches(hour, weather_id):
+		if definition is FishDefinition and definition.matches_conditions(hour, weather_id, shore_condition, rare_condition):
 			eligible.append(definition)
 	if eligible.is_empty():
 		return ERR_DOES_NOT_EXIST

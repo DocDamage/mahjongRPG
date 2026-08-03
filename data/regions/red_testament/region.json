@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "regions": [
+    {"id":"red_testament","display_name":"Red Testament","weather_routes":["red_testament_windward_pass"],"opponents":["witness_ash"],"king_reach_status":"locked_until_act_iii"}
+  ]
+}

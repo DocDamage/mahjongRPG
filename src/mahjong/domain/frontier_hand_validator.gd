@@ -52,20 +52,23 @@ static func _identity_counts(tiles: Array) -> Dictionary:
 
 static func _find_groups(counts: Dictionary, remaining: int) -> Array[Dictionary]:
 	if remaining == 0:
-		return [{}] if _remaining_count(counts) == 0 else []
+		var complete: Array[Dictionary] = []
+		if _remaining_count(counts) == 0:
+			complete.append({})
+		return complete
 	var key: String = _first_key(counts)
 	if key.is_empty():
 		return []
 	if int(counts[key]) >= 4:
 		counts[key] -= 4
-		var quad: Array = _find_groups(counts, remaining - 1)
+		var quad: Array[Dictionary] = _find_groups(counts, remaining - 1)
 		counts[key] += 4
 		if not quad.is_empty():
 			quad.push_front({"kind": "quad", "keys": [key, key, key, key]})
 			return quad
 	if int(counts[key]) >= 3:
 		counts[key] -= 3
-		var set_group: Array = _find_groups(counts, remaining - 1)
+		var set_group: Array[Dictionary] = _find_groups(counts, remaining - 1)
 		counts[key] += 3
 		if not set_group.is_empty():
 			set_group.push_front({"kind": "set", "keys": [key, key, key]})
@@ -75,7 +78,7 @@ static func _find_groups(counts: Dictionary, remaining: int) -> Array[Dictionary
 	var two := "%s:%d" % [identity.suit, identity.rank + 2]
 	if identity.numbered and identity.rank <= 7 and counts.get(one, 0) > 0 and counts.get(two, 0) > 0:
 		counts[key] -= 1; counts[one] -= 1; counts[two] -= 1
-		var run: Array = _find_groups(counts, remaining - 1)
+		var run: Array[Dictionary] = _find_groups(counts, remaining - 1)
 		counts[key] += 1; counts[one] += 1; counts[two] += 1
 		if not run.is_empty():
 			run.push_front({"kind": "run", "keys": [key, one, two]})

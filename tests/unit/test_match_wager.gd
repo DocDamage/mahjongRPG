@@ -16,6 +16,9 @@ func run() -> Array[String]:
 		failures.append("winning a high-stakes wager should award its cash stake")
 	if MatchWager.settle(inventory, &"friendly", 1) != OK or inventory.money_cents != 500:
 		failures.append("friendly wagers should not exchange cash")
+	inventory.add_item(&"fish_tarpon")
+	if not MatchWager.can_start(&"angler_catch", inventory.money_cents, inventory) or MatchWager.settle(inventory, &"angler_catch", 1) != OK or inventory.item_count(&"fish_tarpon") != 0:
+		failures.append("P9 caught fish must be usable as a named non-cash Mahjong wager")
 	if MatchWager.settle(inventory, &"missing", 0) != ERR_INVALID_PARAMETER:
 		failures.append("unknown wager tiers should be rejected")
 	return failures

@@ -1,11 +1,20 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
+  "shore_conditions": ["creek", "river", "harbor", "coast", "reef"],
   "fish": [
-    {"id": "anchovy", "difficulty": 0.25, "sell_value_cents": 45, "hours": [6, 20], "weather": ["clear", "rain"]},
-    {"id": "bluegill", "difficulty": 0.35, "sell_value_cents": 85, "hours": [6, 18], "weather": ["clear"]},
-    {"id": "catfish", "difficulty": 0.55, "sell_value_cents": 160, "hours": [16, 24], "weather": ["rain"]},
-    {"id": "river_bass", "difficulty": 0.5, "sell_value_cents": 140, "hours": [6, 20], "weather": ["clear", "rain"]},
-    {"id": "sunfish", "difficulty": 0.2, "sell_value_cents": 55, "hours": [6, 18], "weather": ["clear"]},
-    {"id": "trout", "difficulty": 0.7, "sell_value_cents": 240, "hours": [6, 12], "weather": ["rain"]}
+    {"id":"anchovy","difficulty":0.25,"sell_value_cents":45,"hours":[6,20],"weather":["clear","rain","cloudy"],"shore_conditions":["harbor","coast"],"rarity_score":1},
+    {"id":"bluegill","difficulty":0.35,"sell_value_cents":85,"hours":[6,18],"weather":["clear","cloudy"],"shore_conditions":["creek","river"],"rarity_score":1},
+    {"id":"catfish","difficulty":0.55,"sell_value_cents":160,"hours":[16,24],"weather":["rain","thunderstorm"],"shore_conditions":["river","harbor"],"rarity_score":2},
+    {"id":"river_bass","difficulty":0.5,"sell_value_cents":140,"hours":[6,20],"weather":["clear","rain","cloudy"],"shore_conditions":["river"],"rarity_score":2},
+    {"id":"sunfish","difficulty":0.2,"sell_value_cents":55,"hours":[6,18],"weather":["clear"],"shore_conditions":["creek","river"],"rarity_score":1},
+    {"id":"trout","difficulty":0.7,"sell_value_cents":240,"hours":[6,12],"weather":["rain","cloudy"],"shore_conditions":["creek","river"],"rarity_score":3},
+    {"id":"red_drum","difficulty":0.62,"sell_value_cents":260,"hours":[7,19],"weather":["clear","cloudy"],"shore_conditions":["coast"],"rarity_score":3},
+    {"id":"flounder","difficulty":0.48,"sell_value_cents":180,"hours":[8,22],"weather":["clear","rain","cloudy"],"shore_conditions":["harbor","coast"],"rarity_score":2},
+    {"id":"gulf_grouper","difficulty":0.82,"sell_value_cents":390,"hours":[10,20],"weather":["clear","cloudy"],"shore_conditions":["reef"],"rarity_score":4},
+    {"id":"sheepshead","difficulty":0.68,"sell_value_cents":310,"hours":[6,18],"weather":["clear","rain"],"shore_conditions":["harbor","reef"],"rarity_score":3},
+    {"id":"tarpon","difficulty":0.9,"sell_value_cents":520,"hours":[5,10],"weather":["clear"],"shore_conditions":["coast"],"rare_conditions":["high_tide"],"rarity_score":5},
+    {"id":"moon_jelly","difficulty":0.72,"sell_value_cents":450,"hours":[20,24],"weather":["supernatural_fog"],"shore_conditions":["reef"],"rare_conditions":["ghost_lantern"],"rarity_score":5},
+    {"id":"dust_carp","difficulty":0.58,"sell_value_cents":210,"hours":[8,20],"weather":["dust_wind"],"shore_conditions":["river"],"rarity_score":2},
+    {"id":"fog_trout","difficulty":0.76,"sell_value_cents":360,"hours":[18,24],"weather":["supernatural_fog"],"shore_conditions":["river"],"rarity_score":4}
   ]
 }

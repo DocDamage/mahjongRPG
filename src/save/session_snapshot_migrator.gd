@@ -86,4 +86,8 @@ static func migrate(snapshot_data: Dictionary, current_version: int) -> Dictiona
 		migrated["trade"] = {"table_tokens": 0, "active_orders": {}, "completed_orders": {}, "shop_stock": {}}
 		migrated["crafting"] = {"crafted": {}}
 		migrated["effects"] = {"active_effects": {}, "last_used_day": {}}
+	if schema_version <= 13:
+		migrated["angler"] = {"owned_gear": {"frontier_rod": true, "mealworm_bait": true, "river_spinner": true, "barbless_hook": true, "braided_line": true, "cork_bobber": true}, "loadout": {"rod": "frontier_rod", "bait": "mealworm_bait", "lure": "river_spinner", "hook": "barbless_hook", "line": "braided_line", "bobber": "cork_bobber"}, "discovered_conditions": {}, "records": {}, "contests": {}}
+	if schema_version <= 14:
+		migrated["desert"] = {"route_states": {}, "supernatural_records": {}, "recovered_clues": {}, "region_secrets": {}}
 	return migrated

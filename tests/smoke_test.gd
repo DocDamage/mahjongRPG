@@ -21,6 +21,8 @@ const DATA_TABLES := {
 	&"brands": "res://data/brands/six_brands.json",
 	&"bridlewood": "res://data/regions/bridlewood/region.json",
 	&"processing": "res://data/farm/vertical_slice_processing.json",
+	&"gulls_rest": "res://data/regions/gulls_rest/region.json",
+	&"red_testament": "res://data/regions/red_testament/region.json",
 }
 const REQUIRED_ASSETS := [
 	"res://assets/generated/player/cowboy_down_walk.png",

@@ -1,0 +1,57 @@
+[gd_scene load_steps=7 format=3]
+[ext_resource type="Script" path="res://src/world/interior.gd" id="1_interior"]
+[ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://src/world/scene_exit.gd" id="3_exit"]
+[ext_resource type="Script" path="res://src/world/coastal_landmark.gd" id="4_landmark"]
+[sub_resource type="CircleShape2D" id="ExitShape"]
+radius = 42.0
+[sub_resource type="CircleShape2D" id="ActionShape"]
+radius = 36.0
+[node name="GullsMarket" type="Node2D"]
+script = ExtResource("1_interior")
+location_name = "GULL'S REST FISH MARKET"
+floor_color = Color(0.18, 0.31, 0.35, 1)
+[node name="Doc" parent="." instance=ExtResource("2_player")]
+position = Vector2(480, 380)
+movement_bounds = Rect2(65, 115, 830, 300)
+footstep_event = &"footstep_wood"
+[node name="Exit" type="Area2D" parent="."]
+position = Vector2(480, 405)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_exit")
+prompt_text = "Leave the fish market"
+destination_scene = "res://src/world/gulls_rest.tscn"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
+shape = SubResource("ExitShape")
+[node name="TarponBuyer" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(285, 235)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_landmark")
+prompt_text = "Sell a tarpon catch at the fish market"
+action = 5
+target_id = &"tarpon"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TarponBuyer"]
+shape = SubResource("ActionShape")
+[node name="MarketKitchen" type="Area2D" parent="." groups=["interior_interactable"]]
+position = Vector2(650, 235)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_landmark")
+prompt_text = "Cook a Gull's Rest grouper roast"
+action = 3
+target_id = &"cook_gulf_grouper"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MarketKitchen"]
+shape = SubResource("ActionShape")
+[node name="HUD" type="CanvasLayer" parent="."]
+[node name="Status" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 20.0
+offset_right = 910.0
+offset_bottom = 60.0
+[node name="Message" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 480.0
+offset_right = 900.0
+offset_bottom = 520.0

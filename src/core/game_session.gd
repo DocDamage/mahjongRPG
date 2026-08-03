@@ -1,5 +1,4 @@
 extends Node
-
 const CropDefinition = preload("res://src/crops/crop_definition.gd")
 const AnimalCareService = preload("res://src/animals/animal_care_service.gd")
 const ConstructionCatalog = preload("res://src/farm/construction_catalog.gd")
@@ -18,18 +17,15 @@ const GameSessionSnapshot = preload("res://src/save/game_session_snapshot.gd")
 const SessionSnapshotMigrator = preload("res://src/save/session_snapshot_migrator.gd")
 const WeatherCatalog = preload("res://src/weather/weather_catalog.gd")
 const SessionCatalogLoader = preload("res://src/core/session_catalog_loader.gd")
-
 signal session_started(seed: int)
 signal time_advanced(day: int, minute_of_day: int)
 signal pause_changed(paused: bool)
 signal weather_changed(weather_id: StringName)
 signal session_restored()
-
-const SAVE_SCHEMA_VERSION := 13
+const SAVE_SCHEMA_VERSION := 15
 const MATCH_TIME_COST_MINUTES := 90
 const MINUTES_PER_DAY := 24 * 60
 const REAL_SECONDS_PER_DAY := 60.0
-
 var seed: int = 0
 var day: int = 1
 var minute_of_day: int = 8 * 60
@@ -45,6 +41,7 @@ var evidence
 var processing
 var regions
 var relationships; var properties; var trade; var crafting; var effects
+var angler; var desert
 var expansion_services = SessionExpansionServices.new()
 var player_scene := ""
 var player_position := Vector2.ZERO
@@ -70,6 +67,8 @@ func _ready() -> void:
 	_ensure_evidence()
 	_ensure_processing()
 	_ensure_regions()
+	expansion_services.ensure_angler(self)
+	expansion_services.ensure_desert(self)
 	expansion_services.ensure_relationships(self)
 	expansion_services.ensure_properties(self)
 	expansion_services.ensure_trade(self)
@@ -90,6 +89,8 @@ func start_new_game(new_seed: int) -> void:
 	evidence = null
 	processing = null
 	regions = null
+	angler = null
+	desert = null
 	expansion_services.reset(self)
 	player_scene = ""
 	player_position = Vector2.ZERO
@@ -101,6 +102,8 @@ func start_new_game(new_seed: int) -> void:
 	_ensure_evidence()
 	_ensure_processing()
 	_ensure_regions()
+	expansion_services.ensure_angler(self)
+	expansion_services.ensure_desert(self)
 	expansion_services.ensure_relationships(self)
 	expansion_services.ensure_properties(self)
 	expansion_services.ensure_trade(self)
@@ -147,29 +150,23 @@ func set_weather(next_weather_id: StringName) -> void:
 		return
 	weather_id = next_weather_id
 	weather_changed.emit(weather_id)
-
 func make_rng(stream_name: StringName) -> RandomNumberGenerator:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = _stream_seed(stream_name)
 	return rng
-
 func record_player_state(scene_path: String, position: Vector2) -> void:
 	if not scene_path.begins_with("res://"):
 		return
 	player_scene = scene_path
 	player_position = position
-
 func tutorial_step(tutorial_id: StringName) -> int:
 	return maxi(0, int(tutorial_steps.get(tutorial_id, 0)))
-
 func set_tutorial_step(tutorial_id: StringName, next_step: int) -> void:
 	if tutorial_id.is_empty() or next_step < 0:
 		return
 	tutorial_steps[tutorial_id] = next_step
-
 func snapshot() -> Dictionary:
 	return GameSessionSnapshot.capture(self)
-
 func restore(snapshot_data: Dictionary) -> Error:
 	var migrated := SessionSnapshotMigrator.migrate(snapshot_data, SAVE_SCHEMA_VERSION)
 	if migrated.is_empty():
@@ -285,6 +282,8 @@ func _ensure_regions():
 		_load_catalog("res://data/regions/bridlewood/region.json", "regions", regions)
 		_load_catalog("res://data/regions/saints_landing/region.json", "regions", regions)
 		_load_catalog("res://data/regions/ironhook/region.json", "regions", regions)
+		_load_catalog("res://data/regions/gulls_rest/region.json", "regions", regions)
+		_load_catalog("res://data/regions/red_testament/region.json", "regions", regions)
 	return regions
 func _load_catalog(path: String, collection_key: String, service, method := "register_definition") -> void:
 	if SessionCatalogLoader.load_into(path, collection_key, service, method) != OK:

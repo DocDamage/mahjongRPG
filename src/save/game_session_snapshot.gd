@@ -22,6 +22,8 @@ static func capture(session) -> Dictionary:
 		"trade": session.expansion_services.ensure_trade(session).snapshot(),
 		"crafting": session.expansion_services.ensure_crafting(session).snapshot(),
 		"effects": session.expansion_services.ensure_effects(session).snapshot(),
+		"angler": session.expansion_services.ensure_angler(session).snapshot(),
+		"desert": session.expansion_services.ensure_desert(session).snapshot(),
 		"player": {"scene": session.player_scene, "position": [session.player_position.x, session.player_position.y]},
 		"tutorial_steps": session.tutorial_steps.duplicate(true),
 	}
@@ -67,6 +69,8 @@ static func _restore_services(session, data: Dictionary) -> bool:
 		["trade", session.expansion_services.ensure_trade(session)],
 		["crafting", session.expansion_services.ensure_crafting(session)],
 		["effects", session.expansion_services.ensure_effects(session)],
+		["angler", session.expansion_services.ensure_angler(session)],
+		["desert", session.expansion_services.ensure_desert(session)],
 	]
 	for service_entry in services:
 		var service_data: Variant = data.get(String(service_entry[0]), {})

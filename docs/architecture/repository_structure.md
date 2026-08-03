@@ -16,6 +16,8 @@ src/
   relationships/   bounded relationship values and persistent dialogue choices
   property/        authored property-case outcomes and route access
   economy/         orders, stocked shops, crafting, and consumable effects
+  fishing/         catalog, live fishing flow, gear progression, records, and contests
+  desert/          saved weather-route, supernatural-record, and clue progression
   farm/            crop, construction, placement, and processing services
   animals/         named animal lifecycle and lineage services
 tools/

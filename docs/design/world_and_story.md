@@ -18,9 +18,11 @@ Poker never became part of local culture. Mahjong is the only formal table game 
 
 Dustward and Saint's Landing are distinct neighborhoods connected by a restricted gate or bridge. The restriction begins as a property dispute controlled by Texas King.
 
-## Current civic and dock slice
+## Current regional slice
 
 P7–P8 make the first part of that regional promise playable. Bridlewood leads to Saint's Landing, where Doc can establish a saved relationship with Registrar Elise and settle the Landing Depot case either through a documented petition or a legal Mahjong win. The result opens Ironhook, restores Hall practice stage 3, and preserves the selected case outcome. Ironhook's cargo ledger is the next authored Silas clue; its Smokehouse Supply Run consumes goods from prior regions, awards a table token, settles the customs-warehouse claim, and gives that token a direct Mahjong use at Mariner Ves's table.
+
+P9 opens Gull's Rest from Ironhook. Captain Coral Fenn's saved relationship letter supplies the next Silas lead; the region has a fish market, Coral's cabin, harbor/coast/reef/spring conditions, a rare-tide journal, gear upgrades, an explicit catch contest, and an expert table. P10 opens Red Testament from Gull's Rest. Windward Pass only records as survived in dust wind or supernatural fog, the expedition right opens the ruin interior, a red-lantern record is saved, and the recovered Texas King clue explains that an exposed conflicting Deed counters a declared final category. King's Reach remains a locked approach until the Act III convergence.
 
 ## The hall
 

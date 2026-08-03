@@ -1,0 +1,140 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://src/world/red_testament.gd" id="1_world"]
+[ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://src/world/scene_exit.gd" id="3_exit"]
+[ext_resource type="Script" path="res://src/world/desert_landmark.gd" id="4_landmark"]
+[ext_resource type="Script" path="res://src/world/bonfire.gd" id="5_bonfire"]
+[ext_resource type="Script" path="res://src/mahjong/presentation/mahjong_opponent.gd" id="6_opponent"]
+[ext_resource type="Script" path="res://src/horses/hitching_post.gd" id="7_hitch"]
+[sub_resource type="CircleShape2D" id="Circle"]
+radius = 36.0
+[sub_resource type="CircleShape2D" id="ExitCircle"]
+radius = 42.0
+
+[node name="RedTestament" type="Node2D"]
+script = ExtResource("1_world")
+[node name="Doc" parent="." instance=ExtResource("2_player")]
+position = Vector2(130, 420)
+movement_bounds = Rect2(45, 110, 870, 350)
+footstep_event = &"footstep_gravel"
+[node name="GullsTrail" type="Area2D" parent="." groups=["red_exit"]]
+position = Vector2(65, 420)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_exit")
+prompt_text = "Return to Gull's Rest"
+destination_scene = "res://src/world/gulls_rest.tscn"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GullsTrail"]
+shape = SubResource("ExitCircle")
+[node name="WindwardPass" type="Area2D" parent="." groups=["desert_landmark"]]
+position = Vector2(190, 205)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_landmark")
+prompt_text = "Cross weather-dependent Windward Pass"
+action = 0
+target_id = &"red_testament_windward_pass"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WindwardPass"]
+shape = SubResource("Circle")
+[node name="RedBonfire" type="Area2D" parent="."]
+position = Vector2(330, 210)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("5_bonfire")
+prompt_text = "Rest at the Red Testament bonfire"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RedBonfire"]
+shape = SubResource("Circle")
+[node name="GhostRecord" type="Area2D" parent="." groups=["desert_landmark"]]
+position = Vector2(470, 210)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_landmark")
+prompt_text = "Record the desert's supernatural lantern"
+action = 1
+target_id = &"red_lantern_ledger"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GhostRecord"]
+shape = SubResource("Circle")
+[node name="SunDialSecret" type="Area2D" parent="." groups=["desert_landmark"]]
+position = Vector2(530, 135)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_landmark")
+prompt_text = "Inspect the hidden Red Testament sun dial"
+action = 4
+target_id = &"red_testament_sun_dial"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SunDialSecret"]
+shape = SubResource("Circle")
+[node name="ExpeditionRight" type="Area2D" parent="." groups=["desert_landmark"]]
+position = Vector2(600, 210)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_landmark")
+prompt_text = "File the Red Testament expedition right"
+action = 3
+target_id = &"red_testament_expedition"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExpeditionRight"]
+shape = SubResource("Circle")
+[node name="CounterRuleClue" type="Area2D" parent="." groups=["desert_landmark"]]
+position = Vector2(740, 210)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_landmark")
+prompt_text = "Recover counterable Texas King rule clue"
+action = 2
+target_id = &"texas_king_counter_deed"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CounterRuleClue"]
+shape = SubResource("Circle")
+[node name="Ruins" type="Area2D" parent="." groups=["red_exit"]]
+position = Vector2(470, 330)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_exit")
+prompt_text = "Enter the Red Testament ruins"
+destination_scene = "res://src/world/red_testament_ruins.tscn"
+required_property = &"red_testament_expedition"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ruins"]
+shape = SubResource("Circle")
+[node name="KingsReachApproach" type="Area2D" parent="." groups=["red_exit"]]
+position = Vector2(850, 175)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_exit")
+prompt_text = "King's Reach approach (locked until the investigation converges)"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KingsReachApproach"]
+shape = SubResource("Circle")
+[node name="AshVarela" type="Area2D" parent="." groups=["red_opponent"]]
+position = Vector2(730, 320)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6_opponent")
+prompt_text = "Challenge Ash Varela"
+opponent_id = &"witness_ash"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AshVarela"]
+shape = SubResource("Circle")
+[node name="RedHitch" type="Area2D" parent="."]
+position = Vector2(870, 420)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("7_hitch")
+prompt_text = "Use Red Testament hitching post"
+post_id = &"red_testament"
+destination_post_id = &"gulls_rest"
+destination_scene = "res://src/world/gulls_rest.tscn"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RedHitch"]
+shape = SubResource("Circle")
+[node name="HUD" type="CanvasLayer" parent="."]
+[node name="Status" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 20.0
+offset_right = 930.0
+offset_bottom = 65.0
+theme_override_colors/font_color = Color(0.95, 0.89, 0.74, 1)
+theme_override_font_sizes/font_size = 18
+[node name="Message" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 480.0
+offset_right = 900.0
+offset_bottom = 520.0
+theme_override_colors/font_color = Color(1, 0.92, 0.67, 1)
+theme_override_font_sizes/font_size = 18

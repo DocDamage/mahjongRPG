@@ -11,7 +11,7 @@ static func state(opponent_id: StringName, weather_id: StringName, hour: int) ->
 	var entry_value: Variant = opponents_value.get(String(opponent_id), {})
 	if not entry_value is Dictionary:
 		return {}
-	var weather_value: Variant = entry_value.get(String(weather_id), {})
+	var weather_value: Variant = entry_value.get(String(weather_id), entry_value.get("clear", {}))
 	if not weather_value is Dictionary:
 		return {}
 	var hours_value: Variant = weather_value.get("hours", [])

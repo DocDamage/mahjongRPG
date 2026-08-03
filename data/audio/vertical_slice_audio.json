@@ -2,12 +2,18 @@
   "schema_version": 1,
   "ambience": {
     "clear": "res://assets/generated/audio/outdoor_generic_ambience.ogg",
-    "rain": "res://assets/generated/audio/rain_ambience.ogg"
+    "rain": "res://assets/generated/audio/rain_ambience.ogg",
+    "cloudy": "res://assets/generated/audio/outdoor_generic_ambience.ogg",
+    "thunderstorm": "res://assets/generated/audio/rain_ambience.ogg",
+    "dust_wind": "res://assets/generated/audio/outdoor_generic_ambience.ogg",
+    "supernatural_fog": "res://assets/generated/audio/outdoor_generic_ambience.ogg"
   },
   "events": {
     "footstep_grass": {"path": "res://assets/generated/audio/footstep_grass.wav", "bus": "SFX"},
     "footstep_gravel": {"path": "res://assets/generated/audio/footstep_gravel.wav", "bus": "SFX"},
     "footstep_wood": {"path": "res://assets/generated/audio/footstep_wood.wav", "bus": "SFX"},
-    "mahjong_tile": {"path": "res://assets/generated/audio/mahjong_tile_wood.wav", "bus": "Mahjong"}
+    "mahjong_tile": {"path": "res://assets/generated/audio/mahjong_tile_wood.wav", "bus": "Mahjong"},
+    "fishing_bite": {"path": "res://assets/generated/audio/mahjong_tile_wood.wav", "bus": "SFX"},
+    "fishing_tension": {"path": "res://assets/generated/audio/footstep_wood.wav", "bus": "SFX"}
   }
 }
